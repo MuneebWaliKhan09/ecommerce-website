@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Ecommerce-backend-Muneeb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuneebShah0/ecommerce-website-mernStack.git"
+  },
+  "author": "Muneeb shah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MuneebShah0/ecommerce-website-mernStack/issues"
+  },
+  "homepage": "https://github.com/MuneebShah0/ecommerce-website-mernStack#readme"
+}
