@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: [true, 'Please provide name'],
         minlength: 5,
@@ -55,7 +55,16 @@ const UserSchema = new mongoose.Schema({
         default: Date.now
     },
 
+    resetPasswordToken: String,
+    resetPasswordTokenExpire: Date
+
     
 
 
 })
+
+
+
+
+
+module.exports = mongoose.model('users', UserSchema);

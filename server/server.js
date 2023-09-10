@@ -25,8 +25,17 @@ app.use(cors())
 
 
 
+
+
+
+
+
 app.listen(() => console.log(`server is running on port ${process.env.PORT} `.cyan.bold.underline))
 
+
+const user = require("./routes/userRoutes")
+
+app.use('/api', user)
 
 // unhandle promise rejection server rejection database rejection
 
