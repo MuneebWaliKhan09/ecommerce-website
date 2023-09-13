@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000; // Use 5000 as a default if PORT is not s
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
-    console.log(`Error: ${err.stack}`.red)
+    console.log(`Error: ${err.message}`.red)
     console.log(`Shutting down the server due to uncaught exception `)
     process.exit(1)
 })

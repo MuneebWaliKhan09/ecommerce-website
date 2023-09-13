@@ -14,13 +14,24 @@ exports.isAuthenticated = expressAsyncHandler(async (req, res, next) => {
         })
     }
 
-    const decoded = jwt.verify(token, process.env.Jwt_Secret_Key);
+    try {
+        const decoded = jwt.verify(token, process.env.Jwt_Secret_Key);
 
-    const user = await User.findById(decoded.id);
+        const user = await User.findById(decoded.id);
 
-    req.user = user;
+        req.user = user;
 
-    next();
+        next();
+
+    } catch (error) {
+
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'session expired, please log in again' });
+        } else {
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+
+    }
 
 
 })
