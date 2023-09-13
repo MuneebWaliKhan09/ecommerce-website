@@ -6,11 +6,12 @@ require("dotenv").config()
 const app = express();
 const cookieParser = require("cookie-parser");
 
+const PORT = process.env.PORT || 5000; // Use 5000 as a default if PORT is not set in .env
 
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
-    console.log(`Error: ${err.message}`.red)
+    console.log(`Error: ${err.stack}`.red)
     console.log(`Shutting down the server due to uncaught exception `)
     process.exit(1)
 })
@@ -33,8 +34,10 @@ const user = require("./routes/userRoutes")
 app.use('/api', user)
 
 
-app.listen(() => console.log(`server is running on port ${process.env.PORT} `.cyan.bold.underline))
 
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`.cyan.bold.underline);
+});
 
 
 // unhandle promise rejection server rejection database rejection

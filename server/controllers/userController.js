@@ -2,13 +2,15 @@ const User = require("../models/userModel")
 const asyncHandler = require("express-async-handler")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const sendEmail = require("../utils/sendMailForgotPassword")
+const crypto = require('crypto');
 
 
 exports.registerUser = asyncHandler(async (req, res) => {
     try {
-        const { username, email, password , avatar} = req.body;
+        const { username, email, password, avatar } = req.body;
 
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email: email })
         if (user) {
             return res.status(400).json({
                 msg: "User already exists",
@@ -19,7 +21,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
 
-        const newUser = User.create({
+        const newUser = await User.create({
             username,
             email,
             password: hashPassword,
@@ -29,13 +31,304 @@ exports.registerUser = asyncHandler(async (req, res) => {
             }
         })
 
-        res.status(200).json({
-            msg: "user created successfully",
-            success: true,
-            newUser
-        })
+        if (!newUser) {
+            return res.status(400).json({
+                msg: "failed to create user!",
+                success: false
+            })
+        }
+        else {
+            return res.status(200).json({
+                msg: "user created successfully",
+                success: true,
+                newUser
+            })
+        }
+
+
+
 
     } catch (error) {
         console.log(error)
+
+        // Send an error response to the client
+        res.status(500).json({
+            msg: "An error occurred while registering the user",
+            success: false
+        });
     }
+})
+
+
+
+// login user
+exports.loginUser = asyncHandler(async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+
+        const user = await User.findOne({ email }).select("+password")
+
+        if (!user) {
+            return res.status(400).json({
+                msg: "User does not exist",
+                success: false
+            })
+        }
+        else {
+
+            const checkPasswordMatch = await bcrypt.compare(password, user.password)
+            if (checkPasswordMatch) {
+
+                // // create token data
+                // const tokenData = {
+                //     id: user._id,
+                //     username: user.username,
+                //     email: user.email
+                // }
+                const token = jwt.sign({ id: user._id }, process.env.Jwt_Secret_Key, { expiresIn: process.env.Jwt_Expire_Time })
+
+
+                const options = {
+                    expires: new Date(
+                        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+                    ),
+                    httpOnly: true
+                }
+
+                res.status(200).cookie("token", token, options).json({
+                    msg: "user logged in successfully",
+                    success: true,
+                    token
+                })
+
+
+            }
+            else {
+                return res.status(400).json({
+                    msg: "password does not match",
+                    success: false
+                })
+
+            }
+
+
+        }
+
+    } catch (error) {
+        console.log(error)
+
+        // Send an error response to the client
+        res.status(500).json({
+            msg: "An error occurred while registering the user",
+            success: false
+        });
+    }
+})
+
+
+
+
+
+
+
+// logout user
+
+exports.logoutUser = asyncHandler(async (req, res) => {
+    try {
+
+        res.clearCookie("token", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true
+        })
+
+        res.status(200).json({
+            msg: "user logged out successfully",
+            success: true
+        })
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: "An error occurred while logging out the user",
+            success: false
+        })
+    }
+})
+
+
+
+
+
+
+// forgot password
+
+exports.forgotPassword = asyncHandler(async (req, res) => {
+
+    const user = await User.findOne({ email: req.body.email })
+
+    if (!user) {
+        return res.status(400).json({
+            msg: "Email not found 😌!",
+            success: false
+        })
+    }
+
+    const resetToken = user.getResetPasswordToken();
+    await user.save({ validateBeforeSave: false })
+
+    // make a sending email URL reset password URL
+    const resetUrl = `${req.protocol}://${req.get("host")}/api/password/reset/${resetToken}`;
+    const message = `Your password reset token is :- \n\n ${resetUrl} \n\n If you have not requested this email then please ignore it.`;
+
+
+    /// now send email according to conditions
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: "ABC website Password Recovery",
+            message
+        })
+
+        return res.status(200).json({
+            msg: `Email sent successfully to ${user.email}`,
+            success: true
+        })
+
+    } catch (error) {
+        user.resetPasswordToken = undefined;
+        user.resetPasswordTokenExpire = undefined;
+        await user.save({ validateBeforeSave: false })
+
+        return res.status(500).json({
+            msg: "An error occurred while sending the email",
+            success: false
+        })
+    }
+
+
+})
+
+
+// reset password 
+exports.resetPassword = asyncHandler(async (req, res) => {
+    const { password, confirmPassword } = req.body;
+    // hash the token in params
+    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex")
+
+    // find user with above hash token
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordTokenExpire: { $gt: Date.now() }
+    })
+
+    // if not user valid
+    if (!user) {
+        return res.status(400).json({
+            success: false,
+            msg: "Invalid or expired token"
+        })
+    }
+    // if valid user
+    else {
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                msg: "Password does not match !"
+            })
+        }
+        else {
+            // change the password with given password
+            const salt = await bcrypt.genSalt(10)
+            const hashPassword = await bcrypt.hash(password, salt)
+
+            user.password = hashPassword;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordTokenExpire = undefined;
+
+            const done = await user.save();
+
+            if (done) {
+                return res.status(200).json({
+                    success: true,
+                    msg: "Password reset successfully"
+                })
+            }
+            else {
+                return res.status(400).json({
+                    msg: "An error occurred while resetting the password",
+                    success: false
+                })
+
+            }
+        }
+    }
+
+})
+
+
+
+
+
+// get logedIn user userDetails
+
+exports.getUserDetails = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.user._id)
+
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+
+})
+
+
+
+// update logedin user password
+
+
+exports.updateUserPassword = asyncHandler(async (req, res) => {
+
+    // make variables
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+
+    // find user by id make  sure loged in user authenticated user
+    const user = await User.findById(req.user._id).select("+password");
+
+    // compare old password with the password in database
+    const EnterOldPass = await bcrypt.compare(oldPassword, user.password)
+
+    if (!EnterOldPass) {
+        return res.status(400).json({
+            msg: "Old password does not match",
+            success: false
+        })
+
+    }
+
+    if (newPassword !== confirmPassword) {
+        return res.status(400).json({
+            msg: "New password does not match with confirm password",
+            success: false
+        })
+
+    } else {
+        // change the password with given password
+        const salt = await bcrypt.genSalt(10)
+        const hashPassword = await bcrypt.hash(newPassword, salt)
+        user.password = hashPassword
+
+        await user.save();
+
+        return res.status(200).json({
+            msg: "Password updated successfully",
+            success: true
+        })
+
+    }
+
+
 })
