@@ -287,6 +287,8 @@ exports.getUserDetails = asyncHandler(async (req, res) => {
 
 
 
+
+
 // update logedin user password
 
 
@@ -328,6 +330,154 @@ exports.updateUserPassword = asyncHandler(async (req, res) => {
             success: true
         })
 
+    }
+
+
+})
+
+
+
+
+// update loged in user profile
+
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+
+    const newData = {
+        username: req.body.username,
+        email: req.body.email,
+        avatar: req.body.avatar
+    }
+
+    if (req.body.avatar === "") {
+        // if user not chooses avatart during updation
+        const users = await User.findById(req.user._id)
+        newData.avatar = {
+            public_id: users.avatar[0].public_id,
+            url: users.avatar[0].url
+        }
+
+
+        const user = await User.findByIdAndUpdate(req.user.id, newData, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        });
+
+        res.status(200).json({
+            success: true,
+            msg: "User Updated Successfully 🤩",
+            user
+        });
+
+    }
+    else {
+        // const users = await User.findById(req.user._id)
+
+        // const imageId = users.avatar[0].public_id;
+
+
+        // await cloudinary.v2.uploader.destroy(imageId);
+
+        // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        //     folder: "avatars",
+        //     width: 150,
+        //     crop: "scale",
+        // });
+
+        const user = await User.findByIdAndUpdate(req.user.id, newData, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        })
+
+        res.status(200).json({
+            success: true,
+            msg: "User Updated Successfully 🤩",
+            user
+        });
+    }
+
+
+})
+
+
+// get All users ---admin
+
+exports.getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find();
+
+    return res.status(200).json({
+        success: true,
+        users
+    })
+})
+
+
+
+// get single user details ---admin
+
+exports.getSingleUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    return res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+
+
+// update user Role ---admin
+exports.updateUserRole = asyncHandler(async (req, res) => {
+    const { role } = req.body;
+
+    const user = await User.findByIdAndUpdate(req.params.id, {
+        role,
+    }, { new: true, runValidators: true, useFindAndModify: false })
+
+    if (user) {
+        return res.status(200).json({
+            success: true,
+            msg: "User Updated Successfully  》》》》》",
+            user
+        })
+    }
+    else{
+        return res.status(400).json({
+            success: false,
+            msg: "An error occurred while updating the user Role !"
+        
+        })
+    }
+
+})
+
+
+// delete user ---admin
+
+exports.deleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return res.status(400).json({
+            success: false,
+            msg: "User not found"
+        })
+    }
+
+    const del = await User.findByIdAndDelete(req.params.id)
+
+    if (del) {
+        return res.status(200).json({
+            success: true,
+            msg: "User deleted successfully"
+        })
+    }
+    else{
+        return res.status(400).json({
+            success: false,
+            msg: "An error occurred while deleting the user"
+        })
     }
 
 

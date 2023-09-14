@@ -1,6 +1,7 @@
 const express = require("express")
-const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updateUserPassword } = require("../controllers/userController")
-const { isAuthenticated } = require("../middleware/auth")
+const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updateUserPassword, updateUserProfile, getAllUsers, getSingleUser, updateUserRole, deleteUser } = require("../controllers/userController")
+
+const { isAuthenticated, AdminRoute } = require("../middleware/auth")
 const router = express.Router()
 
 router.route('/registerUser').post(registerUser)
@@ -10,6 +11,14 @@ router.route('/forgot/password').post(forgotPassword)
 router.route('/password/reset/:token').put(resetPassword)
 router.route('/getUserDetails').get(isAuthenticated, getUserDetails)
 router.route('/updateUserPassword').put(isAuthenticated, updateUserPassword)
+router.route('/updateUserProfile').put(isAuthenticated, updateUserProfile)
+
+
+//admin routes
+router.route('/admin/getAllUsers').get(isAuthenticated, AdminRoute("admin"), getAllUsers)
+router.route('/admin/getSingleUser/:id').get(isAuthenticated, AdminRoute("admin"), getSingleUser)
+router.route('/admin/updateUserRole/:id').put(isAuthenticated, AdminRoute("admin"), updateUserRole)
+router.route('/admin/deleteUser/:id').delete(isAuthenticated, AdminRoute("admin"), deleteUser)
 
 
 

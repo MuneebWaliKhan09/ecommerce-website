@@ -35,6 +35,17 @@ app.use('/api', user)
 
 
 
+// Global error handler middleware
+app.use((err, req, res, next) => {
+    // console.error(err.stack);
+
+    // Handle specific error types (e.g., ReferenceError, SyntaxError, etc.) if needed
+    if (err instanceof ReferenceError) {
+         res.status(400).json({ msg: 'ReferenceError occurred', err: err.stack });
+    }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`.cyan.bold.underline);
 });

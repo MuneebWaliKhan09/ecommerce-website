@@ -35,3 +35,20 @@ exports.isAuthenticated = expressAsyncHandler(async (req, res, next) => {
 
 
 })
+
+
+exports.AdminRoute = (...roles) => {
+
+    return (req, res, next) => {
+        if (req.user.role.includes(roles)) {
+            next();
+        }
+        else {
+            return res.status(401).json({
+                msg: "You are not authorized to access this page",
+                success: false
+            })
+        }
+    }
+
+}
