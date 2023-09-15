@@ -31,9 +31,11 @@ app.use(cors())
 
 const user = require("./routes/userRoutes")
 const product = require("./routes/productRoutes")
+const order = require("./routes/orderRoutes")
 
 app.use('/api', user)
 app.use('/api', product)
+app.use('/api', order)
 
 
 
