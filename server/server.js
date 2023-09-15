@@ -30,8 +30,10 @@ app.use(cors())
 
 
 const user = require("./routes/userRoutes")
+const product = require("./routes/productRoutes")
 
 app.use('/api', user)
+app.use('/api', product)
 
 
 
