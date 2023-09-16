@@ -1,5 +1,5 @@
 import React from 'react';
-import SmallNav from "../SmallNav/SmallNav";
+// import SmallNav from "../SmallNav/SmallNav";
 import DropMenu from "../DropMenu/DropMenu";
 import { useMediaQuery } from '@mui/material';
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css"
@@ -8,15 +8,9 @@ import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
 
 const Home = () => {
 
-
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
-//   const isTablet = useMediaQuery('(min-width: 768px)');
-
-
   return (
     <div>
 
-      {isDesktop ? (
 
 
 
@@ -64,11 +58,10 @@ const Home = () => {
           <div>
             <DropMenu/>
           </div>
+
         </div>
-      ) : (
-        <SmallNav />
-      )
-      }
+        <h1>Main</h1>
+        {/* <SmallNav /> */}
     </div>
 
 
