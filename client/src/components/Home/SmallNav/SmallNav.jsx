@@ -14,8 +14,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import "./left.css";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import "../../../node_modules/bootstrap/dist/css/bootstrap.css"
-import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
+import "../../../../node_modules/bootstrap/dist/css/bootstrap.css"
+import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
 
 
 

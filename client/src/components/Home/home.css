@@ -5,6 +5,47 @@
 
 
 
+.LatestProducts {
+    display: flex;
+    margin-bottom: 200px;
+    margin-top: 100px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 60px;
+}
+
+
+.Heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Heading h1 {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    font-weight: 900;
+    position: relative;
+    width: fit-content;
+    color: rgb(255, 81, 0);
+
+}
+
+
+.Heading h1::after {
+    content: '';
+    position: absolute;
+    bottom: 2%;
+    left: 7%;
+    height: 5px;
+    width: 60%;
+    background-color: rgba(255, 0, 0, 0.801);
+    transition: all ease 1s;
+}
+
+
 
 @media only screen and (max-width: 1024px) {
 
