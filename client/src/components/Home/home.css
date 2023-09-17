@@ -1,0 +1,112 @@
+.logo {
+    gap: 30px;
+    align-items: center !important;
+}
+
+
+
+
+@media only screen and (max-width: 1024px) {
+
+
+    .navhome {
+        justify-content: space-between !important;
+        gap: 10px !important;
+    }
+
+    .searchBtn {
+        font-size: 15px !important;
+        padding: 5px;
+    }
+
+    .search {
+        font-size: 15px !important;
+    }
+
+}
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+    /* .searchMenu {
+        display: none;
+    } */
+
+    .searchBtn {
+        font-size: 12px !important;
+        padding: 5px;
+    }
+
+    .search {
+        font-size: 12px !important;
+    }
+
+
+    .navhome {
+        justify-content: space-between !important;
+        gap: 10px !important;
+        padding: 10px 16px !important;
+        padding-right: 0px !important;
+    }
+
+    .logo {
+        font-size: 18px !important;
+        filter: drop-shadow(2px 4px 6px rgb(255, 224, 220));
+        align-items: center !important;
+    }
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+        display: none;
+
+    }
+
+    .regDiv {
+        display: none;
+    }
+
+    .regDiv .buttonReg {
+        font-size: 12px;
+        display: none;
+    }
+
+    .cartitems {
+        align-items: center !important;
+        gap: 12px !important;
+
+    }
+
+    .cartitems button {
+        font-size: 13px !important;
+    }
+
+    .cartitems span:nth-child(1) {
+        font-size: 10px !important;
+    }
+
+
+}
+
+
+@media only screen and (max-width: 320px) {
+
+    .navhome {
+        justify-content: space-between !important;
+        gap: 20px !important;
+        padding: 10px 16px !important;
+        padding-right: 0px !important;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .searchMenu {
+        display: none;
+    }
+}

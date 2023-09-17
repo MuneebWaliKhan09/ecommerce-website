@@ -1,0 +1,65 @@
+.caroules img {
+    height: 25rem;
+    object-fit:cover;
+}
+.caroules .carousel-caption{
+    top: 50%;
+    
+}
+
+
+
+@media only screen and (max-width: 1024px) {
+    .caroules img {
+        height: 20rem;
+    }
+    .caroules .carousel-caption{
+        top: 50%;
+        
+    }
+
+
+}
+@media only screen and (max-width: 768px) {
+    .caroules img {
+        height: 17rem;
+    }
+
+    .caroules .carousel-caption{
+        top: 50%;
+    }
+
+}
+
+@media only screen and (max-width: 320px) {
+    .caroules img {
+        height: 17rem;
+    }
+
+    .caroules .carousel-caption{
+        top: 20%;
+    }
+
+}
+
+@media only screen and (max-width: 375px) {
+    .caroules img {
+        height: 17rem;
+    }
+
+    .caroules .carousel-caption{
+        top: 22%;
+    }
+
+}
+
+@media only screen and (max-width: 425px) {
+    .caroules img {
+        height: 17rem;
+    }
+
+    .caroules .carousel-caption{
+        top: 22%;
+    }
+
+}
