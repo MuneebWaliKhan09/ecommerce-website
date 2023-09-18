@@ -7,9 +7,9 @@ import axios from "axios";
 
 export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
-    async () => {
+    async (keyword='') => {
         try {
-            const response = await axios.get("https://fakestoreapi.com/products");
+            const response = await axios.get(`/api/allProducts?keyword=${keyword}`);
             return response.data;
         } catch (error) {
             throw error; // Throw the error for handling in productError
