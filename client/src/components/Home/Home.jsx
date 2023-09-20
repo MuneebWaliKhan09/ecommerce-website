@@ -5,12 +5,11 @@ import "./home.css";
 import Carosule from './Carosule/Carosule';
 import { useDispatch } from "react-redux"
 import { useSelector } from 'react-redux'
-import { fetchProducts } from "../../Store/productSlice"
 import ProductCard from './ProductCard/ProductCard';
 import Loader from "../CustomLoader/Loader"
 import Error from "../customError/Error"
 import { Link } from 'react-router-dom';
-import NavBar from './NavBar/NavBar';
+import { getProducts } from '../../Store/actions/productActions';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,12 +18,14 @@ const Home = () => {
   const { products, loading, error } = useSelector((state) => state.products)
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(getProducts());
   }, [dispatch]);
 
   if (error) {
     return <Error />
   }
+
+
 
   return (
     <Fragment>
@@ -37,7 +38,6 @@ const Home = () => {
           : (
             <div>
               <Carosule />
-
               <main className='main'>
 
                 <div className='Heading'>
@@ -51,8 +51,8 @@ const Home = () => {
 
                     </div>
                   ) : (
-                    products.products && products.products.map((item) => (
-                      <ProductCard items={item} key={item.id} />
+                    products && products.map((item) => (
+                      <ProductCard items={item} key={item._id} />
                     ))
                   )
 

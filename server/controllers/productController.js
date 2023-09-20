@@ -30,10 +30,10 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 exports.allProducts = asyncHandler(async (req, res) => {
     // Number of products to show per page
-    const productsPerPage = 6;
+    const resultPerPage = 6;
 
     // Extract the requested page number from the URL's query parameters. Default to page 1 if not provided.
-    const page = Number(req.query.pageNumber) || 1;
+    const pageNo = Number(req.query.page) || 1;
 
     // make empty object for filter 
     const filters = {};
@@ -60,14 +60,15 @@ exports.allProducts = asyncHandler(async (req, res) => {
     }
 
     // Count the total number of products that match the filters
-    const count = await Product.countDocuments(filters);
+    const totalProducts = await Product.countDocuments(filters);
 
     // Fetch products based on the filters and pagination parameters
     const products = await Product.find(filters)
-        .limit(productsPerPage)
-        .skip(productsPerPage * (page - 1));
+        .limit(resultPerPage)
+        .skip(resultPerPage * (pageNo - 1));
 
-    return res.json({ products, page, pages: Math.ceil(count / productsPerPage), count });
+
+    return res.json({ products, pageNo, resultPerPage, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
 });
 
 

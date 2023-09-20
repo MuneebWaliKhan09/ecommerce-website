@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import "../Home/home.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../../Store/productSlice';
 import "./search.css";
-import Loader from '../../components/CustomLoader/Loader';
 import { Link } from 'react-router-dom';
+import { getProducts } from '../../Store/actions/productActions';
 
 const Search = () => {
     const [keyword, setKeyword] = useState("");
@@ -18,10 +17,11 @@ const Search = () => {
     const { products, loading, error } = useSelector((state) => state.products)
 
     useEffect(() => {
-        dispatch(fetchProducts());
+        dispatch(getProducts());
     }, [dispatch]);
 
     const navigate = useNavigate();
+
 
     const searchHandler = (e) => {
         e.preventDefault();
@@ -41,7 +41,7 @@ const Search = () => {
             setshowSearch('none')
         }
         else {
-            setName(products.products.filter((item) => {
+            setName(products.filter((item) => {
                 return item.name.toLowerCase().includes(val)
             }))
             setshowSearch('block')
@@ -66,18 +66,16 @@ const Search = () => {
                 </button>
                 <div className={`searchOptions p-2 rounded d-${showSearch}`} >
                     {
-                        loading ? (
-                            <Loader />
-                        ) : (
-                            name.map((items) => (
-                                <Link className='text-decoration-none' key={items._id} to={`/products/${items._id}`}>
-                                    <ul className='d-flex align-items-center pe-3 border border-secondary rounded py-2  justify-content-between  gap-5'>
-                                        <li>{items.name}</li>
-                                        <img width={50} height={50} src={items.images[0].url} alt="" />
-                                    </ul>
-                                </Link>
-                            ))
-                        )
+
+                        name.map((items) => (
+                            <Link className='text-decoration-none' key={items._id} to={`/products/${items._id}`}>
+                                <ul className='d-flex align-items-center pe-3 border border-secondary rounded py-2  justify-content-between  gap-5'>
+                                    <li>{items.name}</li>
+                                    <img width={50} height={50} src={items.images[0].url} alt="" />
+                                </ul>
+                            </Link>
+                        ))
+
 
                     }
                 </div>

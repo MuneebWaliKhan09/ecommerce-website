@@ -16,15 +16,16 @@ const ProductCard = ({ items }) => {
   return (
     <>
       <Link className='text-decoration-none' to={`/product/${items._id}`}>
-        <div class="card" style={{ width: "15rem"}}>
-          <img width={100} height={200} src={items.images[0].url} class="card-img-top" alt="..." />
-          <div class="card-body d-flex flex-column gap-3">
-            <h5 class="card-title">{items.name && items.name.slice(0, 35)}</h5>
+        <div className="card" style={{ width: "15rem"}}>
+          <img width={100} height={180} src={items.images[0].url} className="card-img-top" alt="..." />
+          <div className="card-body d-flex flex-column gap-3">
+            <h5 className="card-title">{items.name && items.name.slice(0, 35)}</h5>
+            <p className='m-0 p-0 text-primary'>{items.category}</p>
             <div className='d-flex align-items-center gap-2'>
               <Rating {...options} />
               <span> ({items.numOfReviews})</span>
             </div>
-            <p class="card-text text-bold text-danger">$ {items.price}</p>
+            <p className="card-text text-bold text-danger">$ {items.price}</p>
           </div>
         </div>
       </Link>
