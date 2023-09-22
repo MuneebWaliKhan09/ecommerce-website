@@ -1,0 +1,23 @@
+.detailsInputIncreDec{
+    width: 60% !important;
+}
+.detailsInputIncreDec button{
+    background-color: rgba(255, 255, 255, 0.171) !important;
+    font-size: 19px;
+    color: rgb(255, 0, 0);
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 320px) {
+    .detailsInputIncreDec{
+        width: 80% !important;
+        text-align: center !important;
+    }
+    
+    
+}

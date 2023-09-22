@@ -3,15 +3,12 @@
 .catDrop{
     display: flex !important;
     align-items: center !important;
-    gap: 20px !important;
+    gap: 40px !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     width: fit-content !important;
 }
 
-.catDrop select{
-    font-size: 15px;
-}
 
 .catOutline{
 
@@ -22,6 +19,12 @@
 }
 .catOutline h5{
     font-size: 17px;
+}
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    min-width: 130px !important;
+    padding: unset !important;
+    padding: 5px !important;
 }
 
 

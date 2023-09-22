@@ -3,6 +3,7 @@ import SmallNav from "../SmallNav/SmallNav";
 import DropMenu from "../DropMenu/DropMenu";
 import "../home.css";
 import Search from '../../search/Search';
+import { Link } from 'react-router-dom';
 
 
 const NavBar = () => {
@@ -17,12 +18,12 @@ const NavBar = () => {
 
                 <Search />
 
-                <div className='regDiv'>
+                <Link to='/register' className='regDiv text-decoration-none'>
                     <button className='btn btn-danger d-flex buttonReg'>
                         Register
                         <i className="bi bi-person-fill"> </i>
                     </button>
-                </div>
+                </Link>
 
                 <div className='me-3 cartitems d-flex align-items-center gap-3'>
                     <button type="button" className="btn btn-danger position-relative">

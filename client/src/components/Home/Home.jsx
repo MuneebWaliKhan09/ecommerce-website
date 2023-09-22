@@ -25,6 +25,7 @@ const Home = () => {
     return <Error />
   }
 
+  console.log(products)
 
 
   return (

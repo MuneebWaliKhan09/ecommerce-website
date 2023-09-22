@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const connect = require("./config/db")
 require("colors")
-require("dotenv").config()
+const dotenv = require("dotenv")
 const app = express();
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const cloudinary = require("cloudinary").v2;
+const fileUpload = require("express-fileupload");
 
-const PORT = process.env.PORT || 5000; // Use 5000 as a default if PORT is not set in .env
 
 
 // handling uncaught exception
@@ -16,16 +18,27 @@ process.on("uncaughtException", (err) => {
     process.exit(1)
 })
 
+
+// config dotenv
+dotenv.config({ path: ".env" })
+
 connect()
 
 
 app.use(express.json())
 app.use(cookieParser())
-app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors())
+app.use(fileUpload());
 
 
 
+// upload images
+cloudinary.config({
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
+});
 
 
 
@@ -33,9 +46,11 @@ const user = require("./routes/userRoutes")
 const product = require("./routes/productRoutes")
 const order = require("./routes/orderRoutes")
 
+
 app.use('/api', user)
 app.use('/api', product)
 app.use('/api', order)
+
 
 
 
@@ -45,14 +60,12 @@ app.use((err, req, res, next) => {
 
     // Handle specific error types (e.g., ReferenceError, SyntaxError, etc.) if needed
     if (err instanceof ReferenceError) {
-         res.status(400).json({ msg: 'ReferenceError occurred', err: err.stack });
+        res.status(400).json({ msg: 'ReferenceError occurred', err: err.stack });
     }
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`.cyan.bold.underline);
-});
+const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://localhost:${process.env.PORT || 5000}`.cyan) })
 
 
 // unhandle promise rejection server rejection database rejection

@@ -8,7 +8,6 @@ import "./card.css";
 const ProductCard = ({ items }) => {
 
   const options = {
-    // size: 'large',
     value: items.ratings,
     readOnly: true
   };

@@ -4,3 +4,19 @@
 * {
     font-family: 'Open Sans', sans-serif;
 }
+
+
+/* For Chrome and Safari */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background:  radial-gradient(rgba(255, 208, 0, 0.836), rgba(255, 230, 0, 0.74));
+    border-radius: 5px;
+  }
+  

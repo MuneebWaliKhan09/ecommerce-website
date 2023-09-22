@@ -12,7 +12,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { getProducts } from '../../Store/actions/productActions';
 import "./products.css";
-import { MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const categories = [
   "All Categories",
@@ -20,6 +20,7 @@ const categories = [
   "Home",
   "Fitness",
   "Kids",
+  "furniture"
 ];
 
 const Products = () => {
@@ -27,17 +28,18 @@ const Products = () => {
   const params = useParams();
   const keyword = params.keyword;
   const [category, setCategory] = useState('');
-  const [minPrice, setmaxPrice] = useState(0);
-  const [maxPrice, setminPrice] = useState(1000);
+  const [minPrice] = useState(100);
+  const [maxPrice] = useState(20000);
   const [price, setPrice] = useState([minPrice, maxPrice]);
   const [currentPage, setcurrentPage] = useState(1);
 
   const priceRanges = [
     { label: 'All Ranges', value: '0-0' },
-    { label: '$0-$100', value: '0-100' },
+    { label: '$100-$500', value: '100-500' },
     { label: '$100-$300', value: '100-300' },
     { label: '$400-$500', value: '400-500' },
-    { label: '$500-$1000', value: '400-1000' },
+    { label: '$700-$1200', value: '700-1200' },
+    { label: '$1300-$2000', value: '1300-2000' }
     // Add more price range options as needed
   ];
 
@@ -47,27 +49,11 @@ const Products = () => {
   const { products, loading, error, pages, pageNo, totalProducts, resultPerPage } = useSelector((state) => state.products)
 
 
-  const priceHandler = (event) => {
-    const eventVal = event.target.value;
-    if (eventVal === '0-0') {
-      setPrice([0, 1000])
-    }
-    else {
-      // .split('-') is used to split the string into an array 
-      //  This will result in an array like ['200', '500']
-      const newPrice = event.target.value.split('-').map(Number);  // and map would map through these two values in array and convert it to number
-      setPrice(newPrice);
-      // setminPrice(newPrice[0]);
-      // setmaxPrice(newPrice[1]);
-
-    }
-
-  };
 
 
   useEffect(() => {
-    dispatch(getProducts(keyword, currentPage, category, minPrice, maxPrice));
-  }, [dispatch, keyword, currentPage, category, minPrice, maxPrice]);
+    dispatch(getProducts(keyword, currentPage, category, price[0], price[1]));
+  }, [dispatch, keyword, currentPage, category, price[0], price[1]]);
 
 
   if (category === 'All Categories') {
@@ -75,10 +61,23 @@ const Products = () => {
   }
 
 
+  // price handler
+  const priceHandler = (event) => {
+    const eventVal = event.target.value;
+    if (eventVal === '0-0') {
+      setPrice([100, 20000])
+    }
+    else {
+      // .split('-') is used to split the string into an array 
+      //  This will result in an array like ['200', '500']
+      const newPrice = event.target.value.split('-').map(Number);  // and map would map through these two values in array and convert it to number
+      setPrice(newPrice);
+    }
+
+  };
 
 
 
-  console.log(category)
   if (error) {
     return <Error />
   }
@@ -94,29 +93,59 @@ const Products = () => {
         )
           : (
             <div>
+
               {/* filter by category */}
-              <div className='input-group mx-1 catDrop' style={{ width: 190 }}>
-                <select className='form-select' onChange={(e) => setCategory(e.target.value)}>
-                  <option value='' selected disabled>Select a Category</option>
-                  {
-                    categories.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))
-                  }
-                </select>
-                
-                <Select
-                  labelId="demo-select-label"
-                  id="demo-select"
-                  value={`${price[0]}-${price[1]}`}// Set the selected value based on your state
-                  onChange={priceHandler}
-                >
-                  {priceRanges.map((rang) => (
-                    <MenuItem key={rang.value} value={rang.value}>
-                      {rang.label}
-                    </MenuItem>
-                  ))}
-                </Select>
+              <div className='input-group mx-3 my-4 catDrop' style={{ width: 190 }}>
+
+                <FormControl>
+                  <InputLabel style={{ fontSize: "12px", padding: "0px 0px 5px 0px", position: "absolute", top: "-9px" }} htmlFor="demo-select">Select Category</InputLabel>
+                  <Select
+                    labelId="demo-select-label"
+                    id="demo-select"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    label="Select Category"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: '200px', // Set your desired max height here
+                        },
+                      },
+                    }}
+                  >
+                    {categories.map((cat) => (
+                      <MenuItem key={cat} value={cat}>
+                        {cat}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+
+                {/* filter by price */}
+                <FormControl >
+                  <InputLabel htmlFor="demo-select">Select Price</InputLabel>
+                  <Select
+                    labelId="demo-select-label"
+                    id="demo-select"
+                    value={`${price[0]}-${price[1]}`}
+                    onChange={priceHandler}
+                    label="Select Price"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: '200px', // Set your desired max height here
+                        },
+                      },
+                    }}
+                  >
+                    {priceRanges.map((rang) => (
+                      <MenuItem key={rang.value} value={rang.value}>
+                        {rang.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
               </div>
 

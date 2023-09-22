@@ -4,11 +4,13 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const sendEmail = require("../utils/sendMailForgotPassword")
 const crypto = require('crypto');
+const cloudinary = require("cloudinary")
 
 
 exports.registerUser = asyncHandler(async (req, res) => {
     try {
         const { username, email, password, avatar } = req.body;
+
 
         const user = await User.findOne({ email: email })
         if (user) {
@@ -18,6 +20,14 @@ exports.registerUser = asyncHandler(async (req, res) => {
             })
         }
 
+        // uplaod profile image
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            folder: "avatars",
+            width: 150,
+            crop: "scale",
+        });
+
+
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
 
@@ -26,8 +36,8 @@ exports.registerUser = asyncHandler(async (req, res) => {
             email,
             password: hashPassword,
             avatar: {
-                public_id: "picture",
-                url: "pic url",
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
             }
         })
 
@@ -44,8 +54,6 @@ exports.registerUser = asyncHandler(async (req, res) => {
                 newUser
             })
         }
-
-
 
 
     } catch (error) {
@@ -80,12 +88,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
             const checkPasswordMatch = await bcrypt.compare(password, user.password)
             if (checkPasswordMatch) {
 
-                // // create token data
-                // const tokenData = {
-                //     id: user._id,
-                //     username: user.username,
-                //     email: user.email
-                // }
+
                 const token = jwt.sign({ id: user._id }, process.env.Jwt_Secret_Key, { expiresIn: process.env.Jwt_Expire_Time })
 
 
@@ -120,7 +123,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
         // Send an error response to the client
         res.status(500).json({
-            msg: "An error occurred while registering the user",
+            msg: "An error occurred while logging the user",
             success: false
         });
     }
@@ -442,11 +445,11 @@ exports.updateUserRole = asyncHandler(async (req, res) => {
             user
         })
     }
-    else{
+    else {
         return res.status(400).json({
             success: false,
             msg: "An error occurred while updating the user Role !"
-        
+
         })
     }
 
@@ -473,7 +476,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
             msg: "User deleted successfully"
         })
     }
-    else{
+    else {
         return res.status(400).json({
             success: false,
             msg: "An error occurred while deleting the user"

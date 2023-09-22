@@ -68,7 +68,7 @@ const Search = () => {
                     {
 
                         name.map((items) => (
-                            <Link className='text-decoration-none' key={items._id} to={`/products/${items._id}`}>
+                            <Link className='text-decoration-none' key={items._id} to={`/product/${items._id}`}>
                                 <ul className='d-flex align-items-center pe-3 border border-secondary rounded py-2  justify-content-between  gap-5'>
                                     <li>{items.name}</li>
                                     <img width={50} height={50} src={items.images[0].url} alt="" />
