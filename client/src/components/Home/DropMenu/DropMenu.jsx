@@ -11,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
 
 const DropMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,7 +26,7 @@ const DropMenu = () => {
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Tooltip title="Account settings">
+                <Tooltip title="Account">
                     <IconButton
                         onClick={handleClick}
                         size="small"
@@ -93,10 +94,12 @@ const DropMenu = () => {
                     Settings
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
+                    <Link style={{textDecoration:"none" ,color:"inherit"}} onClick={()=> alert("hello")}>
+                        <ListItemIcon>
+                            <Logout fontSize="small" />
+                        </ListItemIcon>
+                        Logout
+                    </Link>
                 </MenuItem>
             </Menu>
         </React.Fragment>

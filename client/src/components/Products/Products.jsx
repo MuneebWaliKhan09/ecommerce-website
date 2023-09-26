@@ -10,7 +10,7 @@ import Error from "../customError/Error"
 import { Link, useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { getProducts } from '../../Store/actions/productActions';
+import { allProducts } from '../../Store/features/productSlice';
 import "./products.css";
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
@@ -45,17 +45,17 @@ const Products = () => {
 
 
 
-
-  const { products, loading, error, pages, pageNo, totalProducts, resultPerPage } = useSelector((state) => state.products)
-
+  const { products, pages, pageNo, totalProducts, resultPerPage } = useSelector((state) => state.app.products.products)
+  const { loading, error } = useSelector((state) => state.app.products)
 
 
 
   useEffect(() => {
-    dispatch(getProducts(keyword, currentPage, category, price[0], price[1]));
-  }, [dispatch, keyword, currentPage, category, price[0], price[1]]);
+    dispatch(allProducts({ currentPage: currentPage, category: category, minPrice: price[0], maxPrice: price[1] , keyword: keyword}));
+  }, [dispatch, currentPage, category, price[0], price[1], keyword]);
 
 
+  
   if (category === 'All Categories') {
     setCategory('')
   }

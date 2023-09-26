@@ -5,7 +5,7 @@ import "../Home/home.css";
 import { useDispatch, useSelector } from 'react-redux';
 import "./search.css";
 import { Link } from 'react-router-dom';
-import { getProducts } from '../../Store/actions/productActions';
+import { allProducts } from '../../Store/features/productSlice';
 
 const Search = () => {
     const [keyword, setKeyword] = useState("");
@@ -14,10 +14,10 @@ const Search = () => {
 
     const dispatch = useDispatch();
 
-    const { products, loading, error } = useSelector((state) => state.products)
+    const { products, loading, error } = useSelector((state) => state.app.products.products)
 
     useEffect(() => {
-        dispatch(getProducts());
+        dispatch(allProducts());
     }, [dispatch]);
 
     const navigate = useNavigate();

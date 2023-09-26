@@ -3,8 +3,9 @@ const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getU
 
 const { isAuthenticated, AdminRoute } = require("../middleware/auth")
 const router = express.Router()
+const upload = require("../middleware/multer")
 
-router.route('/registerUser').post(registerUser)
+router.route('/registerUser').post(upload.single('avatar'),registerUser)
 router.route('/loginUser').post(loginUser)
 router.route('/logoutUser').get(logoutUser)
 router.route('/forgot/password').post(forgotPassword)

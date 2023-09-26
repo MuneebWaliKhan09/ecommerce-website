@@ -7,9 +7,9 @@ import './car.css';
 const Carosule = () => {
 
     const images = [
-        'https://source.unsplash.com/1900x1200/?shoes,shoes',
-        'https://source.unsplash.com/1900x1200/?women,fashion',
-        'https://source.unsplash.com/1900x1200/?mens,fashion',
+        '/b2.jpg',
+        '/bg1.jpg',
+        '/bg3.jpg',
     ];
 
     return (

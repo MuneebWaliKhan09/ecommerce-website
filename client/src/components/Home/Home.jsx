@@ -9,23 +9,23 @@ import ProductCard from './ProductCard/ProductCard';
 import Loader from "../CustomLoader/Loader"
 import Error from "../customError/Error"
 import { Link } from 'react-router-dom';
-import { getProducts } from '../../Store/actions/productActions';
+import { allProducts } from '../../Store/features/productSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
 
 
-  const { products, loading, error } = useSelector((state) => state.products)
+  const { products} = useSelector((state) => state.app.products.products)
+  const { loading, error } = useSelector((state) => state.app.products)
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(allProducts({}));
   }, [dispatch]);
 
   if (error) {
     return <Error />
   }
 
-  console.log(products)
 
 
   return (

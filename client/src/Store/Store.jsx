@@ -1,28 +1,11 @@
-import { legacy_createStore, combineReducers, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { ProductReducer, productDetailsReducer } from './reducers/productReducer';
-import { userReducer } from './reducers/userReducers';
+import { configureStore } from "@reduxjs/toolkit"
+import rootReducer from "./features/productSlice"
 
-const reducer = combineReducers({
-  products: ProductReducer,
-  product: productDetailsReducer,
-  user: userReducer
-
+export const store = configureStore({
+  reducer: {
+    app: rootReducer,
+  }
 })
 
 
-let initialState = {
-
-};
-
-
-const middleware = [thunk]
-
-
-export const store = legacy_createStore(
-  reducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
-
+export default store

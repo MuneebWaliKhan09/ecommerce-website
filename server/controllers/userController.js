@@ -7,26 +7,34 @@ const crypto = require('crypto');
 const cloudinary = require("cloudinary")
 
 
+
 exports.registerUser = asyncHandler(async (req, res) => {
     try {
-        const { username, email, password, avatar } = req.body;
-
+        const { username, email, password } = req.body;
+        const avatar = req.file.path
+        // console.log("Received avatar data:", avatar);
+        // console.log("Received request body:", req.body);
 
         const user = await User.findOne({ email: email })
         if (user) {
             return res.status(400).json({
-                msg: "User already exists",
+                err: "User already exists",
                 success: false
             })
         }
 
         // uplaod profile image
-        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        const myCloud = await cloudinary.uploader.upload(avatar, {
             folder: "avatars",
             width: 150,
             crop: "scale",
         });
-
+        if (!myCloud) {
+            return res.status(500).json({
+                err: "An error occurred while uploading the avatar",
+                success: false,
+            });
+        }
 
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
@@ -43,7 +51,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
         if (!newUser) {
             return res.status(400).json({
-                msg: "failed to create user!",
+                err: "failed to create user!",
                 success: false
             })
         }
@@ -61,7 +69,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
         // Send an error response to the client
         res.status(500).json({
-            msg: "An error occurred while registering the user",
+            err: "An error occurred while registering the user",
             success: false
         });
     }
@@ -79,7 +87,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
         if (!user) {
             return res.status(400).json({
-                msg: "User does not exist",
+                err: "User does not exist",
                 success: false
             })
         }
@@ -102,14 +110,15 @@ exports.loginUser = asyncHandler(async (req, res) => {
                 res.status(200).cookie("token", token, options).json({
                     msg: "user logged in successfully",
                     success: true,
-                    token
+                    token,
+                    user
                 })
 
 
             }
             else {
                 return res.status(400).json({
-                    msg: "password does not match",
+                    err: "password does not match",
                     success: false
                 })
 
@@ -123,7 +132,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
         // Send an error response to the client
         res.status(500).json({
-            msg: "An error occurred while logging the user",
+            err: "An error occurred while logging the user",
             success: false
         });
     }
@@ -154,7 +163,7 @@ exports.logoutUser = asyncHandler(async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: "An error occurred while logging out the user",
+            err: "An error occurred while logging out the user",
             success: false
         })
     }

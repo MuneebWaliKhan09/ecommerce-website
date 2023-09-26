@@ -6,8 +6,7 @@ const dotenv = require("dotenv")
 const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const cloudinary = require("cloudinary").v2;
-const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary");
 
 
 
@@ -29,7 +28,6 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors())
-app.use(fileUpload());
 
 
 
@@ -65,7 +63,7 @@ app.use((err, req, res, next) => {
 });
 
 
-const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://localhost:${process.env.PORT || 5000}`.cyan) })
+const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://:${process.env.PORT || 5000}`.cyan) })
 
 
 // unhandle promise rejection server rejection database rejection
