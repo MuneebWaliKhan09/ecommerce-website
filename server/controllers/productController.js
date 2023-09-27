@@ -168,17 +168,26 @@ exports.createProductReview = asyncHandler(async (req, res) => {
 
     const review = {
         user: req.user._id,
-        name: req.user.name,
+        username: req.user.username,
         rating: Number(rating),
         comment,
-    };
+        createdAt: new Date().toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric'
+        })
+    }
 
+    console.log('review:', review);
 
     const product = await Product.findById(productId);
 
 
     if (!product) {
-        return next(new errorHandler("Product not found", 404));
+        return res.status(404).json({
+            err: 'Product not found',
+            success: false
+        })
     }
 
     const existingReviwed = product.reveiws.findIndex(
@@ -192,8 +201,8 @@ exports.createProductReview = asyncHandler(async (req, res) => {
     }
     else {
         product.reveiws.push(review)
-        product.numOfReviews = product.reveiws.length;
     }
+    product.numOfReviews = product.reveiws.length;
 
     let avg = 0;
     product.reveiws.forEach(r => (avg += r.rating));
@@ -204,7 +213,8 @@ exports.createProductReview = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         success: true,
-        message: "reveiwe added successfully 🤩"
+        message: "reveiwe added successfully 🤩",
+        product
     });
 })
 
@@ -241,17 +251,27 @@ exports.deleteProductReview = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(productId);
 
     if (!product) {
-        return next(new errorHandler("Product not found", 404));
+        return res.status(404).json({
+            err: 'Product not found',
+            success: false
+        })
     }
 
     const reviewToDelete = product.reveiws.find((r) => r._id.toString() === id);
 
     if (!reviewToDelete) {
-        return next(new errorHandler("Review not found", 404));
+        return res.status(404).json({
+            err: 'Reviewe not found',
+            success: false
+        })
     }
 
     if (reviewToDelete.user.toString() !== req.user._id.toString()) {
-        return next(new errorHandler("You are not authorized to delete this review", 403));
+
+        return res.status(403).json({
+            err: 'You are not authorized to delete this review',
+            success: false
+        })
     }
 
     // Remove the review if user matched

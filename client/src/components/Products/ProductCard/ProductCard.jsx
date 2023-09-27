@@ -17,8 +17,8 @@ const ProductCard = ({ items }) => {
   return (
     <>
       <Link className='text-decoration-none' to={`/product/${items._id}`}>
-        <div className="card" style={{ width: "15rem"}}>
-          <img width={100} height={180} src={items.images[0].url} className="card-img-top" alt="..." />
+        <div className="card" style={{ width: "16rem"}}>
+          <img height={200} src={items.images[0].url} className="card-img-top" alt="..." />
           <div className="card-body d-flex flex-column gap-2">
             <h5 className="card-title">{items.name && items.name.slice(0, 35)}</h5>
             <p className='m-0 p-0 text-primary'>{items.category}</p>

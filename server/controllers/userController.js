@@ -95,9 +95,13 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
             const checkPasswordMatch = await bcrypt.compare(password, user.password)
             if (checkPasswordMatch) {
+                
+                // const tokenPayload = {
+                //     _id: user._id,
+                //     username: user.username,
+                // };
 
-
-                const token = jwt.sign({ id: user._id }, process.env.Jwt_Secret_Key, { expiresIn: process.env.Jwt_Expire_Time })
+                const token = jwt.sign({id: user._id}, process.env.Jwt_Secret_Key, { expiresIn: process.env.Jwt_Expire_Time })
 
 
                 const options = {

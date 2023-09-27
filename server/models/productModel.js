@@ -56,7 +56,7 @@ const ProductSchema = new mongoose.Schema({
                 required: true,
             },
 
-            name: {
+            username: {
                 type: String,
                 required: true,
             },
@@ -67,6 +67,10 @@ const ProductSchema = new mongoose.Schema({
             comment: {
                 type: String,
                 required: true,
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now, // Use a function to get the current date and time
             }
         }
     ],
