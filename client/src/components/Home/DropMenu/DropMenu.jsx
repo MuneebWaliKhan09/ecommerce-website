@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -9,11 +9,25 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import Loader from "../../CustomLoader/Loader"
+import "../../../../node_modules/bootstrap/dist/css/bootstrap.css"
+import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
+import { useDispatch, useSelector } from 'react-redux';
+import { clearError, loginUserDetails, logoutUser,clearErrorUser } from '../../../Store/features/productSlice';
 
 const DropMenu = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { enqueueSnackbar } = useSnackbar();
+
+    const { user, errorUser } = useSelector((state) => state.app.userData)
+    const { msg2, error, loading } = useSelector((state) => state.app.userAuth)
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -23,8 +37,35 @@ const DropMenu = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogOout = async () => {
+        dispatch(logoutUser())
+    }
+
+
+    useEffect(() => {
+        if (msg2) {
+            enqueueSnackbar(msg2, { variant: "success" })
+            navigate('/login')
+            dispatch(clearError())
+            dispatch(clearErrorUser())
+        }
+        if (error) {
+            enqueueSnackbar(error, { variant: "error" })
+            dispatch(clearError())
+        }
+    }, [msg2, error, enqueueSnackbar, navigate])
+
+
+    useEffect(() => {
+        dispatch(loginUserDetails())
+    }, [dispatch])
+
+
+
     return (
-        <React.Fragment>
+
+        <>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 <Tooltip title="Account">
                     <IconButton
@@ -35,7 +76,7 @@ const DropMenu = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                        <Avatar sx={{ width: 40, height: 40 }} src={user && user.avatar && user.avatar[0].url} />
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -75,18 +116,29 @@ const DropMenu = () => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem onClick={handleClose}>
-                    <Avatar /> Profile
+                    <Avatar sx={{ width: 32, height: 32, background: "grey" }}>{user && user.username && user.username.slice(0, 1).toUpperCase()}</Avatar>{user && user.username}
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <Avatar /> My account
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                    </ListItemIcon>
-                    Add another account
-                </MenuItem>
+                {
+                    user && user.role === "admin" ? (
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <LockOpenIcon fontSize="small" />
+                            </ListItemIcon>
+                            Admin-panel
+                        </MenuItem>
+                    ) : (
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <PersonAdd fontSize="small" />
+                            </ListItemIcon>
+                            Register User
+                        </MenuItem>
+                    )
+                }
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <Settings fontSize="small" />
@@ -94,15 +146,15 @@ const DropMenu = () => {
                     Settings
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                    <Link style={{textDecoration:"none" ,color:"inherit"}} onClick={()=> alert("hello")}>
+                    <div style={{ textDecoration: "none", color: "inherit" }} onClick={handleLogOout}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>
                         Logout
-                    </Link>
+                    </div>
                 </MenuItem>
             </Menu>
-        </React.Fragment>
+        </>
     );
 }
 

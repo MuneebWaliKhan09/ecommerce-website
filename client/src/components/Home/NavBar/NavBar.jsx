@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SmallNav from "../SmallNav/SmallNav";
 import DropMenu from "../DropMenu/DropMenu";
 import "../home.css";
 import Search from '../../search/Search';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUserDetails } from '../../../Store/features/productSlice';
 
 
 const NavBar = () => {
+    const dispatch = useDispatch()
+    const { user , loading} = useSelector((state) => state.app.userData)
+
+    useEffect(()=>{
+        dispatch(loginUserDetails())
+    },[dispatch])
     return (
         <>
             <div className="navbar-light bg-light navhome shadow d-flex align-items-center pe-4 ps-5" style={{ justifyContent: "space-between", gap: "40px", padding: "18px" }}>
@@ -18,9 +26,9 @@ const NavBar = () => {
 
                 <Search />
 
-                <Link to='/register' className='regDiv text-decoration-none'>
-                    <button className='btn btn-danger d-flex buttonReg'>
-                        Register
+                <Link to='/login' className='regDiv text-decoration-none'>
+                    <button className='btn btn-danger d-flex buttonReg gap-1'>
+                        Login
                         <i className="bi bi-person-fill"> </i>
                     </button>
                 </Link>
@@ -33,9 +41,12 @@ const NavBar = () => {
                         <span className='bi bi-cart'></span>
 
                     </button>
-                    <div>
-                        <DropMenu />
-                    </div>
+                    {
+                        user &&
+                        <div>
+                            <DropMenu />
+                        </div>
+                    }
                 </div>
             </div>
         </>

@@ -14,6 +14,9 @@ const ProductDetails = () => {
     const { id } = useParams();
 
     const [quantity, setQuantity] = useState(1);
+    const [selectedRating, setSelectedRating] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const { product, loading, error } = useSelector((state) => state.app.products)
     // the structure of redux is like app --> [products, loading, error] --> product
@@ -28,7 +31,6 @@ const ProductDetails = () => {
         return <h2>{error}</h2>
     }
 
-    console.log("comp", product)
 
 
     const incrementQuantity = () => {
@@ -42,11 +44,31 @@ const ProductDetails = () => {
     };
 
 
+    // filter reveiwes by ratings
+    const handleRatingChange = (e) => {
+        const rating = parseFloat(e.target.value);
+        setSelectedRating(rating)
+
+        setIsLoading(true)
+
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000);
+    };
+
+    const filteredReviews = selectedRating
+        ? product.reveiws.filter((R) => R.rating === selectedRating)
+        : product.reveiws;
+
+
 
     const options = {
         // size: 'large',
         value: product.ratings && product.ratings,
-        readOnly: true
+        readOnly: true,
+        name: "half-rating-read",
+        defaultValue: 2.5,
+        precision: 0.5
     };
 
 
@@ -119,17 +141,36 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <h2 className='text-center m-5 p-5'>Product Reveiwe : </h2>
-
+                        <div className='container'>
+                            <select onChange={handleRatingChange}>
+                                <option value="">Filter By Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4.5">4.5 Stars</option>
+                                <option value="3.5">3.5 Stars</option>
+                                <option value="2.5">2.5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
                         <div class="container mt-5">
-                        <div class="card mb-5 gap-2">
+                            <div class="card mb-5 gap-2">
                                 {
-                                    product.reveiws && product.reveiws.length > 0 ? (
-                                        product.reveiws.map((R) => (
-                                            <><PrReviewes R={R} key={R._id} />
-                                            <hr className='m-0' /></>
-                                        ))
+                                    isLoading ? (
+                                        <div className='d-flex justify-content-center align-items-center p-3'>
+                                            <Loader />
+                                        </div>
                                     ) : (
-                                        <h3 className='text-center text-danger'>No Reveiwes Found !</h3>
+                                        filteredReviews && filteredReviews.length > 0 ? (
+                                            filteredReviews.map((R) => (
+                                                <><PrReviewes R={R} key={R._id} />
+                                                    <hr className='m-0' />
+                                                </>
+                                            ))
+                                        ) : (
+                                            <h3 className='text-center text-danger'>No Reveiwes Found !</h3>
+                                        )
                                     )
                                 }
                             </div>

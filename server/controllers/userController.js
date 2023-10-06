@@ -59,7 +59,6 @@ exports.registerUser = asyncHandler(async (req, res) => {
             return res.status(200).json({
                 msg: "user created successfully",
                 success: true,
-                newUser
             })
         }
 
@@ -95,13 +94,8 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
             const checkPasswordMatch = await bcrypt.compare(password, user.password)
             if (checkPasswordMatch) {
-                
-                // const tokenPayload = {
-                //     _id: user._id,
-                //     username: user.username,
-                // };
 
-                const token = jwt.sign({id: user._id}, process.env.Jwt_Secret_Key, { expiresIn: process.env.Jwt_Expire_Time })
+                const token = jwt.sign({ id: user._id }, process.env.Jwt_Secret_Key, { expiresIn: process.env.Jwt_Expire_Time })
 
 
                 const options = {
@@ -111,11 +105,11 @@ exports.loginUser = asyncHandler(async (req, res) => {
                     httpOnly: true
                 }
 
-                res.status(200).cookie("token", token, options).json({
-                    msg: "user logged in successfully",
-                    success: true,
+                res.cookie("token", token, options)
+
+                res.send({
+                    msg: "user loged in successfully",
                     token,
-                    user
                 })
 
 
@@ -157,7 +151,6 @@ exports.logoutUser = asyncHandler(async (req, res) => {
             expires: new Date(Date.now()),
             httpOnly: true
         })
-
         res.status(200).json({
             msg: "user logged out successfully",
             success: true
@@ -292,7 +285,6 @@ exports.resetPassword = asyncHandler(async (req, res) => {
 exports.getUserDetails = asyncHandler(async (req, res) => {
 
     const user = await User.findById(req.user._id)
-
 
     res.status(200).json({
         success: true,

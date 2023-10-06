@@ -11,7 +11,10 @@ const ProductCard = ({ items }) => {
   const options = {
     // size: 'large',
     value: items.ratings,
-    readOnly: true
+    readOnly: true,
+    name: "half-rating-read",
+    defaultValue: 2.5,
+    precision: 0.5
   };
 
   return (
@@ -23,7 +26,7 @@ const ProductCard = ({ items }) => {
             <h5 className="card-title">{items.name && items.name.slice(0, 35)}</h5>
             <p className='m-0 p-0 text-primary'>{items.category}</p>
             <div className='d-flex align-items-center gap-2'>
-              <Rating {...options} />
+              <Rating {...options}  />
               <span> ({items.numOfReviews})</span>
             </div>
             <p className="card-text text-bold text-danger m-0">$ {items.price}</p>
