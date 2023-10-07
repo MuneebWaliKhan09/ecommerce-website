@@ -169,7 +169,7 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
 
 
     } catch (error) {
-        return rejectWithValue(error.response.data.err);
+        return rejectWithValue(error.response.data);
     }
 
 })
@@ -274,12 +274,14 @@ export const userData = createSlice({
     initialState: {
         loadingUser: false,
         errorUser: null,
+        errorUser2: null,
         user: null
     },
 
     reducers: {
         clearErrorUser: (state) => {
             state.errorUser = null;
+            state.errorUser2 = null;
             state.user = null;
         }
     },
@@ -287,12 +289,21 @@ export const userData = createSlice({
     extraReducers: {
         [loginUserDetails.pending]: (state) => {
             state.loadingUser = true;
+            state.errorUser2 = null;
+            state.errorUser = null;
         },
         [loginUserDetails.fulfilled]: (state, action) => {
             state.user = action.payload;
             state.loadingUser = false;
             state.errorUser = null;
-        }
+            state.errorUser2 = null;
+        },
+        [loginUserDetails.rejected]: (state, action) => {
+            state.loadingUser = false;
+            state.errorUser = action.payload.message;  // session expired message from server
+            state.errorUser2 = action.payload.msg; // login to access the page error from server
+            state.user = null;
+        },
     }
 
 

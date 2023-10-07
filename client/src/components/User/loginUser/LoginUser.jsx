@@ -13,7 +13,7 @@ const LoginUser = () => {
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar();
 
-    const { user ,loadingUser } = useSelector((state) => state.app.userData)
+    const { user, loadingUser } = useSelector((state) => state.app.userData)
     const { msg1, error1, loading } = useSelector((state) => state.app.userAuth)
 
     const [email, setEmail] = useState('');
@@ -43,13 +43,13 @@ const LoginUser = () => {
 
 
     useEffect(() => {
-        if(!user){
-            navigate("/login")
+        if (!user) {
+                navigate("/login")
         }
-        else{
+        else {
             navigate("/")
         }
-    }, [user, navigate, dispatch])
+    }, [user,navigate, dispatch])
 
 
     if (loading && loadingUser) {

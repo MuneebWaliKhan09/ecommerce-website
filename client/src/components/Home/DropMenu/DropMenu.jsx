@@ -12,13 +12,13 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import Loader from "../../CustomLoader/Loader"
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.css"
 import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, loginUserDetails, logoutUser,clearErrorUser } from '../../../Store/features/productSlice';
+import { clearError, loginUserDetails, logoutUser, clearErrorUser } from '../../../Store/features/productSlice';
 
 const DropMenu = () => {
     const navigate = useNavigate()
@@ -118,9 +118,12 @@ const DropMenu = () => {
                 <MenuItem onClick={handleClose}>
                     <Avatar sx={{ width: 32, height: 32, background: "grey" }}>{user && user.username && user.username.slice(0, 1).toUpperCase()}</Avatar>{user && user.username}
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> My account
-                </MenuItem>
+                <Link to='/account' className="text-decoration-none text-inherit">
+                    <MenuItem onClick={handleClose}>
+                        <Avatar /> My account
+                    </MenuItem>
+                </Link>
+
                 <Divider />
                 {
                     user && user.role === "admin" ? (

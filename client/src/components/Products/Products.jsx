@@ -51,11 +51,11 @@ const Products = () => {
 
 
   useEffect(() => {
-    dispatch(allProducts({ currentPage: currentPage, category: category, minPrice: price[0], maxPrice: price[1] , keyword: keyword}));
+    dispatch(allProducts({ currentPage: currentPage, category: category, minPrice: price[0], maxPrice: price[1], keyword: keyword }));
   }, [dispatch, currentPage, category, price[0], price[1], keyword]);
 
 
-  
+
   if (category === 'All Categories') {
     setCategory('')
   }
@@ -163,9 +163,8 @@ const Products = () => {
 
                 <div className='LatestProducts'>
                   {loading ? (
-                    <div>
+                    <div className='d-flex flex-column align-items-center justify-content-center' style={{ width: "100%", height: "100vh", zIndex: "999" }}>
                       <Loader />
-
                     </div>
                   ) :
                     (

@@ -15,7 +15,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
 
-  const { products} = useSelector((state) => state.app.products.products)
+  const { products } = useSelector((state) => state.app.products.products)
   const { loading, error } = useSelector((state) => state.app.products)
 
   useEffect(() => {
@@ -47,9 +47,8 @@ const Home = () => {
 
                 <div className='LatestProducts'>
                   {loading ? (
-                    <div>
+                    <div className='d-flex flex-column align-items-center justify-content-center' style={{ width: "100%", height: "100vh", zIndex: "999" }}>
                       <Loader />
-
                     </div>
                   ) : (
                     products && products.map((item) => (
