@@ -43,6 +43,37 @@ export const productsDetails = createAsyncThunk("productsDetail", async (id, { r
 
 
 
+// create product reveiwe
+
+export const productsReveiw = createAsyncThunk("productReveiw", async (data, { rejectWithValue }) => {
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.put(`/api/createReview`, data, config)
+
+        console.log(res.data);
+        return res.data;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+})
+
+
+
+
+
+
 
 export const productFunctionality = createSlice({
     name: "productFunctionality",
@@ -97,8 +128,92 @@ export const productFunctionality = createSlice({
 
 
 
+export const productReveiwer = createSlice({
+    name: "productReveiwer",
+
+    initialState: {
+        loadingReveiw: false,
+        errorRewiew: null,
+        AuthError: null,
+        msg: null
+    },
+
+    reducers: {
+        clearMsgReveiwer(state) {
+            state.msg = null;
+            state.errorRewiew = null;
+            state.AuthError = null;
+        }
+
+    }
+    ,
+    extraReducers: {
+        [productsReveiw.pending]: (state) => {
+            state.loadingReveiw = true;
+            state.errorRewiew = null;
+
+        },
+
+        [productsReveiw.fulfilled]: (state, action) => {
+            state.loadingReveiw = false;
+            state.msg = action.payload.msg;
+            state.loadingReveiw = false;
+
+        },
+        [productsReveiw.rejected]: (state, action) => {
+            state.loadingReveiw = false;
+            state.errorRewiew = action.payload.err;
+            state.AuthError = action.payload.msg;
+            state.msg = null;
+        }
+    }
+
+})
 
 
+export const addToCart = createSlice({
+    name: "addToCart",
+    initialState: {
+        cart: JSON.parse(localStorage.getItem("cart")) || [], // Initialize cart from localStorage
+        msgCart: null,
+    },
+    reducers: {
+
+        addToCartFunc: (state, action) => {
+            const newCartItem = action.payload;
+            const existingItemIndex = state.cart.findIndex(item => item._id === newCartItem._id);
+
+            if (existingItemIndex !== -1) {
+
+                state.cart[existingItemIndex].quantity = newCartItem.quantity;
+                state.msgCart = "Cart item updated successfully";
+
+            } else {
+
+                state.cart.push(newCartItem);
+                state.msgCart = "Cart item added successfully";
+            }
+
+            localStorage.setItem("cart", JSON.stringify(state.cart));
+        },
+
+        removeCartFunc: (state, action) => {
+            const id = action.payload._id
+            const data = state.cart.filter((item)=>{
+                return item._id !== id
+            })
+            if(data){
+                state.msgCart = "Cart item removed successfully";
+            }
+            state.cart = data;
+            localStorage.setItem("cart", JSON.stringify(state.cart));
+        },
+
+        clearMsgCart: (state) => {
+            state.msgCart = null;
+        }
+    }
+});
 
 
 
@@ -170,6 +285,85 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
 
     } catch (error) {
         return rejectWithValue(error.response.data);
+    }
+
+})
+
+
+// forgot password
+export const forgotPasswordUser = createAsyncThunk("forgotPasswordUser", async ({ email: email }, { rejectWithValue }) => {
+
+    try {
+        const res = await axios.post("/api/forgot/password", { email });
+        return res.data.msg;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+
+})
+
+// reset password
+export const resetPasswordUser = createAsyncThunk("resetPasswordUser", async ({ password: password, confirmPassword: confirmPassword, token: token }, { rejectWithValue }) => {
+
+    try {
+        const res = await axios.put(`/api/password/reset/${token}`, { password, confirmPassword });
+        return res.data.msg;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+
+})
+
+// update user profile
+export const updateUserProfile = createAsyncThunk("updateUserProfile", async (data, { rejectWithValue }) => {
+
+    try {
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+
+        const res = await axios.put(`/api/updateUserProfile`, data, config);
+        console.log(res.data.msg);
+        return res.data.msg;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+
+})
+
+
+// update user profile
+export const updateUserPassword = createAsyncThunk("updateUserPassword", async ({ oldPassword: oldPassword, newPassword: newPassword, confirmPassword: confirmPassword }, { rejectWithValue }) => {
+
+    try {
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.put(`/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
+        console.log(res.data.msg);
+        return res.data.msg;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
     }
 
 })
@@ -279,7 +473,8 @@ export const userData = createSlice({
     },
 
     reducers: {
-        clearErrorUser: (state) => {
+        clearErrorUser: (state) => {  // remember if you do not add this reducer the messages 
+            //from backend will apeared two times on success or fail
             state.errorUser = null;
             state.errorUser2 = null;
             state.user = null;
@@ -306,13 +501,122 @@ export const userData = createSlice({
         },
     }
 
+})
 
 
+export const forgotPass = createSlice({
+    name: "forgotPasswordUser",
+    initialState: {
+        loadingForgotPass: false,
+        errorforgotPass: null,
+        msgForgotPass: null
+    },
+
+    reducers: {
+        clearErrorForgotPass: (state) => {
+            state.errorforgotPass = null;
+            state.msgForgotPass = null;
+        }
+    },
+
+    extraReducers: {
+        [forgotPasswordUser.pending]: (state) => {
+            state.loadingForgotPass = true;
+            state.errorforgotPass = null;
+        },
+        [forgotPasswordUser.fulfilled]: (state, action) => {
+            state.msgForgotPass = action.payload;
+            state.loadingForgotPass = false;
+            state.errorforgotPass = null;
+        },
+        [forgotPasswordUser.rejected]: (state, action) => {
+            state.loadingForgotPass = false;
+            state.errorforgotPass = action.payload;
+            state.msgForgotPass = null;
+        },
+
+        // resete password
+        [resetPasswordUser.pending]: (state) => {
+            state.loadingForgotPass = true;
+            state.errorforgotPass = null;
+        },
+        [resetPasswordUser.fulfilled]: (state, action) => {
+            state.msgForgotPass = action.payload;
+            state.loadingForgotPass = false;
+            state.errorforgotPass = null;
+        },
+        [resetPasswordUser.rejected]: (state, action) => {
+            state.loadingForgotPass = false;
+            state.errorforgotPass = action.payload;
+            state.msgForgotPass = null;
+        },
+    }
 
 })
 
+
+export const updateUserProf = createSlice({
+    name: "updateUserProfile",
+    initialState: {
+        loadingUpdate: false,
+        errorUpdate: null,
+        msgUpdate: null
+    },
+
+    reducers: {
+        clearErrorUpdateProfile: (state) => {
+            state.errorUpdate = null;
+            state.msgUpdate = null;
+        }
+    }
+    ,
+
+    extraReducers: {
+        [updateUserProfile.pending]: (state) => {
+            state.loadingUpdate = true;
+            state.errorUpdate = null;
+        },
+
+        [updateUserProfile.fulfilled]: (state, action) => {
+            state.msgUpdate = action.payload;
+            state.loadingUpdate = false;
+            state.errorUpdate = null;
+        },
+
+        [updateUserProfile.rejected]: (state, action) => {
+            state.loadingUpdate = false;
+            state.errorUpdate = action.payload;
+            state.msgUpdate = null;
+        },
+
+        // update user password
+        [updateUserPassword.pending]: (state) => {
+            state.loadingUpdate = true;
+            state.errorUpdate = null;
+        },
+
+        [updateUserPassword.fulfilled]: (state, action) => {
+            state.msgUpdate = action.payload;
+            state.loadingUpdate = false;
+            state.errorUpdate = null;
+        },
+
+        [updateUserPassword.rejected]: (state, action) => {
+            state.loadingUpdate = false;
+            state.errorUpdate = action.payload;
+            state.msgUpdate = null;
+        }
+    }
+})
+
+
+
 export const { clearError } = auth.actions;
 export const { clearErrorUser } = userData.actions;
+export const { clearMsgReveiwer } = productReveiwer.actions;
+export const { clearErrorForgotPass } = forgotPass.actions;
+export const { clearErrorUpdateProfile } = updateUserProf.actions;
+export const { removeCartFunc, addToCartFunc, clearMsgCart } = addToCart.actions
 
 
 // ============================================ END User =====================================================================================
@@ -331,6 +635,10 @@ const rootReducer = combineReducers({
     user: user.reducer,
     userAuth: auth.reducer,
     userData: userData.reducer,
+    productReveiwer: productReveiwer.reducer,
+    forgotPass: forgotPass.reducer,
+    updateUserProf: updateUserProf.reducer,
+    addToCart: addToCart.reducer
 });
 
 

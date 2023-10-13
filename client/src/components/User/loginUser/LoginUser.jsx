@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from 'notistack';
@@ -13,7 +12,7 @@ const LoginUser = () => {
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar();
 
-    const { user, loadingUser } = useSelector((state) => state.app.userData)
+    const { user, loadingUser, errorUser2 } = useSelector((state) => state.app.userData)
     const { msg1, error1, loading } = useSelector((state) => state.app.userAuth)
 
     const [email, setEmail] = useState('');

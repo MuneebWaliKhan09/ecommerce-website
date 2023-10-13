@@ -19,11 +19,14 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.css"
 import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 
 
 export default function SwipeableTemporaryDrawer() {
+    const { errorUser2 } = useSelector((state) => state.app.userData)
+
     const [state, setState] = React.useState({
         left: false,
     });
@@ -46,15 +49,15 @@ export default function SwipeableTemporaryDrawer() {
         if (text === 'Home') {
             return <HomeIcon />;
         }
-         else if (text === 'Products') {
+        else if (text === 'Products') {
             return <ShoppingCartIcon />;
-        } 
-         else if (text === 'Login') {
-            return <LoginIcon />;
-        } 
-         else if (text === 'Register') {
+        }
+        else if (text === 'Register') {
             return <PersonAddAltIcon />;
-        } 
+        }
+        else if (text === 'Login') {
+            return <LoginIcon />;
+        }
         else {
             return null; // You can return null for other items or define more conditions
         }
@@ -72,7 +75,6 @@ export default function SwipeableTemporaryDrawer() {
                 {[
                     { text: 'Home', route: '/' },
                     { text: 'Products', route: '/products' },
-                    { text: 'Login', route: '/login' },
                     { text: 'Register', route: '/register' },
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
@@ -82,6 +84,20 @@ export default function SwipeableTemporaryDrawer() {
                         </ListItemButton>
                     </ListItem>
                 ))}
+                 {/*  show login when user not loged in errorUser2 is unauthorizes msg */}
+                <ListItem disablePadding>
+                    {
+                        errorUser2 && errorUser2 ? (
+                            <ListItemButton component={Link} to='/login'>
+                                <ListItemIcon>{getIconForText('Login')}</ListItemIcon>
+                                <ListItemText primary='Login' />
+                            </ListItemButton>
+                        ) : (
+                            <span></span>
+                        )
+                    }
+                </ListItem>
+
             </List>
 
             <Divider />

@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
-import { Link } from "react-router-dom"; // Import Link for navigation
 import { useSelector } from 'react-redux';
 import Loader from "../../CustomLoader/Loader"
-const UserProfile = () => {
+import Update from "../UpdateProfile/Update";
+import PassUpdate from "../UpdatePass/PassUpdate";
 
+const UserProfile = () => {
     const { user, loadingUser } = useSelector((state) => state.app.userData)
+    const { loadingUpdate } = useSelector((state) => state.app.updateUserProf)
+
+    const [showUpdate, setShowUpdate] = useState(false)
+    const [showUpdatePass, setShowUpdatePass] = useState(false)
+
+    const updateProfile = () => {
+        setShowUpdate(true)
+    }
+
+    const UpdatePass = () => {
+        setShowUpdatePass(true)
+    }
+
 
     return (
         <>
+            {showUpdate && <Update setShowUpdate={setShowUpdate} showUpdate={showUpdate} />}
+            {showUpdatePass && <PassUpdate setShowUpdatePass={setShowUpdatePass} showUpdatePass={showUpdatePass} />}
             {
-                loadingUser ? (<div className='d-flex flex-column align-items-center justify-content-center' style={{ width: "100%", height: "100vh", zIndex: "1000" }}>
+                loadingUser || loadingUpdate ? (<div className='d-flex flex-column align-items-center justify-content-center' style={{ width: "100%", height: "100vh", zIndex: "1000" }}>
                     <Loader />
                 </div>) : (
 
@@ -24,7 +40,7 @@ const UserProfile = () => {
                                         src={user && user.avatar && user.avatar[0].url}
                                         className="card-img-top rounded-circle profile-picture"
                                         alt="User"
-                                        style={{ objectFit: "cover" , height:"53vh"}}
+                                        style={{ objectFit: "cover", height: "53vh" }}
                                     />
                                     <div className="card-body">
                                         <h5 className="card-title font-weight-bold">User Profile</h5>
@@ -63,12 +79,12 @@ const UserProfile = () => {
                                         <div className="d-flex justify-content-between align-items-center">
                                             <h5 className="card-title">User Actions</h5>
                                             <div className="d-flex align-items-center gap-2">
-                                                <Link to="/update-profile" className="btn btn-success">
+                                                <button onClick={updateProfile} className="btn btn-success">
                                                     Update Profile
-                                                </Link>
-                                                <Link to="/update-password" className="btn btn-primary fs-6 fs-sm-5">
+                                                </button>
+                                                <button onClick={UpdatePass} className="btn btn-primary fs-6 fs-sm-5">
                                                     Update Password
-                                                </Link>
+                                                </button>
                                             </div>
 
                                         </div>

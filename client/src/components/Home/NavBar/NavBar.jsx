@@ -10,11 +10,13 @@ import { loginUserDetails } from '../../../Store/features/productSlice';
 
 const NavBar = () => {
     const dispatch = useDispatch()
-    const { user , loading} = useSelector((state) => state.app.userData)
+    const { errorUser2 } = useSelector((state) => state.app.userData)
+    const { msgCart, cart } = useSelector((state) => state.app.addToCart)
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(loginUserDetails())
-    },[dispatch])
+    }, [dispatch])
+
     return (
         <>
             <div className="navbar-light bg-light navhome shadow d-flex align-items-center pe-4 ps-5" style={{ justifyContent: "space-between", gap: "40px", padding: "18px" }}>
@@ -27,25 +29,31 @@ const NavBar = () => {
                 <Search />
 
                 <Link to='/login' className='regDiv text-decoration-none'>
-                    <button className='btn btn-danger d-flex buttonReg gap-1'>
-                        Login
-                        <i className="bi bi-person-fill"> </i>
-                    </button>
+                    {
+                        errorUser2 && errorUser2 ? (<button className='btn btn-danger d-flex buttonReg gap-1'>
+                            Login
+                            <i className="bi bi-person-fill"> </i>
+                        </button>) : (
+                            <span></span>
+                        )
+                    }
                 </Link>
 
                 <div className='me-3 cartitems d-flex align-items-center gap-3'>
-                    <button type="button" className="btn btn-danger position-relative">
+                    <Link to='/cart' type="button" className="btn btn-danger position-relative">
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-                            99+
+                        {cart && cart.length}
                         </span>
                         <span className='bi bi-cart'></span>
 
-                    </button>
+                    </Link>
                     {
-                        user &&
-                        <div>
-                            <DropMenu />
-                        </div>
+                        !errorUser2 && !errorUser2 ? (
+                            <div>
+                                <DropMenu />
+                            </div>) : (
+                            <span></span>
+                        )
                     }
                 </div>
             </div>

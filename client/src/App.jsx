@@ -8,19 +8,12 @@ import Register from "./components/User/registerUser/Register"
 import LoginUser from "./components/User/loginUser/LoginUser"
 import PrivateRoute from "./components/User/PrivateRoute"
 import UserProfile from "./components/User/userProfile/UserProfile"
-import { useDispatch, useSelector } from "react-redux"
-import { logoutUser } from "./Store/features/productSlice"
+import ForgotPass from "./components/User/forgotPassword/ForgotPass"
+import ResetPass from "./components/User/ResetPass/ResetPass"
+import Cart from "./components/Products/CartItems/Cart"
 
 function App() {
-  const dispatch = useDispatch()
 
-  const { errorUser } = useSelector((state) => state.app.userData)
-
-  useEffect(() => {
-    if (errorUser) {
-      dispatch(logoutUser())
-    }
-  }, [dispatch])
 
 
   return (
@@ -34,6 +27,9 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<LoginUser />} />
+          <Route path="/forgot/password" element={<ForgotPass />} />
+          <Route path="/password/reset/:token" element={<ResetPass />} />
+          <Route path="/cart" element={<Cart />} />
 
           <Route element={<PrivateRoute />}>
             <Route path="/account" element={<UserProfile />} />

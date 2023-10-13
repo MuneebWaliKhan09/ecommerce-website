@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const sendEmail = require("../utils/sendMailForgotPassword")
 const crypto = require('crypto');
 const cloudinary = require("cloudinary")
-
+const ms = require('ms');
 
 
 exports.registerUser = asyncHandler(async (req, res) => {
@@ -100,7 +100,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
                 const options = {
                     expires: new Date(
-                        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+                        Date.now() + ms(process.env.COOKIE_EXPIRE)
                     ),
                     httpOnly: true
                 }
@@ -179,7 +179,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
 
     if (!user) {
         return res.status(400).json({
-            msg: "Email not found 😌!",
+            err: "Email not found 😌!",
             success: false
         })
     }
@@ -188,7 +188,8 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
     await user.save({ validateBeforeSave: false })
 
     // make a sending email URL reset password URL
-    const resetUrl = `${req.protocol}://${req.get("host")}/api/password/reset/${resetToken}`;
+    // const resetUrl = `${req.protocol}://${req.get("host")}/api/password/reset/${resetToken}`;
+    const resetUrl = `http://localhost:4000/password/reset/${resetToken}`;
     const message = `Your password reset token is :- \n\n ${resetUrl} \n\n If you have not requested this email then please ignore it.`;
 
 
@@ -211,7 +212,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
         await user.save({ validateBeforeSave: false })
 
         return res.status(500).json({
-            msg: "An error occurred while sending the email",
+            err: "An error occurred while sending the email",
             success: false
         })
     }
@@ -236,7 +237,7 @@ exports.resetPassword = asyncHandler(async (req, res) => {
     if (!user) {
         return res.status(400).json({
             success: false,
-            msg: "Invalid or expired token"
+            err: "Invalid or expired token"
         })
     }
     // if valid user
@@ -244,7 +245,7 @@ exports.resetPassword = asyncHandler(async (req, res) => {
         if (password !== confirmPassword) {
             return res.status(400).json({
                 success: false,
-                msg: "Password does not match !"
+                err: "Password does not match !"
             })
         }
         else {
@@ -266,7 +267,7 @@ exports.resetPassword = asyncHandler(async (req, res) => {
             }
             else {
                 return res.status(400).json({
-                    msg: "An error occurred while resetting the password",
+                    err: "An error occurred while resetting the password",
                     success: false
                 })
 
@@ -313,7 +314,7 @@ exports.updateUserPassword = asyncHandler(async (req, res) => {
 
     if (!EnterOldPass) {
         return res.status(400).json({
-            msg: "Old password does not match",
+            err: "Old password does not match",
             success: false
         })
 
@@ -321,7 +322,7 @@ exports.updateUserPassword = asyncHandler(async (req, res) => {
 
     if (newPassword !== confirmPassword) {
         return res.status(400).json({
-            msg: "New password does not match with confirm password",
+            err: "New password does not match with confirm password",
             success: false
         })
 
@@ -349,6 +350,7 @@ exports.updateUserPassword = asyncHandler(async (req, res) => {
 // update loged in user profile
 
 exports.updateUserProfile = asyncHandler(async (req, res) => {
+    console.log(req.user.id);
 
     const newData = {
         username: req.body.username,
@@ -356,15 +358,17 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
         avatar: req.body.avatar
     }
 
+
+
     if (req.body.avatar === "") {
         // if user not chooses avatart during updation
-        const users = await User.findById(req.user._id)
+        const users = await User.findById(req.user.id)
         newData.avatar = {
             public_id: users.avatar[0].public_id,
             url: users.avatar[0].url
         }
 
-
+        console.log("user override image done");
         const user = await User.findByIdAndUpdate(req.user.id, newData, {
             new: true,
             runValidators: true,
@@ -374,35 +378,43 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
         res.status(200).json({
             success: true,
             msg: "User Updated Successfully 🤩",
-            user
         });
 
     }
     else {
-        // const users = await User.findById(req.user._id)
+        const avatar = req.file.path;
+        const users = await User.findById(req.user.id)
+        const imageId = users.avatar[0].public_id;
 
-        // const imageId = users.avatar[0].public_id;
+        await cloudinary.v2.uploader.destroy(imageId);
 
+        const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+            crop: "scale",
+        });
 
-        // await cloudinary.v2.uploader.destroy(imageId);
-
-        // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-        //     folder: "avatars",
-        //     width: 150,
-        //     crop: "scale",
-        // });
-
-        const user = await User.findByIdAndUpdate(req.user.id, newData, {
-            new: true,
-            runValidators: true,
-            useFindAndModify: false,
-        })
+        const user = await User.findByIdAndUpdate(req.user.id,
+            {
+                username: req.body.username,
+                email: req.body.email,
+                avatar: [{
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url
+                }]
+            }
+            , {
+                new: true,
+                runValidators: true,
+                useFindAndModify: false,
+            })
 
         res.status(200).json({
             success: true,
             msg: "User Updated Successfully 🤩",
             user
         });
+
     }
 
 

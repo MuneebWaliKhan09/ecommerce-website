@@ -14,7 +14,7 @@ const PrivateRoute = () => {
       setUserLoaded(true);
     }
     if (errorUser2) {
-      return navigate('/login')
+      navigate('/login')
     }
   }, [user, errorUser2]);
 

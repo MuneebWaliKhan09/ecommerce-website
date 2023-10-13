@@ -5,14 +5,14 @@ const { isAuthenticated, AdminRoute } = require("../middleware/auth")
 const router = express.Router()
 const upload = require("../middleware/multer")
 
-router.route('/registerUser').post(upload.single('avatar'),registerUser)
+router.route('/registerUser').post(upload.single('avatar'), registerUser)
 router.route('/loginUser').post(loginUser)
 router.route('/logoutUser').get(logoutUser)
 router.route('/forgot/password').post(forgotPassword)
 router.route('/password/reset/:token').put(resetPassword)
 router.route('/getUserDetails').get(isAuthenticated, getUserDetails)
 router.route('/updateUserPassword').put(isAuthenticated, updateUserPassword)
-router.route('/updateUserProfile').put(isAuthenticated, updateUserProfile)
+router.route('/updateUserProfile').put(upload.single('avatar'), isAuthenticated, updateUserProfile)
 
 
 //admin routes

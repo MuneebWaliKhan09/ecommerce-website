@@ -43,9 +43,9 @@ const PrReviewes = ({ R }) => {
                         <Loader />
                     </div>
                 ) : (
-                    <div class="card-body m-3">
-                        <div class="d-flex align-items-center gap-3 ">
-                            {/* <img src='/userR.png' width={50} height={50} alt='user' class="user-avatar rounded-circle mr-3 text-primary" />                                                    <h5 class="card-title">{R.name}</h5> */}
+                    <div className="card-body m-3">
+                        <div className="d-flex align-items-center gap-3 ">
+                            {/* <img src='/userR.png' width={50} height={50} alt='user' className="user-avatar rounded-circle mr-3 text-primary" />                                                    <h5 className="card-title">{R.name}</h5> */}
                             <div
                                 className={`user-avatar ${getRandomColor()} font-weight-bold rounded-circle mr-3 text-white text-center d-flex justify-content-center align-items-center`}
                                 style={{ width: '50px', height: '50px' , fontSize:"18px"}}
@@ -54,11 +54,11 @@ const PrReviewes = ({ R }) => {
                             </div>
                             <h5 className="card-title mb-0 text-secondary" style={{fontSize:"18px"}}>{R.username}</h5>
                         </div>
-                        <div class="my-3">
-                            <span class="text-warning"><Rating {...options} /></span>
+                        <div className="my-3">
+                            <span className="text-warning"><Rating {...options} /></span>
                         </div>
-                        <p class="card-text">{R.comment}</p>
-                        <p class="card-text text-muted">Posted on: <span style={{ fontSize: "15px" }}>{new Date(R.createdAt).toDateString()}</span></p>
+                        <p className="card-text">{R.comment}</p>
+                        <p className="card-text text-muted">Posted on: <span style={{ fontSize: "15px" }}>{new Date(R.createdAt).toDateString()}</span></p>
                     </div>
                 )
             }

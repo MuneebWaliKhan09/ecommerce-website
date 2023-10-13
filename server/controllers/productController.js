@@ -209,13 +209,21 @@ exports.createProductReview = asyncHandler(async (req, res) => {
     product.ratings = avg / product.reveiws.length;
 
 
-    await product.save({ validateBeforeSave: false });
+    const savedR = await product.save({ validateBeforeSave: false });
 
-    res.status(200).json({
-        success: true,
-        message: "reveiwe added successfully 🤩",
-        product
-    });
+    if (savedR) {
+        return res.status(200).json({
+            success: true,
+            msg: "reveiwe added successfully 🤩",
+        });
+    }
+    else{
+        return res.status(400).json({
+            success: false,
+            err: "reveiwe adding failed !"
+        })
+    }
+
 })
 
 
