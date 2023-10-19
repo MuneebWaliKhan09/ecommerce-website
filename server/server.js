@@ -43,11 +43,13 @@ cloudinary.config({
 const user = require("./routes/userRoutes")
 const product = require("./routes/productRoutes")
 const order = require("./routes/orderRoutes")
+const payment = require("./routes/PaymentRoute")
 
 
 app.use('/api', user)
 app.use('/api', product)
 app.use('/api', order)
+app.use("/api", payment)
 
 
 

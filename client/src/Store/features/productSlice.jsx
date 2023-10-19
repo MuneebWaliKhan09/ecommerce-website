@@ -70,6 +70,69 @@ export const productsReveiw = createAsyncThunk("productReveiw", async (data, { r
 })
 
 
+// create order
+export const createOrder = createAsyncThunk("createOrder", async (order, { rejectWithValue }) => {
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+
+        const res = await axios.post(`/api/createOrder`, order, config)
+
+        return res.data.msg;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+// all orders of loged in user
+export const allOrders = createAsyncThunk("allOrders", async (rand, { rejectWithValue }) => {
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+
+        const res = await axios.get(`/api/myOrders`, config)
+
+        return res.data.orders;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+// single order of loged in user
+export const orderDetails = createAsyncThunk("orderDetails", async (id, { rejectWithValue }) => {
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+
+        const res = await axios.get(`/api/getSingleOrder/${id}`, config)
+
+        return res.data.order;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
 
 
 
@@ -175,6 +238,7 @@ export const addToCart = createSlice({
     name: "addToCart",
     initialState: {
         cart: JSON.parse(localStorage.getItem("cart")) || [], // Initialize cart from localStorage
+        shippingInfo: JSON.parse(localStorage.getItem("shipping-info")) || {}, // Initialize shipping info  from localStorage
         msgCart: null,
     },
     reducers: {
@@ -199,14 +263,19 @@ export const addToCart = createSlice({
 
         removeCartFunc: (state, action) => {
             const id = action.payload._id
-            const data = state.cart.filter((item)=>{
+            const data = state.cart.filter((item) => {
                 return item._id !== id
             })
-            if(data){
+            if (data) {
                 state.msgCart = "Cart item removed successfully";
             }
             state.cart = data;
             localStorage.setItem("cart", JSON.stringify(state.cart));
+        },
+
+        shippingInfoAdd: (state, action) => {
+            const data = action.payload
+            localStorage.setItem("shipping-info", JSON.stringify(data));
         },
 
         clearMsgCart: (state) => {
@@ -214,6 +283,74 @@ export const addToCart = createSlice({
         }
     }
 });
+
+
+
+export const createOrders = createSlice({
+    name: 'createOrder',
+    initialState: {
+        loading: false,
+        errorOrder: null,
+        msgOrder: null,
+        orders: {},
+        order: {}
+    },
+
+    reducers: {
+        clearMsgOrder(state) {
+            state.msgOrder = null;
+            state.errorOrder = null;
+        }
+    },
+    extraReducers: {
+        [createOrder.pending]: (state, action) => {
+            state.loading = true,
+                state.errorOrder = null
+        },
+        [createOrder.fulfilled]: (state, action) => {
+            state.loading = false,
+            state.msgOrder = action.payload
+        },
+        [createOrder.rejected]: (state, action) => {
+            state.loading = false,
+                state.errorOrder = action.payload
+        },
+
+
+        // all order of loged in user
+        [allOrders.pending]: (state, action) => {
+            state.loading = true,
+                state.errorOrder = null
+        },
+        [allOrders.fulfilled]: (state, action) => {
+            state.loading = false,
+                state.orders = action.payload
+        },
+
+        [allOrders.rejected]: (state, action) => {
+            state.loading = false,
+                state.errorOrder = action.payload
+            state.orders = {}
+        },
+
+
+        // single order of loged in user
+        [orderDetails.pending]: (state, action) => {
+            state.loading = true,
+                state.errorOrder = null
+        },
+        [orderDetails.fulfilled]: (state, action) => {
+            state.loading = false,
+                state.order = action.payload
+        },
+
+        [orderDetails.rejected]: (state, action) => {
+            state.loading = false,
+                state.errorOrder = action.payload
+            state.order = {}
+        },
+    }
+})
 
 
 
@@ -616,7 +753,8 @@ export const { clearErrorUser } = userData.actions;
 export const { clearMsgReveiwer } = productReveiwer.actions;
 export const { clearErrorForgotPass } = forgotPass.actions;
 export const { clearErrorUpdateProfile } = updateUserProf.actions;
-export const { removeCartFunc, addToCartFunc, clearMsgCart } = addToCart.actions
+export const { removeCartFunc, addToCartFunc, shippingInfoAdd, clearMsgCart } = addToCart.actions
+export const { clearMsgOrder } = createOrders.actions
 
 
 // ============================================ END User =====================================================================================
@@ -638,7 +776,8 @@ const rootReducer = combineReducers({
     productReveiwer: productReveiwer.reducer,
     forgotPass: forgotPass.reducer,
     updateUserProf: updateUserProf.reducer,
-    addToCart: addToCart.reducer
+    addToCart: addToCart.reducer,
+    orderInfo: createOrders.reducer
 });
 
 

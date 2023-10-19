@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./components/Home/Home"
 import Products from "./components/Products/Products"
@@ -11,14 +11,34 @@ import UserProfile from "./components/User/userProfile/UserProfile"
 import ForgotPass from "./components/User/forgotPassword/ForgotPass"
 import ResetPass from "./components/User/ResetPass/ResetPass"
 import Cart from "./components/Products/CartItems/Cart"
+import ShippingInfo from "./components/Products/ShippingInfo/ShippingInfo"
+import PaymentInfo from "./components/Products/PaymentInfo/PaymentInfo"
+import ConfirmOder from "./components/Products/ConfirmOrder/ConfirmOder"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios"
+import Orders from "./components/Products/Orders/Orders"
+import Order from "./components/Products/Orders/order/Order"
 
 function App() {
+  const [stripeApiKey, setStripeApiKey] = useState("");
 
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/stripeapikey");
 
+    setStripeApiKey(data.stripeApiKey);
+  }
+
+  useEffect(() => {
+    getStripeApiKey();
+  }, []);
+
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
 
   return (
     <>
       <BrowserRouter>
+
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,6 +53,17 @@ function App() {
 
           <Route element={<PrivateRoute />}>
             <Route path="/account" element={<UserProfile />} />
+            <Route path="/shipping-info" element={<ShippingInfo />} />
+            <Route path="/confirm-order" element={<ConfirmOder />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/order/:id" element={<Order />} />
+
+            <Route path="/payment-info" element={
+              stripeApiKey &&
+              <Elements stripe={loadStripe(stripeApiKey)}>
+                <PaymentInfo />
+              </Elements>
+            } />
           </Route>
 
         </Routes>

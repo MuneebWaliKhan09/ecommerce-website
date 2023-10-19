@@ -130,7 +130,7 @@ const ProductDetails = () => {
 
 
     const AddCartHandler = () => {
-        dispatch(addToCartFunc({_id: product._id, name: product.name, price: product.price, images: product.images[0].url, stock: product.stock, quantity: quantity}))
+        dispatch(addToCartFunc({_id: product._id, name: product.name, price: product.price, image: product.images[0].url, stock: product.stock, quantity: quantity}))
     }
 
 

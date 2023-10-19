@@ -20,12 +20,17 @@ exports.createOrder = asyncHandler(async (req, res) => {
 
     const products = await ProductsModel.find();
 
+    console.log("check model for product id of order");
+
+
     for (const orderItem of orderItems) {
-        const productExists = products.some(product => product._id.equals(orderItem.product));
+        const productExists = products.some(product => product._id.equals(orderItem._id));
+        console.log("check model done");
         if (!productExists) {
-            return res.status(404).json({ success: false, msg: "Can't find product with that Id !" })
+            return res.status(404).json({ success: false, err: "Can't find product with that Id !" })
         }
     }
+    console.log("check model done after loop");
 
     const order = await Order.create({
         shippingInfo,
@@ -38,13 +43,16 @@ exports.createOrder = asyncHandler(async (req, res) => {
         paidAt: Date.now(),
         user: req.user._id,
     });
+    console.log("creating order", order);
 
     if (order) {
-        return res.status(201).json(order);
-    }
-    else {
-        return res.status(400).json({ message: "failed to create order !" });
-
+        return res.status(201).json({
+            msg: "order created successfully",
+            success: true
+        });
+    } else {
+        console.error("Failed to create order!");
+        return res.status(400).json({ err: "Failed to create order!" });
     }
 
 })
@@ -81,6 +89,11 @@ exports.getSingleOrder = asyncHandler(async (req, res, next) => {
 // get logedin user orders
 exports.myOrders = asyncHandler(async (req, res, next) => {
     const orders = await Order.find({ user: req.user._id });
+
+
+    if(!orders){
+        return res.status(404).json({err:"orders not found !", success: false})
+    }
 
     res.status(200).json({
         success: true,
@@ -185,7 +198,7 @@ exports.deleteOrder = asyncHandler(async (req, res, next) => {
 
     const delOrder = await Order.findByIdAndDelete(order);
 
-   return res.status(200).json({
+    return res.status(200).json({
         success: true,
         msg: "Order deleted successfully !"
     });

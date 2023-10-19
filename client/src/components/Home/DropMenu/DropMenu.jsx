@@ -12,13 +12,14 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import Loader from "../../CustomLoader/Loader"
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.css"
 import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, loginUserDetails, logoutUser, clearErrorUser } from '../../../Store/features/productSlice';
+import { clearError, loginUserDetails, logoutUser, clearErrorUser, allOrders } from '../../../Store/features/productSlice';
 
 const DropMenu = () => {
     const navigate = useNavigate()
@@ -27,6 +28,7 @@ const DropMenu = () => {
 
     const { user, errorUser } = useSelector((state) => state.app.userData)
     const { msg2, error, loading } = useSelector((state) => state.app.userAuth)
+    const { orders } = useSelector((state) => state.app.orderInfo)
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -61,6 +63,9 @@ const DropMenu = () => {
         dispatch(loginUserDetails())
     }, [dispatch])
 
+    useEffect(() => {
+        dispatch(allOrders())
+    }, [dispatch])
 
 
     return (
@@ -127,12 +132,14 @@ const DropMenu = () => {
                 <Divider />
                 {
                     user && user.role === "admin" ? (
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <LockOpenIcon fontSize="small" />
-                            </ListItemIcon>
-                            Admin-panel
-                        </MenuItem>
+                        <Link to='/admin/dashboard' className="text-decoration-none">
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <LockOpenIcon fontSize="small" />
+                                </ListItemIcon>
+                                Admin-panel
+                            </MenuItem>
+                        </Link>
                     ) : (
                         <MenuItem onClick={handleClose}>
                             <ListItemIcon>
@@ -142,12 +149,20 @@ const DropMenu = () => {
                         </MenuItem>
                     )
                 }
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                </MenuItem>
+
+                {
+                    orders && orders.length > 0 && (
+                        <Link to='/orders' className="text-decoration-none">
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <LocalShippingIcon fontSize="small" />
+                                </ListItemIcon>
+                                Orders
+                            </MenuItem>
+                        </Link>
+                    )
+                }
+
                 <MenuItem onClick={handleClose}>
                     <div style={{ textDecoration: "none", color: "inherit" }} onClick={handleLogOout}>
                         <ListItemIcon>
