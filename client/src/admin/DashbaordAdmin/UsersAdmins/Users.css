@@ -1,0 +1,30 @@
+.container {
+    margin: 20px;
+  }
+  
+  .edit-user-form {
+    width: 300px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .btn-primary {
+    margin-top: 10px;
+  }
+  
+  .table {
+    /* Add table styling here */
+  }
+  
+  .action-icon {
+    color: blue;
+    cursor: pointer;
+    margin-right: 50px;
+  }
+  
+  .delete {
+    color: red;
+  }
+  

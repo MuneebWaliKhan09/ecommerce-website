@@ -1,0 +1,13 @@
+.Addtitle{
+    font-weight: 800;
+    font-size: 30px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(68, 164, 209);
+    border: 1px solid rgb(73, 197, 235);
+}
+
+.form-label{
+    font-weight: 600;
+}
+
+

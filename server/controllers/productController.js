@@ -37,6 +37,7 @@ exports.allProducts = asyncHandler(async (req, res) => {
 
     // make empty object for filter 
     const filters = {};
+    const totalCategories = (await Product.find().distinct("category")).length; // this will find the category feilds in products schema and give us all the categories
 
     // filter by product name
     if (req.query.keyword) {
@@ -68,7 +69,7 @@ exports.allProducts = asyncHandler(async (req, res) => {
         .skip(resultPerPage * (pageNo - 1));
 
 
-    return res.json({ products, pageNo, resultPerPage, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
+    return res.json({ products, pageNo, resultPerPage, totalCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
 });
 
 

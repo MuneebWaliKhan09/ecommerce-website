@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useNavigate, useParams } from "react-router-dom"
 import Home from "./components/Home/Home"
 import Products from "./components/Products/Products"
 import ProductDetails from "./components/Products/ProductDetails/ProductDetails"
@@ -19,6 +19,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios"
 import Orders from "./components/Products/Orders/Orders"
 import Order from "./components/Products/Orders/order/Order"
+import AdminRoutes from "./components/User/AdminRoutes"
+import Dash from "./admin/DashbaordAdmin/Dash"
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -51,6 +53,7 @@ function App() {
           <Route path="/password/reset/:token" element={<ResetPass />} />
           <Route path="/cart" element={<Cart />} />
 
+          {/* authenticated routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/account" element={<UserProfile />} />
             <Route path="/shipping-info" element={<ShippingInfo />} />
@@ -66,6 +69,12 @@ function App() {
             } />
           </Route>
 
+
+          {/* admin routes  */}
+          <Route element={<AdminRoutes />} >
+            <Route path="/admin/dashboard/*" element={<AdminDashboard />}  />
+          </Route>
+
         </Routes>
       </BrowserRouter>
 
@@ -73,4 +82,10 @@ function App() {
   )
 }
 
+
+function AdminDashboard() {
+  const navigate = useNavigate();
+
+  return <Dash navigate={navigate}  />;
+}
 export default App

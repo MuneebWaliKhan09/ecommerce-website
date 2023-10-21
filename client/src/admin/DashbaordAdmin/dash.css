@@ -1,0 +1,164 @@
+
+.grid-cont {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-gap: 0px;
+    height: 100vh;
+    font-family: sans-serif;
+  }
+  
+  .grid1 {
+    background-color: rgb(60 67 73);
+    color: white;
+    height: 100%;
+    /* padding: 10px; */
+    display: flex;
+    flex-direction: column;
+    border-right: 5px solid rgb(60 67 73);
+  }
+  
+  .grid1 h6 {
+    align-self: center;
+    font-size: 13px;
+    padding-left: 16px;
+  }
+  
+  .grid1 h5 {
+    align-self: center;
+    font-size: 34px;
+    padding-left: 9px;
+    margin-bottom: 31px;
+  }
+  
+  .grid1 h5 .bi-person-fill-lock::before {
+    color: darkseagreen;
+    font-size: 43px;
+  }
+  
+  .grid1 ul {
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-right: 53px;
+    align-items: flex-start;
+    padding-top: 20px;
+    color: white;
+    position: fixed;
+    /* top: 0; */
+  }
+  
+  .grid1 ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .grid1 ul li {
+    list-style-type: none;
+    font-size: 16px;
+    transition: .5s;
+    padding: 5px 7px
+  }
+  
+  .grid1 ul li:hover {
+    transform: scale(1.1);
+    background-color: cornflowerblue;
+    transition: .5s;
+  }
+  
+  .grid2 {
+    height: 100%;
+    /* padding: 20px; */
+    padding-top: 0px;
+  }
+  
+  .brand {
+    padding: 20px 41px 20px 26px;
+    background-color: rgb(60 67 73);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .brand h1 {
+    font-size: 25px;
+    font-weight: 600;
+  }
+  
+  .brand div span {
+    font-size: 17px;
+  }
+  
+  .maindash {
+    padding: 20px 19px 20px 19px;
+  }
+  
+  .main_Text {
+    padding: 17px 20px;
+  }
+  
+  .grid2 .MobileMenu{
+    display: none;
+  }
+
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .grid-cont {
+      grid-template-columns: 1fr;
+    }
+  
+    .grid1 {
+      border-right: none;
+    }
+  
+    .grid1 h6 {
+      font-size: 11px;
+      padding-left: 10px;
+    }
+  
+    .grid1 h5 {
+      font-size: 26px;
+      padding-left: 5px;
+      margin-bottom: 20px;
+    }
+  
+    .grid1 h5 .bi-person-fill-lock::before {
+      font-size: 34px;
+    }
+  
+    .grid1 ul {
+      padding-left: 15px;
+      padding-right: 20px;
+      display: none;
+    }
+    
+    .grid2 .MobileMenu{
+        display: block;
+    }
+  
+    .brand {
+      padding: 15px 20px;
+    }
+  
+    .brand h1 {
+      font-size: 20px;
+    }
+  
+    .brand div span {
+      font-size: 14px;
+    }
+  
+    .maindash {
+      padding: 15px;
+    }
+  
+    .main_Text {
+      padding: 10px;
+    }
+  }
+  
