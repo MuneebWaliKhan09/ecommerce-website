@@ -24,6 +24,7 @@ const Products = () => {
         Id: `${item._id.substring(0, 10)}...`,
         product: item.name,
         price: item.price,
+        category: item.category,
         ratings: item.ratings.toFixed(1),
         image: item.images && item.images[0] ? <img src={item.images[0].url} alt="product" style={{ height: "50px", width: "50px" }} /> : "",
       }
@@ -39,8 +40,8 @@ const Products = () => {
       name: "Id",
       label: "ID",
       options: {
-        filter: true,
-        sort: true,
+        filter: false,
+        sort: false,
       }
     },
     {
@@ -57,6 +58,14 @@ const Products = () => {
       options: {
         filter: false,
         sort: false,
+      }
+    },
+    {
+      name: "category",
+      label: "Category",
+      options: {
+        filter: true,
+        sort: true,
       }
     },
     {
@@ -84,12 +93,26 @@ const Products = () => {
     filterType: 'checkbox',
     responsive: 'simple', // Enable responsiveness
     customSort: (data, colIndex, order) => {
-      if (colIndex === 4) {
-        return data.sort((a, b) => parseFloat(a.data[colIndex]) - parseFloat(b.data[colIndex]) * (order === 'asc' ? 1 : -1));
+      if (colIndex === 1 || colIndex === 3 || colIndex === 4 || colIndex === 5) {
+        // Modify this condition for the "Product" column (column index 1)
+        return data.sort((a, b) => {
+          if (a.data[colIndex] < b.data[colIndex]) {
+            return order === 'asc' ? -1 : 1;
+          }
+          if (a.data[colIndex] > b.data[colIndex]) {
+            return order === 'asc' ? 1 : -1;
+          }
+          return 0;
+        });
       }
+
       return data;
     },
+
+
+    selectableRows: "none"
   };
+
 
   return (
     <>

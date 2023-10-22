@@ -76,8 +76,8 @@
     padding: 20px 41px 20px 26px;
     background-color: rgb(60 67 73);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: baseline;
     color: white;
     position: sticky;
     top: 0;
@@ -110,6 +110,7 @@
   @media (max-width: 768px) {
     .grid-cont {
       grid-template-columns: 1fr;
+      height: unset;
     }
   
     .grid1 {

@@ -25,12 +25,12 @@ const DrawersCustom = () => {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 ,minHeight:"100vh" }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List style={{paddingTop: "0px", backgroundColor: "rgb(60 67 73)", color: "white", height: "100vh"}}>
+      <List style={{paddingTop: "0px", backgroundColor: "rgb(60 67 73)", color: "white", height:"100vh"}}>
         <ListItem disablePadding style={{ backgroundColor: 'rgb(60 67 73)', padding: "20px", margin: 0 }}>
           <ListItemButton sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '31px' }}>
             <ListItemIcon sx={{ justifyContent: 'center' }}>
