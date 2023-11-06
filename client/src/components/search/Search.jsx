@@ -17,7 +17,7 @@ const Search = () => {
     const { products, loading, error } = useSelector((state) => state.app.products.products)
 
     useEffect(() => {
-        dispatch(allProducts());
+        dispatch(allProducts({}));
     }, [dispatch]);
 
     const navigate = useNavigate();
@@ -51,20 +51,14 @@ const Search = () => {
 
     return (
         <>
-            <form className='input-group searchMenu input-group-lg' onSubmit={searchHandler}>
-                {/* <div className='input-group catDrop' style={{ width: 190 }}>
-                <select className='form-select'>
-                  <option value="">All</option>
-    
-                </select>
-              </div> */}
+            <form className='input-group searchMenu input-group-lg'  onSubmit={searchHandler}>
 
                 <input type="text" onKeyUp={fetchData} className='form-control search' onChange={(e) => setKeyword(e.target.value)} placeholder='Search Products Here...' />
                 <button type='submit' className='btn btn-warning text-light searchBtn'>
                     Search
                     <span className='bi bi-chevron-right'></span>
                 </button>
-                <div className={`searchOptions p-2 rounded d-${showSearch}`} >
+                <div className={`searchOptions p-2 rounded d-${showSearch}`} style={{zIndex:"1000"}} >
                     {
 
                         name.map((items) => (

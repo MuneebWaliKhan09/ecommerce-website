@@ -5,7 +5,7 @@ import "./Add.css";
 const AddProduct = () => {
   
   return (
-    <div className='container w-100 h-100 d-flex justify-content-center align-items-center mt-lg-5 flex-column col-12 '>
+    <div className='container w-100 h-100 d-flex justify-content-center mobileScreen px-0 py-0 align-items-center mt-lg-5 flex-column col-12 '>
 
 
 
@@ -45,14 +45,14 @@ const AddProduct = () => {
 
             <div>
               <label for="formFile" class="form-label">Choose Category :</label>
-              <input as='select' className='form-select' name='category'>
+              <select  className='form-select' name='category'>
                 <option value="">Select Category..</option>
                 {/* {
                   category.map((category, index) => (
                     <option key={index}>{category.name}</option>
                   ))
                 } */}
-              </input>
+              </select>
               <p></p>
             </div>
 

@@ -26,7 +26,7 @@ const HomeAdmin = () => {
 
             <div className="">
                 <div className="d-flex align-items-center gap-3 mb-5 mt-3 rounded-3 pt-3 pb-2 ps-3" style={{ backgroundColor: "orange" }}>
-                    <h3><i class="bi bi-speedometer2 text-light" style={{ fontSize: "35px" }}></i></h3>
+                    <h3><i className="bi bi-speedometer2 text-light" style={{ fontSize: "35px" }}></i></h3>
                     <h2 className="text-light">Dash-board Main</h2>
                 </div>
 
@@ -180,7 +180,7 @@ const HomeAdmin = () => {
                 <div>
                     <h2 className="pt-3 mb-5 text-danger  p-3 text-light rounded-3" style={{ backgroundColor: "#315aa3" }}>Products and Categories Details : </h2>
 
-                    <div class="set-size circular charts-container flex-wrap d-flex justify-content-center align-items-center" style={{ gap: "40px" }}>
+                    <div className="set-size circular charts-container flex-wrap d-flex justify-content-center align-items-center" style={{ gap: "40px" }}>
 
 
 
@@ -212,7 +212,7 @@ const HomeAdmin = () => {
                 <h2 className="pt-3 mb-5 text-danger  p-3 text-light rounded-3" style={{ backgroundColor: "#7a488b" }}>Products in each Category : </h2>
 
 
-                <div class="set-size circular charts-container d-flex flex-wrap align-items-center" style={{ gap: "40px", padding: "25px" }}>
+                <div className="set-size circular charts-container d-flex flex-wrap align-items-center" style={{ gap: "40px", padding: "25px" }}>
 
 
 

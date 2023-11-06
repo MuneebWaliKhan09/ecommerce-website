@@ -11,3 +11,12 @@
 }
 
 
+
+
+
+@media only screen and (max-width: 425px) {
+
+    .mobileScreen {
+        margin-top: 70px !important;
+    }
+}

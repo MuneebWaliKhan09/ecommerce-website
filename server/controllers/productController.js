@@ -1,6 +1,6 @@
 const Product = require("../models/productModel")
 const asyncHandler = require("express-async-handler")
-
+const cloudinary = require("cloudinary")
 
 exports.createProduct = asyncHandler(async (req, res) => {
     req.body.user = req.user._id
@@ -68,8 +68,9 @@ exports.allProducts = asyncHandler(async (req, res) => {
         .limit(resultPerPage)
         .skip(resultPerPage * (pageNo - 1));
 
+    const AllPRODUCTS = await Product.find()
 
-    return res.json({ products, pageNo, resultPerPage, totalCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
+    return res.json({ products, AllPRODUCTS, pageNo, resultPerPage, totalCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
 });
 
 
@@ -81,24 +82,92 @@ exports.allProducts = asyncHandler(async (req, res) => {
 exports.updateProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
 
+
     if (!product) {
         return res.status(400).json({
             success: false,
-            msg: "product not found"
+            err: "product not found"
         })
     }
     else {
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true,
-            useFindAndModify: false
-        })
+        if (req.body.images === "") {
+            const product = await Product.findById(req.params.id)
 
-        return res.status(201).json({
-            success: true,
-            msg: "product updated successfully",
-            updatedProduct
-        })
+            req.body.images = {
+                public_id: product.images[0].public_id,
+                url: product.images[0].url
+            }
+            const products = await Product.findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true,
+                useFindAndModify: false,
+            });
+
+            if (products) {
+                return res.status(200).json({
+                    success: true,
+                    msg: "Product Updated Successfully 🤩",
+                });
+            }
+            else {
+                return res.status(400).json({
+                    success: false,
+                    err: "Product Updation Failed !"
+                })
+            }
+
+        }
+        else {
+            const images = req.file.path;
+            const products = await Product.findById(req.params.id)
+            const imageId = products.images[0].public_id;
+            if(imageId){
+
+                await cloudinary.v2.uploader.destroy(imageId);
+            }
+
+            const myCloud = await cloudinary.v2.uploader.upload(images, {
+                folder: "products",
+                width: 300,
+                crop: "scale",
+            });
+
+            const product = await Product.findByIdAndUpdate(req.params.id,
+                {
+                    name: req.body.name,
+                    description: req.body.description,
+                    price: req.body.price,
+                    category: req.body.category,
+                    stock: req.body.stock,
+
+                    images: [{
+                        public_id: myCloud.public_id,
+                        url: myCloud.secure_url
+                    }]
+                }
+                , {
+                    new: true,
+                    runValidators: true,
+                    useFindAndModify: false,
+                })
+
+            if (product) {
+                return res.status(200).json({
+                    success: true,
+                    msg: "Product Updated Successfully 🤩",
+                });
+            }
+            else{
+                return res.status(400).json({
+                    success: false,
+                    err: "Product Updation Failed !"
+                })
+            }
+
+        }
+
+
+
     }
 
 
@@ -114,7 +183,7 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
     if (!product) {
         return res.status(400).json({
             success: false,
-            msg: "product not found"
+            err: "product not found"
         })
     }
     else {
@@ -130,7 +199,7 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
         else {
             return res.status(400).json({
                 success: false,
-                msg: "failed to delete product !"
+                err: "failed to delete product !"
             })
 
         }
@@ -218,7 +287,7 @@ exports.createProductReview = asyncHandler(async (req, res) => {
             msg: "reveiwe added successfully 🤩",
         });
     }
-    else{
+    else {
         return res.status(400).json({
             success: false,
             err: "reveiwe adding failed !"

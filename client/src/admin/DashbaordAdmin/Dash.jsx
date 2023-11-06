@@ -27,20 +27,29 @@ import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 
 // breadcrumbs
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import HomeIcon from '@mui/icons-material/Home';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 
 const Dash = ({ navigate }) => {
-
+  const navigater = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const [adminName, setAdminName] = useState('');
 
 
 
+  const [currentRoute, setCurrentRoute] = useState('');
 
+  const routes = [
+    { path: '/admin/dashboard', label: 'Home' },
+    { path: '/admin/dashboard/products', label: 'Products' },
+    { path: '/admin/dashboard/categories', label: 'Categories' },
+    { path: '/admin/dashboard/orders', label: 'Orders' },
+    { path: '/admin/dashboard/payments', label: 'Payments' },
+    { path: '/admin/dashboard/messages', label: 'Messages' },
+  ];
 
+  useEffect(() => {
+    setCurrentRoute(window.location.pathname);
+  }, [navigate]);
 
 
 
@@ -54,16 +63,6 @@ const Dash = ({ navigate }) => {
   // }
 
 
-  // menu on side
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-
-  };
-
 
 
 
@@ -76,7 +75,9 @@ const Dash = ({ navigate }) => {
       <aside className='grid-cont'>
         <div className='grid1'>
           <ul>
-            <h5><Link to='/admin/dashboard' className='bi bi-person-fill-lock text-light'></Link></h5>
+            <h5>
+              <Link to='/admin/dashboard' className='bi bi-person-fill-lock text-light'></Link>
+            </h5>
 
             <li className='d-flex align-items-center gap-3'>
               <span className='bi bi-house'></span>
@@ -115,8 +116,21 @@ const Dash = ({ navigate }) => {
             <h1>Dash-board</h1>
 
           </div>
-          <div className='main_Text'>
 
+          <Breadcrumb>
+            {routes.map((route, index) => (
+              <Breadcrumb.Item
+                key={index}
+                as={Link}
+                to={route.path}
+                active={currentRoute === route.path}
+              >
+                {route.label}
+              </Breadcrumb.Item>
+            ))}
+          </Breadcrumb>
+
+          <div className='main_Text'>
 
             <main className='maindash'>
 

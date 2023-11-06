@@ -105,6 +105,11 @@
     display: none;
   }
 
+  .breadcrumb{
+    padding: 10px 0px 0px 46px !important;
+    margin-top: 20px !important;
+  }
+
 
   /* Responsive Styles */
   @media (max-width: 768px) {
@@ -159,7 +164,12 @@
     }
   
     .main_Text {
-      padding: 10px;
+      padding:  0px;
+    }
+
+    .breadcrumb{
+      padding: 10px 0px 0px 19px !important;
+      margin-top: 20px !important;
     }
   }
   
