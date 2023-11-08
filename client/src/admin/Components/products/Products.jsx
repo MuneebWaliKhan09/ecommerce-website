@@ -204,7 +204,7 @@ const Products = () => {
         ) : (
           <>
             <div className="d-flex justify-content-end  align-center w-100 py-4 px-1">
-              <Link>
+              <Link to='/admin/dashboard/addproduct'>
                 <button className="btn btn-primary py-1 px-3">
                   Add Product +
                 </button>

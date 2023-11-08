@@ -91,8 +91,8 @@ exports.myOrders = asyncHandler(async (req, res, next) => {
     const orders = await Order.find({ user: req.user._id });
 
 
-    if(!orders){
-        return res.status(404).json({err:"orders not found !", success: false})
+    if (!orders) {
+        return res.status(404).json({ err: "orders not found !", success: false })
     }
 
     res.status(200).json({
@@ -137,36 +137,49 @@ exports.getAllOrders = asyncHandler(async (req, res, next) => {
 
 exports.UpdateOrderStatus = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id)
-
+    console.log("okay done id");
     if (!order) {
-        return res.status(404).json({ success: false, msg: "orders not found !" })
+        return res.status(404).json({ success: false, err: "orders not found !" })
     }
 
     if (order.orderStatus === "Delivered") {
-        return res.status(400).json({ success: false, msg: "You have already delivered this order" });
+        return res.status(400).json({ success: false, err: "You have already delivered this order" });
     }
 
     if (req.body.status === "Delivered") {
         order.orderItems.forEach(async (status) => {
-            await updateStock(status.product, status.quantity)
+            await updateStock(status._id, status.quantity)
         });
 
     }
+    console.log("okay done status check");
+
 
     order.orderStatus = req.body.status;
+    console.log("okay done status = dilivered");
 
     if (order.orderStatus === "Delivered") {
         order.deliveredAt = Date.now();
     }
+    console.log("okay done status changed");
 
-    await order.save({ validateBeforeSave: false })
-
-
-    return res.status(200).json({
-        success: true,
-        msg: "Order updated successfully !"
-    });
-
+    const ordersave = await order.save({ validateBeforeSave: false })
+    
+    if (ordersave) {
+        console.log("okay done save");
+        return res.status(200).json({
+            success: true,
+            msg: "Order updated successfully !"
+        });
+    }
+    
+    else {
+        return res.status(400).json({
+            success: true,
+            err: "errror occured while saving the order !"
+        });
+        
+    }
 
 
 })
@@ -193,7 +206,7 @@ exports.deleteOrder = asyncHandler(async (req, res, next) => {
     const order = await Order.findById(req.params.id);
 
     if (!order) {
-        return res.status(200).json({ success: false, msg: "Order not found with this Id" });
+        return res.status(404).json({ success: false, err: "Order not found with this Id" });
     }
 
     const delOrder = await Order.findByIdAndDelete(order);

@@ -766,6 +766,30 @@ export const { clearMsgOrder } = createOrders.actions
 //  ADMIN SLICES DONW BELOW
 
 
+export const CreateProduct = createAsyncThunk("CreateProduct", async (data, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.post(`/api/admin/createProduct`, data, config)
+        return res.data.msg
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+
 export const UpdateProduct = createAsyncThunk("UpdateProduct", async ({ id: id, data: data }, { rejectWithValue }) => {
 
 
@@ -781,7 +805,6 @@ export const UpdateProduct = createAsyncThunk("UpdateProduct", async ({ id: id, 
         };
 
         const res = await axios.put(`/api/admin/updateProduct/${id}`, data, config)
-        console.log(res.data);
         return res.data.msg
 
     } catch (error) {
@@ -798,14 +821,13 @@ export const DeleteProduct = createAsyncThunk("DeleteProduct", async (id, { reje
         const token = document.cookie.toString(/token=([^;]+)/)[1];
         const config = {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
                 "Authorization": token,
                 "Accept": "application/json"
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteProduct/${id}`,config)
-        console.log(res.data);
+        const res = await axios.delete(`/api/admin/deleteProduct/${id}`, config)
         return res.data.msg
 
     } catch (error) {
@@ -816,12 +838,91 @@ export const DeleteProduct = createAsyncThunk("DeleteProduct", async (id, { reje
 
 
 
+
+export const adminOrders = createAsyncThunk("adminOrders", async (rand, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.get(`/api/admin/allOrders`, config)
+        console.log(res.data);
+        return res.data
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+
+export const OrderFinalStatus = createAsyncThunk("OrderFinalStatus", async ({ id: id, status: status }, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+            },
+        };
+        
+        const requestData = { status: status };
+
+        const res = await axios.put(`/api/admin/finalStatus/${id}`, requestData, config)
+        return res.data.msg
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+
+
+export const DeleteOrder = createAsyncThunk("DeleteOrder", async (id, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.delete(`/api/admin/deleteOrder/${id}`, config)
+        return res.data.msg
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+
+
+
+
 export const AuthorizedProductFunc = createSlice({
     name: "AuthorizedProductFunc",
     initialState: {
         loadingAdminProduct: false,
         errorAdminProduct: null,
-        msgAdminProduct: null
+        msgAdminProduct: null,
+        orders: []
     },
 
     reducers: {
@@ -832,6 +933,20 @@ export const AuthorizedProductFunc = createSlice({
     },
 
     extraReducers: {
+
+        [CreateProduct.pending]: (state) => {
+            state.loadingAdminProduct = true
+            state.errorAdminProduct = null
+        },
+        [CreateProduct.fulfilled]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.msgAdminProduct = action.payload
+        },
+        [CreateProduct.rejected]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.errorAdminProduct = action.payload
+        },
+
 
         [UpdateProduct.pending]: (state) => {
             state.loadingAdminProduct = true
@@ -859,6 +974,52 @@ export const AuthorizedProductFunc = createSlice({
             state.loadingAdminProduct = false
             state.errorAdminProduct = action.payload
         },
+
+
+
+
+        [adminOrders.pending]: (state) => {
+            state.loadingAdminProduct = true
+            state.errorAdminProduct = null
+        },
+        [adminOrders.fulfilled]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.orders = action.payload
+        },
+        [adminOrders.rejected]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.errorAdminProduct = action.payload
+        },
+
+
+
+        [OrderFinalStatus.pending]: (state) => {
+            state.loadingAdminProduct = true
+            state.errorAdminProduct = null
+        },
+        [OrderFinalStatus.fulfilled]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.msgAdminProduct = action.payload
+        },
+        [OrderFinalStatus.rejected]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.errorAdminProduct = action.payload
+        },
+
+
+        [DeleteOrder.pending]: (state) => {
+            state.loadingAdminProduct = true
+            state.errorAdminProduct = null
+        },
+        [DeleteOrder.fulfilled]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.msgAdminProduct = action.payload
+        },
+        [DeleteOrder.rejected]: (state, action) => {
+            state.loadingAdminProduct = false
+            state.errorAdminProduct = action.payload
+        },
+
     }
 
 
@@ -868,6 +1029,42 @@ export const AuthorizedProductFunc = createSlice({
 
 
 export const { clearErrorAdminProduct } = AuthorizedProductFunc.actions
+
+
+
+
+
+export const AuthorizedUserFunc = createSlice({
+    name: "AuthorizedUserFunc",
+    initialState: {
+        loadingAdminUser: false,
+        errorAdminUser: null,
+        msgAdminUser: null,
+        users: []
+    },
+
+    reducers: {
+        clearErrorAdminUser: (state) => {
+            state.errorAdminUser = null;
+            state.msgAdminUser = null;
+        }
+    },
+
+    extraReducers: {
+    }
+
+})
+
+
+
+
+export const { clearErrorAdminUser } = AuthorizedProductFunc.actions
+
+
+
+
+
+
 
 
 
@@ -881,7 +1078,8 @@ const rootReducer = combineReducers({
     updateUserProf: updateUserProf.reducer,
     addToCart: addToCart.reducer,
     orderInfo: createOrders.reducer,
-    AuthorizedProductFunc: AuthorizedProductFunc.reducer
+    AuthorizedProductFunc: AuthorizedProductFunc.reducer,
+    AuthorizedUserFunc: AuthorizedUserFunc.reducer
 });
 
 

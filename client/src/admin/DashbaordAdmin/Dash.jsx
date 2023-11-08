@@ -5,35 +5,20 @@ import Messages from '../Components/message/Messages';
 import Orders from '../Components/order/Orders';
 import Payments from '../Components/payments/Payments';
 import Products from '../Components/products/Products';
-import Categories from '../Components/Categories/Categories';
+import Users from '../Components/Users/Users';
 import AddProduct from '../crudOperation/AddProduct/AddProduct';
 import HomeAdmin from '../Components/Home/HomeAdmin';
 import DrawersCustom from './MenuSmall/DrawersCustom';
-// import RegisterAdmin from '../RegisterAdmin/RegisterAdmin';
-// import Users from './UsersAdmins/Users';
+
 import UpdatePr from '../crudOperation/AddProduct/UpdatePr/UpdatePr';
 
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-// menu on side
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import Logout from '@mui/icons-material/Logout';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 
 // breadcrumbs
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import UpdateOrder from '../Components/order/updateOrder/UpdateOrder';
 
 
 const Dash = ({ navigate }) => {
-  const navigater = useNavigate()
-  const [anchorEl, setAnchorEl] = useState(null);
-
 
 
   const [currentRoute, setCurrentRoute] = useState('');
@@ -41,7 +26,7 @@ const Dash = ({ navigate }) => {
   const routes = [
     { path: '/admin/dashboard', label: 'Home' },
     { path: '/admin/dashboard/products', label: 'Products' },
-    { path: '/admin/dashboard/categories', label: 'Categories' },
+    { path: '/admin/dashboard/users', label: 'Users' },
     { path: '/admin/dashboard/orders', label: 'Orders' },
     { path: '/admin/dashboard/payments', label: 'Payments' },
     { path: '/admin/dashboard/messages', label: 'Messages' },
@@ -50,23 +35,6 @@ const Dash = ({ navigate }) => {
   useEffect(() => {
     setCurrentRoute(window.location.pathname);
   }, [navigate]);
-
-
-
-
-  // if (isLoading) {
-  //   return <div>
-  //     <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh", width: "100%" }}>
-  //       <CircularProgress />
-  //     </Box>
-  //   </div>;
-  // }
-
-
-
-
-
-
 
 
 
@@ -88,8 +56,8 @@ const Dash = ({ navigate }) => {
               <Link to='products' title='Products'>Products</Link>
             </li>
             <li className='d-flex align-items-center gap-3'>
-              <span className='bi bi-list'></span>
-              <Link to='categories' title='Category'>Category</Link>
+              <span className='bi bi-people'></span>
+              <Link to='users' title='Users'>Users</Link>
             </li>
             <li className='d-flex align-items-center gap-3'>
               <span className='bi bi-file-earmark'></span>
@@ -142,13 +110,17 @@ const Dash = ({ navigate }) => {
               <Outlet />
 
               <Routes>
-                <Route path='/categories' element={<Categories />} />
+                <Route path='/users' element={<Users />} />
                 <Route path='/messages' element={<Messages />} />
                 <Route path='/orders' element={<Orders />} />
                 <Route path='/payments' element={<Payments />} />
                 <Route path='/products' element={<Products />} />
                 <Route path='/addproduct' element={<AddProduct />} />
                 <Route path='/updateproduct/:id' element={<UpdatePr />} />
+                <Route path='/addproduct' element={<AddProduct />} />
+                <Route path='/allOrders' element={<Orders />} />
+                <Route path='/updateorder/:id' element={<UpdateOrder />} />
+
               </Routes>
 
             </main>

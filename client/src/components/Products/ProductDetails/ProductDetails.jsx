@@ -35,7 +35,7 @@ const ProductDetails = () => {
     // the structure of redux is like app --> [products, loading, error] --> product
 
     useEffect(() => {
-        if (!product.ratings) {
+        if (!product.ratings < 0) {
             setRLoading(true)
         }
         else {

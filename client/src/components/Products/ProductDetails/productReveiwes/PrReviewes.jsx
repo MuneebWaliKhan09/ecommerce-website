@@ -8,7 +8,7 @@ const PrReviewes = ({ R }) => {
 
     const options = {
         // size: 'large',
-        value: product.ratings && product.ratings,
+        value: product.ratings && product.ratings || 0,
         readOnly: true,
         name: "half-rating-read",
         defaultValue: 2.5,

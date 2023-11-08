@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { allOrders } from '../../../Store/features/productSlice';
 import { Link } from 'react-router-dom';
 import Loader from "../../CustomLoader/Loader"
+import { Table, Button, Badge, Container } from 'react-bootstrap';
+
 
 const Orders = () => {
     const dispatch = useDispatch();
@@ -50,9 +52,11 @@ const Orders = () => {
                                                 <td>{items.orderItems[0].quantity}</td>
                                                 <td>${items.orderItems[0].price * items.orderItems[0].quantity}</td>
                                                 <td>
-                                                    <span style={{ color: orders && orders.orderStatus === "Dilevered" ? "green" : "orangered" }} className=" px-1 py-1 rounded">
-                                                        {items.orderStatus}
-                                                    </span>
+                                                    {items.orderStatus === 'Delivered' ? (
+                                                        <Badge variant="custom-success">Delivered</Badge>
+                                                    ) : (
+                                                        <Badge variant="custom-primary">Processing</Badge>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}

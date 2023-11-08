@@ -40,7 +40,15 @@ const Order = () => {
                     </div>
                     <div className="card-body">
                         <h6 className="card-title">Order ID: {order && order._id}</h6>
-                        <p className="card-text">Order Date: {new Date(order && order.createdAt).toDateString()}</p>
+                        <p className="card-text mb-1">Order Date: {new Date(order && order.createdAt).toDateString()}</p>
+                        {
+                            order && order.deliveredAt ? (
+                                <p className="m-0  ">Delivered  Date: <span className='text-danger text-uppercase'>{new Date(order && order.deliveredAt).toDateString()}</span></p>
+
+                            ):(
+                                null
+                            )
+                        }
                         <hr />
                         <h5 className="card-title">Products</h5>
                         <ul className="list-group">
@@ -53,7 +61,8 @@ const Order = () => {
                         </ul>
                         <hr />
                         <h5 className="card-title">Total Amount: Rs.{order && order.totalPrice}</h5>
-                        <h5 className="card-title">Order Status: <span style={{ color: order && order.orderStatus === "Dilevered" ? "green" : "orangered" }}>{order && order.orderStatus}...</span></h5>
+                        <h5 className="card-title">Order Status: <span style={{ color: order && order.orderStatus === "Delivered" ? "green" : "orangered" }}>{order && order.orderStatus}...</span></h5>
+
                     </div>
                 </div>
             </div>

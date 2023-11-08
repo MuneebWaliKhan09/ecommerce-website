@@ -3,15 +3,33 @@ const asyncHandler = require("express-async-handler")
 const cloudinary = require("cloudinary")
 
 exports.createProduct = asyncHandler(async (req, res) => {
+    const images = req.file.path;
     req.body.user = req.user._id
+
+    const myCloud = await cloudinary.v2.uploader.upload(images, {
+        folder: "products",
+        width: 300,
+        crop: "scale",
+    });
+
+    const imagesUp = [{
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url
+    }]
+
+    req.body.images = imagesUp
+
+    console.log("done cloud");
+
     const product = await Product.create(req.body)
+
+    console.log("done image");
 
     if (product) {
 
         return res.status(201).json({
             success: true,
             msg: "product created successfully",
-            product
         })
 
     }
@@ -38,6 +56,7 @@ exports.allProducts = asyncHandler(async (req, res) => {
     // make empty object for filter 
     const filters = {};
     const totalCategories = (await Product.find().distinct("category")).length; // this will find the category feilds in products schema and give us all the categories
+    const allCategories = (await Product.find().distinct("category"));
 
     // filter by product name
     if (req.query.keyword) {
@@ -70,7 +89,7 @@ exports.allProducts = asyncHandler(async (req, res) => {
 
     const AllPRODUCTS = await Product.find()
 
-    return res.json({ products, AllPRODUCTS, pageNo, resultPerPage, totalCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
+    return res.json({ products, AllPRODUCTS, pageNo, resultPerPage, totalCategories, allCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
 });
 
 
@@ -121,7 +140,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
             const images = req.file.path;
             const products = await Product.findById(req.params.id)
             const imageId = products.images[0].public_id;
-            if(imageId){
+            if (imageId) {
 
                 await cloudinary.v2.uploader.destroy(imageId);
             }
@@ -157,7 +176,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
                     msg: "Product Updated Successfully 🤩",
                 });
             }
-            else{
+            else {
                 return res.status(400).json({
                     success: false,
                     err: "Product Updation Failed !"
