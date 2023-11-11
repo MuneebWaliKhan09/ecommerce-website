@@ -9,31 +9,34 @@ import Users from '../Components/Users/Users';
 import AddProduct from '../crudOperation/AddProduct/AddProduct';
 import HomeAdmin from '../Components/Home/HomeAdmin';
 import DrawersCustom from './MenuSmall/DrawersCustom';
-
 import UpdatePr from '../crudOperation/AddProduct/UpdatePr/UpdatePr';
+import UpdateUser from "../Components/Users/updateUser/UpdateUser"
 
 
 // breadcrumbs
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import UpdateOrder from '../Components/order/updateOrder/UpdateOrder';
+import User from '../Components/Users/user/User';
 
 
 const Dash = ({ navigate }) => {
 
 
   const [currentRoute, setCurrentRoute] = useState('');
+  const [currentLable, setCurrentLable] = useState('');
 
   const routes = [
     { path: '/admin/dashboard', label: 'Home' },
-    { path: '/admin/dashboard/products', label: 'Products' },
-    { path: '/admin/dashboard/users', label: 'Users' },
-    { path: '/admin/dashboard/orders', label: 'Orders' },
-    { path: '/admin/dashboard/payments', label: 'Payments' },
-    { path: '/admin/dashboard/messages', label: 'Messages' },
+    { path: currentRoute, label: currentLable },
   ];
 
   useEffect(() => {
-    setCurrentRoute(window.location.pathname);
+    const pathname = window.location.pathname
+    const newpath = pathname.substr(17, Infinity)
+    const parts = newpath.split('/');
+    setCurrentLable(parts[0])
+    setCurrentRoute(pathname)
+
   }, [navigate]);
 
 
@@ -91,7 +94,7 @@ const Dash = ({ navigate }) => {
                 key={index}
                 as={Link}
                 to={route.path}
-                active={currentRoute === route.path}
+                active={currentLable !== route.label ? currentLable : currentLable === "Home"}
               >
                 {route.label}
               </Breadcrumb.Item>
@@ -117,9 +120,11 @@ const Dash = ({ navigate }) => {
                 <Route path='/products' element={<Products />} />
                 <Route path='/addproduct' element={<AddProduct />} />
                 <Route path='/updateproduct/:id' element={<UpdatePr />} />
-                <Route path='/addproduct' element={<AddProduct />} />
                 <Route path='/allOrders' element={<Orders />} />
                 <Route path='/updateorder/:id' element={<UpdateOrder />} />
+                <Route path='/users' element={<Users />} />
+                <Route path='/singleuser/:id' element={<User />} />
+                <Route path='/updateuser/:id' element={<UpdateUser />} />
 
               </Routes>
 

@@ -458,14 +458,13 @@ exports.updateUserRole = asyncHandler(async (req, res) => {
     if (user) {
         return res.status(200).json({
             success: true,
-            msg: "User Updated Successfully  》》》》》",
-            user
+            msg: "User Role Updated Successfully",
         })
     }
     else {
         return res.status(400).json({
             success: false,
-            msg: "An error occurred while updating the user Role !"
+            err: "An error occurred while updating the user Role !"
 
         })
     }

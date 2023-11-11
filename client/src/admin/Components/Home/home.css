@@ -1,9 +1,8 @@
-
 /* Google Fonts - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
-.circular .container{
+.circular .container {
     display: flex;
     width: 420px;
     padding: 50px 0;
@@ -13,7 +12,8 @@
     flex-direction: column;
     align-items: center;
 }
-.circular .circular-progress{
+
+.circular .circular-progress {
     position: relative;
     height: 159px;
     width: 159px;
@@ -23,7 +23,8 @@
     align-items: center;
     justify-content: center;
 }
-.circular .circular-progress::before{
+
+.circular .circular-progress::before {
     content: "";
     position: absolute;
     height: 130px;
@@ -31,13 +32,15 @@
     border-radius: 50%;
     background-color: #fff;
 }
-.circular .progress-value{
+
+.circular .progress-value {
     position: relative;
     font-size: 40px;
     font-weight: 600;
     color: #7d2ae8;
 }
-.circular .text{
+
+.circular .text {
     font-size: 20px;
     font-weight: 500;
     color: #606060;
@@ -84,4 +87,15 @@
 .bg6 {
     background-color: #d12b08ba;
     color: white;
+}
+
+
+/* Add this CSS to your home.css file */
+.chart-container {}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .chart-container canvas {
+        max-width: 100%;
+    }
 }

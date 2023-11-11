@@ -81,16 +81,19 @@ exports.allProducts = asyncHandler(async (req, res) => {
 
     // Count the total number of products that match the filters
     const totalProducts = await Product.countDocuments(filters);
+    const AllPRODUCTS = await Product.find()
 
     // Fetch products based on the filters and pagination parameters
     const products = await Product.find(filters)
         .limit(resultPerPage)
         .skip(resultPerPage * (pageNo - 1));
 
-    const AllPRODUCTS = await Product.find()
+   
 
     return res.json({ products, AllPRODUCTS, pageNo, resultPerPage, totalCategories, allCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
+
 });
+
 
 
 

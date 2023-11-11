@@ -2,22 +2,68 @@ import "./home.css"
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { allProducts } from "../../../Store/features/productSlice";
+import { Bar } from "react-chartjs-2"
+import { Chart as ChartJs, BarElement, CategoryScale, LinearScale, Tooltip, Legend, scales } from "chart.js";
 
+ChartJs.register(
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend
+)
 
 const HomeAdmin = () => {
     const dispatch = useDispatch()
     const [catGredient, setCatGredint] = useState(0)
     const [PrGredent, setPrGredent] = useState(0)
 
-    const { totalProducts , totalCategories} = useSelector((state) => state.app.products.products)
+
+    const { totalProducts, totalCategories, allCategories, AllPRODUCTS } = useSelector((state) => state.app.products.products)
+
+
+
+    const datapoints = allCategories && allCategories.length > 0 && allCategories.map((category) => {
+        return AllPRODUCTS && AllPRODUCTS.length > 0 && AllPRODUCTS.reduce((acc, item) => {
+            if (item.category === category) {
+                return acc + 1;
+            }
+            return acc;
+        }, 0);
+    });
+
+    const data = {
+        labels: allCategories,
+        datasets: [
+            {
+                label: "Products count per category",
+                data: datapoints,
+                borderWidth: 1,
+                backgroundColor: "#6990b9ad"
+            },
+        ],
+    }
+
+    const options = {
+        // indexAxis: 'x', // Display bars vertically (y-axis)
+        scales: {
+            y: {
+                beginAtZero: true,
+                suggestedMin: 0, // Set the minimum value for the y-axis
+                suggestedMax: Math.max(...datapoints), // Set the maximum value for the y-axis
+                ticks: {
+                    stepSize: 1, // Set the step size to 1 to display integer values
+                },
+            }
+        }
+    }
 
     useEffect(() => {
         dispatch(allProducts({}))
-
         setPrGredent(totalProducts)
         setCatGredint(totalCategories)
-    }, [totalProducts, totalCategories])
 
+    }, [totalProducts, totalCategories, AllPRODUCTS, allCategories])
 
 
 
@@ -212,9 +258,13 @@ const HomeAdmin = () => {
                 <h2 className="pt-3 mb-5 text-danger  p-3 text-light rounded-3" style={{ backgroundColor: "#7a488b" }}>Products in each Category : </h2>
 
 
-                <div className="set-size circular charts-container d-flex flex-wrap align-items-center" style={{ gap: "40px", padding: "25px" }}>
+                <div className="max-w-100 w-100">
 
 
+                    {/* user bar chart here */}
+                    <div className="chart-container">
+                        <Bar data={data} options={options} />
+                    </div>
 
                 </div>
 

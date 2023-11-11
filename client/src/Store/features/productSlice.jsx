@@ -876,7 +876,7 @@ export const OrderFinalStatus = createAsyncThunk("OrderFinalStatus", async ({ id
                 "Authorization": token,
             },
         };
-        
+
         const requestData = { status: status };
 
         const res = await axios.put(`/api/admin/finalStatus/${id}`, requestData, config)
@@ -1029,6 +1029,103 @@ export const AuthorizedProductFunc = createSlice({
 
 
 export const { clearErrorAdminProduct } = AuthorizedProductFunc.actions
+// =============================================================== Aythorized product func is over 
+
+
+
+
+export const AllUsers = createAsyncThunk("AllUsers", async (rand, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.get(`/api/admin/getAllUsers`, config)
+        return res.data.users
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+export const UserDetails = createAsyncThunk("UserDetails", async (id, { rejectWithValue }) => {
+
+    try {
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.get(`/api/admin/getSingleUser/${id}`, config);
+        return res.data.user;
+
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+
+})
+
+
+
+export const UpdateUserRole = createAsyncThunk("UpdateUser", async ({ id: id, role: role }, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+        const requestData = { role: role };
+
+        const res = await axios.put(`/api/admin/updateUserRole/${id}`, requestData, config)
+        return res.data.msg
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
+
+
+export const DeleteUser = createAsyncThunk("DeleteProduct", async (id, { rejectWithValue }) => {
+
+
+    try {
+
+        const token = document.cookie.toString(/token=([^;]+)/)[1];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+                "Accept": "application/json"
+            }
+        };
+
+        const res = await axios.delete(`/api/admin/deleteUser/${id}`, config)
+        return res.data.msg
+
+    } catch (error) {
+        return rejectWithValue(error.response.data.err);
+    }
+})
 
 
 
@@ -1040,7 +1137,8 @@ export const AuthorizedUserFunc = createSlice({
         loadingAdminUser: false,
         errorAdminUser: null,
         msgAdminUser: null,
-        users: []
+        users: [],
+        user: {}
     },
 
     reducers: {
@@ -1051,6 +1149,61 @@ export const AuthorizedUserFunc = createSlice({
     },
 
     extraReducers: {
+        [AllUsers.pending]: (state) => {
+            state.loadingAdminUser = true
+            state.errorAdminUser = null
+        },
+        [AllUsers.fulfilled]: (state, action) => {
+            state.loadingAdminUser = false
+            state.users = action.payload
+        },
+        [AllUsers.rejected]: (state, action) => {
+            state.loadingAdminUser = false
+            state.errorAdminUser = action.payload
+        },
+
+
+        [UserDetails.pending]: (state) => {
+            state.loadingAdminUser = true
+            state.errorAdminUser = null
+        },
+        [UserDetails.fulfilled]: (state, action) => {
+            state.loadingAdminUser = false
+            state.user = action.payload
+        },
+        [UserDetails.rejected]: (state, action) => {
+            state.loadingAdminUser = false
+            state.errorAdminUser = action.payload
+        },
+
+
+        [UpdateUserRole.pending]: (state) => {
+            state.loadingAdminUser = true
+            state.errorAdminUser = null
+        },
+        [UpdateUserRole.fulfilled]: (state, action) => {
+            state.loadingAdminUser = false
+            state.msgAdminUser = action.payload
+        },
+        [UpdateUserRole.rejected]: (state, action) => {
+            state.loadingAdminUser = false
+            state.errorAdminUser = action.payload
+        },
+
+
+        [DeleteUser.pending]: (state) => {
+            state.loadingAdminUser = true
+            state.errorAdminUser = null
+        },
+        [DeleteUser.fulfilled]: (state, action) => {
+            state.loadingAdminUser = false
+            state.msgAdminUser = action.payload
+        },
+        [DeleteUser.rejected]: (state, action) => {
+            state.loadingAdminUser = false
+            state.errorAdminUser = action.payload
+        },
+
     }
 
 })
@@ -1058,7 +1211,7 @@ export const AuthorizedUserFunc = createSlice({
 
 
 
-export const { clearErrorAdminUser } = AuthorizedProductFunc.actions
+export const { clearErrorAdminUser } = AuthorizedUserFunc.actions
 
 
 
