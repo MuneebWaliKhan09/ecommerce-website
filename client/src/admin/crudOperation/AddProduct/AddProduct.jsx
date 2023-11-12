@@ -13,7 +13,12 @@ const categories = [
   "Home",
   "Fitness",
   "Kids",
-  "furniture"
+  'Computers',
+  ' Video Games',
+  'Kitchen & Dining',
+  'Cameras',
+  "furniture",
+  'Electronics',
 ];
 
 const AddProduct = () => {
@@ -97,14 +102,14 @@ const AddProduct = () => {
 
           <div >
             <label htmlFor="formFile" className="form-label">Product Description :</label>
-            <input className="form-control" onChange={(e) => setDescription(e.target.value)}  type='text' aria-label="With textarea" name='description' placeholder='Description..' /><p></p>
+            <input className="form-control" onChange={(e) => setDescription(e.target.value)} type='text' aria-label="With textarea" name='description' placeholder='Description..' /><p></p>
           </div>
 
           <div>
             <label htmlFor="formFile" className="form-label">Product Price :</label>
             <div className='d-flex align-items-center'>
               <span className="input-group-text"> $</span>
-              <input type="number" onChange={(e) => setPrice(e.target.value)}  className="form-control" name='price' placeholder='Product Price' />
+              <input type="number" onChange={(e) => setPrice(e.target.value)} className="form-control" name='price' placeholder='Product Price' />
             </div>
             <p></p>
           </div>
@@ -113,7 +118,7 @@ const AddProduct = () => {
             <label htmlFor="formFile" className="form-label">Product Image :</label>
             <div>
               {
-                images &&  (
+                images && (
                   <img src={URL.createObjectURL(images)} alt='' height={50} width={50} />
                 )
               }
@@ -123,7 +128,7 @@ const AddProduct = () => {
           <div>
             <label htmlFor="formFile" className="form-label">Product Stock :</label>
             <div className='d-flex align-items-center'>
-              <input type="number" onChange={(e) => setStock(e.target.value)}  className="form-control" name='stock' placeholder='Product Stock' />
+              <input type="number" onChange={(e) => setStock(e.target.value)} className="form-control" name='stock' placeholder='Product Stock' />
             </div>
             <p></p>
           </div>
@@ -134,7 +139,7 @@ const AddProduct = () => {
               <option value="">Select Category..</option>
               {
                 categories && categories.map((cat, index) => (
-                  <option value={cat}  key={index}>{cat}</option>
+                  <option value={cat} key={index}>{cat}</option>
                 ))
               }
             </select>

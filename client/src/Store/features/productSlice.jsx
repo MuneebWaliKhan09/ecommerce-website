@@ -8,7 +8,7 @@ import axios from "axios";
 
 // get products
 
-export const allProducts = createAsyncThunk("allProducts", async ({ currentPage = 1, category = '', minPrice = 100, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
+export const allProducts = createAsyncThunk("allProducts", async ({ currentPage = 1, category = '', minPrice = 20, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
     let apiUrl = `/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
 
     if (category) {

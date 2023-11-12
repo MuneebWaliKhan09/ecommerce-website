@@ -15,7 +15,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
 
-  const { products } = useSelector((state) => state.app.products.products)
+  const { products} = useSelector((state) => state.app.products.products)
   const { loading, error } = useSelector((state) => state.app.products)
 
   useEffect(() => {
@@ -51,9 +51,15 @@ const Home = () => {
                       <Loader />
                     </div>
                   ) : (
-                    products && products.map((item) => (
-                      <ProductCard items={item} key={item._id} />
-                    ))
+                    products && !products.length ? (
+                      <div className='text-danger'>
+                        <h4>No Products Found !</h4>
+                      </div>
+                    ) : (
+                      products && products.map((item) => (
+                        <ProductCard items={item} key={item._id} />
+                      ))
+                    )
                   )
 
                   }

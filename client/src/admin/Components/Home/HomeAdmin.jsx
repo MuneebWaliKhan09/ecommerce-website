@@ -1,7 +1,7 @@
 import "./home.css"
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux"
-import { allProducts } from "../../../Store/features/productSlice";
+import { adminOrders, allProducts } from "../../../Store/features/productSlice";
 import { Bar } from "react-chartjs-2"
 import { Chart as ChartJs, BarElement, CategoryScale, LinearScale, Tooltip, Legend, scales } from "chart.js";
 
@@ -19,8 +19,8 @@ const HomeAdmin = () => {
     const [PrGredent, setPrGredent] = useState(0)
 
 
-    const { totalProducts, totalCategories, allCategories, AllPRODUCTS } = useSelector((state) => state.app.products.products)
-
+    const { allCategories, AllPRODUCTS } = useSelector((state) => state.app.products.products)
+    const { orders } = useSelector((state) => state.app.AuthorizedProductFunc)
 
 
     const datapoints = allCategories && allCategories.length > 0 && allCategories.map((category) => {
@@ -49,10 +49,10 @@ const HomeAdmin = () => {
         scales: {
             y: {
                 beginAtZero: true,
-                suggestedMin: 0, // Set the minimum value for the y-axis
-                suggestedMax: Math.max(...datapoints), // Set the maximum value for the y-axis
+                suggestedMin: 0,
+                suggestedMax: datapoints && Math.max(...datapoints),
                 ticks: {
-                    stepSize: 1, // Set the step size to 1 to display integer values
+                    stepSize: 1,
                 },
             }
         }
@@ -60,12 +60,14 @@ const HomeAdmin = () => {
 
     useEffect(() => {
         dispatch(allProducts({}))
-        setPrGredent(totalProducts)
-        setCatGredint(totalCategories)
+        dispatch(adminOrders())
+        setPrGredent(AllPRODUCTS && AllPRODUCTS.length)
+        setCatGredint(allCategories && allCategories.length)
 
-    }, [totalProducts, totalCategories, AllPRODUCTS, allCategories])
+    }, [AllPRODUCTS, allCategories])
 
 
+    
 
     return (
         <>
@@ -85,10 +87,10 @@ const HomeAdmin = () => {
                                     <div className="widget-content-wrapper bg1 p-2 pe-3 d-flex align-items-center justify-content-between">
                                         <div className="widget-content-left">
                                             <div className="widget-heading" style={{ fontWeight: "600", fontSize: "23px" }}>Total Orders</div>
-                                            <div className="widget-subheading">Last year expenses</div>
+                                            <div className="widget-subheading">All Orders Count</div>
                                         </div>
                                         <div className="widget-content-right">
-                                            <div className="widget-numbers  totalOrders" style={{ fontSize: "24px" }}>1896</div>
+                                            <div className="widget-numbers  totalOrders" style={{ fontSize: "24px" }}>{orders.orders && orders.orders.length}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -101,10 +103,10 @@ const HomeAdmin = () => {
                                     <div className="widget-content-wrapper bg2 p-2 pe-3 d-flex align-items-center justify-content-between">
                                         <div className="widget-content-left">
                                             <div className="widget-heading" style={{ fontWeight: "600", fontSize: "23px" }}>Products Sold</div>
-                                            <div className="widget-subheading">Revenue streams</div>
+                                            <div className="widget-subheading">Totall Amount</div>
                                         </div>
                                         <div className="widget-content-right">
-                                            <div className="widget-numbers totalOrders" style={{ fontSize: "24px" }}>$3M</div>
+                                            <div className="widget-numbers totalOrders" style={{ fontSize: "24px" }}>Rs.{orders && orders.totallAmount}</div>
                                         </div>
                                     </div>
                                 </div>

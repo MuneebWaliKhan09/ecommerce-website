@@ -48,14 +48,13 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 exports.allProducts = asyncHandler(async (req, res) => {
     // Number of products to show per page
-    const resultPerPage = 6;
+    const resultPerPage = 7;
 
     // Extract the requested page number from the URL's query parameters. Default to page 1 if not provided.
     const pageNo = Number(req.query.page) || 1;
 
     // make empty object for filter 
     const filters = {};
-    const totalCategories = (await Product.find().distinct("category")).length; // this will find the category feilds in products schema and give us all the categories
     const allCategories = (await Product.find().distinct("category"));
 
     // filter by product name
@@ -81,16 +80,16 @@ exports.allProducts = asyncHandler(async (req, res) => {
 
     // Count the total number of products that match the filters
     const totalProducts = await Product.countDocuments(filters);
-    const AllPRODUCTS = await Product.find()
 
     // Fetch products based on the filters and pagination parameters
     const products = await Product.find(filters)
         .limit(resultPerPage)
         .skip(resultPerPage * (pageNo - 1));
 
-   
+    const AllPRODUCTS = await Product.find()
 
-    return res.json({ products, AllPRODUCTS, pageNo, resultPerPage, totalCategories, allCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
+
+    return res.json({ products, AllPRODUCTS, pageNo, resultPerPage, allCategories, pages: Math.ceil(totalProducts / resultPerPage), totalProducts });
 
 });
 

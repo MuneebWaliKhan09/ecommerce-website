@@ -28,7 +28,7 @@ const Products = () => {
   const params = useParams();
   const keyword = params.keyword;
   const [category, setCategory] = useState('');
-  const [minPrice] = useState(100);
+  const [minPrice] = useState(20);
   const [maxPrice] = useState(20000);
   const [price, setPrice] = useState([minPrice, maxPrice]);
   const [currentPage, setcurrentPage] = useState(1);
@@ -168,9 +168,17 @@ const Products = () => {
                     </div>
                   ) :
                     (
-                      products && products.map((item) => (
-                        <ProductCard items={item} key={item._id} />
-                      ))
+                      products && !products.length ? (
+                        <div className='text-danger'>
+                          <h4>No Products Found !</h4>
+                        </div>
+                      ) : (
+
+                        products && products.map((item) => (
+                          <ProductCard items={item} key={item._id} />
+                        ))
+                      )
+
                     )
 
                   }
