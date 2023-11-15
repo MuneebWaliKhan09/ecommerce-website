@@ -60,7 +60,6 @@ export const productsReveiw = createAsyncThunk("productReveiw", async (data, { r
 
         const res = await axios.put(`/api/createReview`, data, config)
 
-        console.log(res.data);
         return res.data;
 
 
@@ -470,7 +469,6 @@ export const updateUserProfile = createAsyncThunk("updateUserProfile", async (da
 
 
         const res = await axios.put(`/api/updateUserProfile`, data, config);
-        console.log(res.data.msg);
         return res.data.msg;
 
 
@@ -495,7 +493,6 @@ export const updateUserPassword = createAsyncThunk("updateUserPassword", async (
         };
 
         const res = await axios.put(`/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
-        console.log(res.data.msg);
         return res.data.msg;
 
 
@@ -854,7 +851,6 @@ export const adminOrders = createAsyncThunk("adminOrders", async (rand, { reject
         };
 
         const res = await axios.get(`/api/admin/allOrders`, config)
-        console.log(res.data);
         return res.data
 
     } catch (error) {

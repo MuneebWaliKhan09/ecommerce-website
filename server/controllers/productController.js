@@ -48,7 +48,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 exports.allProducts = asyncHandler(async (req, res) => {
     // Number of products to show per page
-    const resultPerPage = 7;
+    const resultPerPage = 4;
 
     // Extract the requested page number from the URL's query parameters. Default to page 1 if not provided.
     const pageNo = Number(req.query.page) || 1;

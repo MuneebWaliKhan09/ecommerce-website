@@ -21,9 +21,11 @@ import Orders from "./components/Products/Orders/Orders"
 import Order from "./components/Products/Orders/order/Order"
 import AdminRoutes from "./components/User/AdminRoutes"
 import Dash from "./admin/DashbaordAdmin/Dash"
+import Footer from "./components/Footer/Footer"
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
+  // const navigate = useNavigate()
 
   async function getStripeApiKey() {
     const { data } = await axios.get("/api/stripeapikey");
@@ -35,13 +37,17 @@ function App() {
     getStripeApiKey();
   }, []);
 
+
+
   window.addEventListener("contextmenu", (e) => e.preventDefault());
+
 
   return (
     <>
       <BrowserRouter>
 
         <NavBar />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
@@ -72,10 +78,11 @@ function App() {
 
           {/* admin routes  */}
           <Route element={<AdminRoutes />} >
-            <Route path="/admin/dashboard/*" element={<AdminDashboard />}  />
+            <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
           </Route>
 
         </Routes>
+        {!window.location.pathname.startsWith("/admin") ?  <Footer />  : ''}
       </BrowserRouter>
 
     </>
@@ -86,6 +93,6 @@ function App() {
 function AdminDashboard() {
   const navigate = useNavigate();
 
-  return <Dash navigate={navigate}  />;
+  return <Dash navigate={navigate} />;
 }
 export default App

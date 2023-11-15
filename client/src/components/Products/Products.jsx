@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import { allProducts } from '../../Store/features/productSlice';
 import "./products.css";
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import Search from "../search/Search"
 
 const categories = [
   "All Categories",
@@ -20,7 +21,12 @@ const categories = [
   "Home",
   "Fitness",
   "Kids",
-  "furniture"
+  'Computers',
+  ' Video Games',
+  'Kitchen & Dining',
+  'Cameras',
+  "furniture",
+  'Electronics',
 ];
 
 const Products = () => {
@@ -32,6 +38,7 @@ const Products = () => {
   const [maxPrice] = useState(20000);
   const [price, setPrice] = useState([minPrice, maxPrice]);
   const [currentPage, setcurrentPage] = useState(1);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const priceRanges = [
     { label: 'All Ranges', value: '0-0' },
@@ -39,7 +46,7 @@ const Products = () => {
     { label: '$100-$300', value: '100-300' },
     { label: '$400-$500', value: '400-500' },
     { label: '$700-$1200', value: '700-1200' },
-    { label: '$1300-$2000', value: '1300-2000' }
+    { label: '$1300-$20000', value: '1300-20000' }
     // Add more price range options as needed
   ];
 
@@ -51,8 +58,9 @@ const Products = () => {
 
 
   useEffect(() => {
+    setSearchLoading(false)
     dispatch(allProducts({ currentPage: currentPage, category: category, minPrice: price[0], maxPrice: price[1], keyword: keyword }));
-  }, [dispatch, currentPage, category, price[0], price[1], keyword]);
+  }, [dispatch, currentPage, category, price[0], price[1], keyword, setSearchLoading]);
 
 
 
@@ -65,7 +73,7 @@ const Products = () => {
   const priceHandler = (event) => {
     const eventVal = event.target.value;
     if (eventVal === '0-0') {
-      setPrice([100, 20000])
+      setPrice([20, 20000])
     }
     else {
       // .split('-') is used to split the string into an array 
@@ -83,16 +91,25 @@ const Products = () => {
   }
 
 
+
+
   return (
     <Fragment>
       {
-        loading ? (
+        searchLoading ? (
           <div className='d-flex flex-column align-items-center justify-content-center' style={{ width: "100%", height: "100vh", zIndex: "999" }}>
             <Loader />
           </div>
         )
           : (
             <div>
+
+              <div style={{ position: "relative" }} className='d-flex items-center p-3'>
+                <Search setSearchLoading={setSearchLoading} />
+                <div style={{ position: "absolute", right: 40, top: '30%' }}>
+                  <span className='bi bi-search'></span>
+                </div>
+              </div>
 
               {/* filter by category */}
               <div className='input-group mx-3 my-4 catDrop' style={{ width: 190 }}>
@@ -198,7 +215,7 @@ const Products = () => {
                       count={pages}   // pages we have
                       page={pageNo}  // current page no abhi jo load kerna hain
                       onChange={(e, pageNo) => setcurrentPage(pageNo)}
-                      color="primary" />
+                      color="warning"/>
                   </Stack>
 
                 }

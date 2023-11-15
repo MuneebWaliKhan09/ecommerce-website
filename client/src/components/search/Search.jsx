@@ -7,18 +7,19 @@ import "./search.css";
 import { Link } from 'react-router-dom';
 import { allProducts } from '../../Store/features/productSlice';
 
-const Search = () => {
+const Search = ({setSearchLoading}) => {
     const [keyword, setKeyword] = useState("");
     const [name, setName] = useState([]);
     const [showSearch, setshowSearch] = useState('none');
 
     const dispatch = useDispatch();
 
-    const { products, loading, error } = useSelector((state) => state.app.products.products)
+    const { AllPRODUCTS, loading, error } = useSelector((state) => state.app.products.products)
 
     useEffect(() => {
+        setSearchLoading(loading)
         dispatch(allProducts({}));
-    }, [dispatch]);
+    }, [dispatch, setSearchLoading, loading]);
 
     const navigate = useNavigate();
 
@@ -41,23 +42,18 @@ const Search = () => {
             setshowSearch('none')
         }
         else {
-            setName(products.filter((item) => {
+            setName(AllPRODUCTS && AllPRODUCTS.filter((item) => {
                 return item.name.toLowerCase().includes(val)
             }))
             setshowSearch('block')
         }
     }
 
-
     return (
         <>
             <form className='input-group searchMenu input-group-lg'  onSubmit={searchHandler}>
 
-                <input type="text" onKeyUp={fetchData} className='form-control search' onChange={(e) => setKeyword(e.target.value)} placeholder='Search Products Here...' />
-                <button type='submit' className='btn btn-warning text-light searchBtn'>
-                    Search
-                    <span className='bi bi-chevron-right'></span>
-                </button>
+                <input type="text" onKeyUp={fetchData} className='form-control searchp p-3' onChange={(e) => setKeyword(e.target.value)} placeholder='Search Products Here...' />
                 <div className={`searchOptions p-2 rounded d-${showSearch}`} style={{zIndex:"1000"}} >
                     {
 

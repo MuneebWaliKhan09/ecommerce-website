@@ -35,7 +35,7 @@
     font-weight: 900;
     position: relative;
     width: fit-content;
-    color: rgb(255, 81, 0);
+    color: #ff6933d7 ;
 
 }
 
@@ -47,7 +47,7 @@
     left: 8%;
     height: 5px;
     width: 60%;
-    background-color: rgba(255, 0, 0, 0.801);
+    background-color: #ff6933a9 ;
     transition: all ease 1s;
 }
 
@@ -80,9 +80,9 @@
 
 
 @media only screen and (max-width: 768px) {
-    /* .searchMenu {
-        display: none;
-    } */
+    .hideLinks{
+        display: none !important;
+    }
 
     .searchBtn {
         font-size: 12px !important;
@@ -144,7 +144,7 @@
         left: 9%;
         height: 5px;
         width: 60%;
-        background-color: rgba(255, 0, 0, 0.801);
+        background-color: #ff69339d ;
         transition: all ease 1s;
     }
     
@@ -163,12 +163,6 @@
 }
 
 
-@media only screen and (max-width: 600px) {
-    .searchMenu {
-        display: none;
-    }
-}
-
 
 @media only screen and (max-width: 425px) {
 
@@ -180,9 +174,3 @@
     }
 }
 
-
-@media only screen and (max-width: 600px) {
-    .searchMenu {
-        display: none;
-    }
-}

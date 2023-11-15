@@ -1,8 +1,44 @@
-.card{
+
+.cardwrapper {
+    position: relative;
+    width: 270px;
+    height: 386px;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+    font-family: Verdana;
     transition: .4s;
     box-shadow: 10px 10px 10px rgb(255, 201, 201);
+
 }
-.card:hover{
+
+
+.cardwrapper:hover {
     transform: translateY(-15px);
     transition: .4s;
+}
+
+.cardwrapper .card-title {
+    font-size: 19px !important;
+    color: rgb(70, 70, 70);
+}
+
+.cardwrapper .img-wrapper {
+    height: 265px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all .6s;
+}
+
+.cardwrapper .img-wrapper img {
+    width: 75%
+}
+
+.cardwrapper .img-wrapper {
+    transform-origin: center;
+    transform: scale(0.6) translateY(10px);
+}
+
+.cardwrapper .content-wrapper {
+    transition: all .6s;
 }
