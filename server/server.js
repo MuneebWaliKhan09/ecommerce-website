@@ -8,11 +8,6 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 
-const corsOptions ={
-    origin:'*', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200,
- }
 
 
 // handling uncaught exception
@@ -33,7 +28,7 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions))
+app.use(cors())
 
 
 // upload images
