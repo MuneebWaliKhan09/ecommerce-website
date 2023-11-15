@@ -3,10 +3,10 @@ const cors = require("cors");
 const connect = require("./config/db")
 require("colors")
 const dotenv = require("dotenv")
-const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
+const app = express();
 
 app.use(cors(
     {
