@@ -8,13 +8,13 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 
-app.use(cors(
-    {
-        origin: "*",
-        methods: ["POST", "GET"],
-        credentials: true,
-    }
-));
+// app.use(cors(
+//     {
+//         origin: "*",
+//         methods: ["POST", "GET"],
+//         credentials: true,
+//     }
+// ));
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
@@ -34,6 +34,7 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
 
 // upload images
