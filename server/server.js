@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+const cors = require("cors");
 const connect = require("./config/db")
 require("colors")
 const dotenv = require("dotenv")
@@ -11,8 +11,8 @@ const cloudinary = require("cloudinary");
 app.use(cors(
     {
         origin: "https://ecommerce-muneeb-frontend.vercel.app",
-        methods: ["POST", "GET"],
-        credentials: true,
+        // methods: ["POST", "GET"],
+        // credentials: true,
     }
 ));
 
@@ -34,7 +34,7 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
+// app.use(cors())
 
 
 // upload images
