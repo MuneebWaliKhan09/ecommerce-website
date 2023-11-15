@@ -9,6 +9,11 @@ import axios from "axios";
 // get products
 
 export const allProducts = createAsyncThunk("allProducts", async ({ currentPage = 1, category = '', minPrice = 20, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    };
     let apiUrl = `https://ecommerce-muneeb.vercel.app/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
 
     if (category) {
@@ -17,7 +22,7 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
 
     try {
 
-        const res = await axios.get(apiUrl);
+        const res = await axios.get(apiUrl, config);
 
         return res.data;
     } catch (error) {
