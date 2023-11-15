@@ -8,7 +8,6 @@ const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 const app = express();
 
-app.use(express.static("dist"))
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
