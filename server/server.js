@@ -13,7 +13,6 @@ app.use(cors(
         origin: "*",
         methods: ["POST", "GET"],
         credentials: true,
-        exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
     }
 ));
 
@@ -85,3 +84,17 @@ process.on("unhandledRejection", (err) => {
         process.exit(1)
     })
 })
+
+
+// {
+//     "version":2,
+//     "builds": [
+//       { "src": "*.js", "use": "@vercel/node" }
+//     ],
+//     "routes": [
+//         {
+//           "src": "/(.*)",
+//           "dest": "/"
+//         }
+//     ]
+//   }
