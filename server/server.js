@@ -8,11 +8,7 @@ const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 const app = express();
 
-// app.use(cors(
-//     {
-//         origin: "https://ecommerce-muneeb-frontend.vercel.app",
-//     }
-// ));
+app.use(express.static("dist"))
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
@@ -32,12 +28,7 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(
-    {
-        origin: "https://ecommerce-muneeb-frontend.vercel.app",
-        credentials: true
-    }
-))
+app.use(cors())
 
 
 // upload images
