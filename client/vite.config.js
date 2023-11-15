@@ -9,7 +9,8 @@ export default defineConfig({
     port: 4000, // Your configured port
     proxy: {
       "/api": {
-        target: 'http://192.168.10.6:8009', // Your server's address
+        // target: 'http://192.168.10.6:8009', // Your server's address
+        target: 'https://ecommerce-muneeb-backend.vercel.app', // Your server's address
         changeOrigin: true,
       },
     },
