@@ -8,13 +8,13 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 
-// app.use(cors(
-//     {
-//         origin: "*",
-//         methods: ["POST", "GET"],
-//         credentials: true,
-//     }
-// ));
+app.use(cors(
+    {
+        origin: "https://ecommerce-muneeb-frontend.vercel.app",
+        methods: ["POST", "GET"],
+        credentials: true,
+    }
+));
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
