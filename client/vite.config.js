@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
-      "/api": {
+      "https://ecommerce-muneeb.vercel.app": {
         target: 'https://ecommerce-muneeb.vercel.app', // Your server's address
         changeOrigin: true,
       },
