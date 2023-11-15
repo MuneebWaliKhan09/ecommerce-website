@@ -8,6 +8,11 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }
 
 
 // handling uncaught exception
@@ -28,14 +33,7 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
-
-const corsMiddleware = (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://ecommerce-muneeb-frontend.vercel.app');
-    next();
-  };
-  
-  app.use(corsMiddleware);
+app.use(cors(corsOptions))
 
 
 // upload images
@@ -71,9 +69,6 @@ app.use((err, req, res, next) => {
     }
 });
 
-app.get('/', (req, res) => {
-    res.json("hello")
-})
 
 
 const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://:${process.env.PORT || 5000}`.cyan) })
