@@ -65,6 +65,10 @@ app.use((err, req, res, next) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.json("hello")
+})
+
 
 const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://:${process.env.PORT || 5000}`.cyan) })
 
