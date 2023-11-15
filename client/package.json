@@ -2,7 +2,7 @@
   "name": "ecommerce-muneeb",
   "private": true,
   "version": "0.0.0",
-  "proxy": "https://ecommerce-muneeb-frontend.vercel.app",
+  "proxy": "https://ecommerce-muneeb.vercel.app",
   "type": "module",
   "scripts": {
     "dev": "vite",
