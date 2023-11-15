@@ -28,7 +28,14 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
+// app.use(cors())
+app.use(cors(
+    {
+        origin: ["https://ecommerce-muneeb-frontend.vercel.app"],
+        methods: ["POST", "GET", "UPDATE", "DELETE"],
+        credentials: true
+    }
+));
 
 
 
