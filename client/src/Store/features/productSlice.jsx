@@ -41,7 +41,9 @@ export const productsDetails = createAsyncThunk("productsDetail", async (id, { r
 })
 
 
-
+console.log("API URL:", apiUrl);
+const res = await axios.get(apiUrl);
+console.log(res);
 
 // create product reveiwe
 

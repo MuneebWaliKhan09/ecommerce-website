@@ -10,9 +10,10 @@ const cloudinary = require("cloudinary");
 
 app.use(cors(
     {
-        origin: "*",
+        origin: ["https://ecommerce-muneeb-frontend.vercel.app"],
         methods: ["POST", "GET"],
-        credentials: true
+        credentials: true,
+        exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
     }
 ));
 
