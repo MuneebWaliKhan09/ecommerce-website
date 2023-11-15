@@ -10,7 +10,7 @@ const app = express();
 
 app.use(cors(
     {
-        origin: "https://ecommerce-muneeb-frontend.vercel.app",
+        origin: "https://ecommerce-muneeb-frontend-5qp8bkder-muneebs-projects-18ef342e.vercel.app",
     }
 ));
 
