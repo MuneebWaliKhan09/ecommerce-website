@@ -10,7 +10,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         // target: 'http://192.168.10.6:8009', // Your server's address
-        target: 'https://ecommerce-muneeb-backend.vercel.app', // Your server's address
+        target: 'https://ecommerce-muneeb-backend-l3x8usbcg-muneebs-projects-18ef342e.vercel.app', // Your server's address
         changeOrigin: true,
       },
     },
