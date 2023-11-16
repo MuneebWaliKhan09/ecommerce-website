@@ -18,7 +18,6 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
     try {
 
         const res = await axios.get(apiUrl);
-
         return res.data;
     } catch (error) {
         return rejectWithValue(error.response.data);
