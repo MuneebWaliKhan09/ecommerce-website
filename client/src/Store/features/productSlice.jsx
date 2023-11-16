@@ -17,7 +17,7 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
 
     try {
 
-    const res = await axios.get(apiUrl);
+    const res = await axios.get(apiUrl, {headers: {'Access-Control-Allow-Origin': '*'}});
 
         return res.data;
     } catch (error) {
@@ -97,6 +97,7 @@ export const allOrders = createAsyncThunk("allOrders", async (rand, { rejectWith
         const config = {
             headers: {
                 "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*'
             }
         };
 
@@ -411,7 +412,8 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token,
-                "Accept": "application/json"
+                "Accept": "application/json",
+                'Access-Control-Allow-Origin': '*'
             }
         };
 
