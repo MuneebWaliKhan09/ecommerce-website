@@ -17,11 +17,11 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
 
     try {
 
-        const res = await axios.get(apiUrl,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            }
-        );
+    const res = await axios.get(apiUrl, {
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+    },
+    });
 
         return res.data;
     } catch (error) {
