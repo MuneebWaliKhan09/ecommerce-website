@@ -24,7 +24,7 @@ connect()
 
 app.use(cors(
     {
-        origin: ["https://ecommerce-muneeb.vercel.app"],
+        origin: ["https://ecommerce-muneeb.vercel.app/"],
         credentials: true
     }
 ));
