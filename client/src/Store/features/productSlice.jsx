@@ -22,7 +22,6 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
             }
         );
 
