@@ -19,8 +19,6 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
 
         const res = await axios.get(apiUrl,
             headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
                 "Access-Control-Allow-Origin": "*",
             }
         );
