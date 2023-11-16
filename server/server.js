@@ -22,6 +22,12 @@ dotenv.config({ path: ".env" })
 
 connect()
 
+app.use(cors(
+    {
+        origin: ["https://ecommerce-muneeb.vercel.app/"],
+        credentials: true
+    }
+));
 
 app.use(express.json())
 app.use(cookieParser())
