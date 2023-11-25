@@ -4,16 +4,17 @@ Welcome to **Es Shoop**, an Ecommerce website built with the powerful MERN stack
 
 ## Features
 
-- **Home Page:**
+# - **Home Page:**
+
   ![Es Shoop Home Page](https://github.com/MuneebWaliKhan09/ecommerce-muneeb/blob/main/client/public/home.png?raw=true)
 
-- **Product Page:**
+# - **Product Page:**
   Discover a wide range of products tailored to your preferences.
 
-  
+
   ![Es Shoop Product Page](https://github.com/MuneebWaliKhan09/ecommerce-muneeb/blob/main/client/public/products.png?raw=true)
 
-- **Admin Dashboard:**
+# - **Admin Dashboard:**
   Manage your store efficiently with a user-friendly admin dashboard.
 
 
