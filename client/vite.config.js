@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      "/api": "https://ecommerce-muneeb-2hdf.vercel.app/",
+      "/api": "https://ecommerce-muneeb-2hdf.vercel.app",
       //  "/api": 'http://localhost:8009', // Your server's address
     },
   },
