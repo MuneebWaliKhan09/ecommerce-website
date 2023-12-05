@@ -407,15 +407,7 @@ export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectW
 export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand, { rejectWithValue }) => {
 
     try {
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            }
-        };
+        const config = { headers: { "Content-Type": "multipart/form-data" } };
 
         const res = await axios.get("https://ecommerce-muneeb-2hdf.vercel.app/api/getUserDetails", config);
         return res.data.user;
