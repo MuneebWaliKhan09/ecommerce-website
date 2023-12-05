@@ -7,6 +7,8 @@ export default defineConfig({
     proxy: {
       "/api": "https://ecommerce-muneeb-2hdf.vercel.app",
       //  "/api": 'http://localhost:8009', // Your server's address
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api/, ''),
     },
   },
   plugins: [react()],
