@@ -16,7 +16,7 @@ const LoginUser = () => {
     const { msg1, error1, loading } = useSelector((state) => state.app.userAuth)
 
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState("");
 
 
     const handleLogin = (e) => {
