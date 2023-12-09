@@ -9,7 +9,7 @@ import axios from "axios";
 // get products
 
 export const allProducts = createAsyncThunk("allProducts", async ({ currentPage = 1, category = '', minPrice = 20, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
-    let apiUrl = `/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
+    let apiUrl = `https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
 
     if (category) {
         apiUrl += `&category=${category}`;
@@ -29,7 +29,7 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
 // get productsDetails
 
 export const productsDetails = createAsyncThunk("productsDetail", async (id, { rejectWithValue }) => {
-    const res = await axios.get(`/api/getProductDetails/${id}`)
+    const res = await axios.get(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/getProductDetails/${id}`)
 
     try {
 
@@ -58,7 +58,7 @@ export const productsReveiw = createAsyncThunk("productReveiw", async (data, { r
             }
         };
 
-        const res = await axios.put(`/api/createReview`, data, config)
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/createReview`, data, config)
 
         return res.data;
 
@@ -79,7 +79,7 @@ export const createOrder = createAsyncThunk("createOrder", async (order, { rejec
             }
         };
 
-        const res = await axios.post(`/api/createOrder`, order, config)
+        const res = await axios.post(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/createOrder`, order, config)
 
         return res.data.msg;
 
@@ -101,7 +101,7 @@ export const allOrders = createAsyncThunk("allOrders", async (rand, { rejectWith
             }
         };
 
-        const res = await axios.get(`/api/myOrders`, config)
+        const res = await axios.get(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/myOrders`, config)
 
         return res.data.orders;
 
@@ -122,7 +122,7 @@ export const orderDetails = createAsyncThunk("orderDetails", async (id, { reject
             }
         };
 
-        const res = await axios.get(`/api/getSingleOrder/${id}`, config)
+        const res = await axios.get(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/getSingleOrder/${id}`, config)
 
         return res.data.order;
 
@@ -364,7 +364,7 @@ export const registerUser = createAsyncThunk("auth/register", async (data, { rej
     try {
         const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-        const res = await axios.post("/api/registerUser", data, config);
+        const res = await axios.post("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/registerUser", data, config);
 
         return res.data.msg;
     } catch (error) {
@@ -379,7 +379,7 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email: email, p
     try {
         const config = { headers: { "Content-Type": "application/json" } };
 
-        const res = await axios.post("/api/loginUser", { email, password }, config);
+        const res = await axios.post("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/loginUser", { email, password }, config);
 
         return res.data.msg;
     } catch (error) {
@@ -394,7 +394,7 @@ export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectW
     try {
         const config = { headers: { "Content-Type": "application/json" } };
 
-        const res = await axios.get("/api/logoutUser", config);
+        const res = await axios.get("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/logoutUser", config);
 
         return res.data.msg;
     } catch (error) {
@@ -407,9 +407,9 @@ export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectW
 export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand, { rejectWithValue }) => {
 
     try {
-        const config = { headers: { "Content-Type": "multipart/form-data" } };
+        const config = { headers: { "Content-Type": "application/json" } };
 
-        const res = await axios.get("/api/getUserDetails", config);
+        const res = await axios.get("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/getUserDetails", config);
         return res.data.user;
 
 
@@ -424,7 +424,7 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
 export const forgotPasswordUser = createAsyncThunk("forgotPasswordUser", async ({ email: email }, { rejectWithValue }) => {
 
     try {
-        const res = await axios.post("/api/forgot/password", { email });
+        const res = await axios.post("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/forgot/password", { email });
         return res.data.msg;
 
 
@@ -438,7 +438,7 @@ export const forgotPasswordUser = createAsyncThunk("forgotPasswordUser", async (
 export const resetPasswordUser = createAsyncThunk("resetPasswordUser", async ({ password: password, confirmPassword: confirmPassword, token: token }, { rejectWithValue }) => {
 
     try {
-        const res = await axios.put(`/api/password/reset/${token}`, { password, confirmPassword });
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/password/reset/${token}`, { password, confirmPassword });
         return res.data.msg;
 
 
@@ -462,7 +462,7 @@ export const updateUserProfile = createAsyncThunk("updateUserProfile", async (da
         };
 
 
-        const res = await axios.put(`/api/updateUserProfile`, data, config);
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/updateUserProfile`, data, config);
         return res.data.msg;
 
 
@@ -486,7 +486,7 @@ export const updateUserPassword = createAsyncThunk("updateUserPassword", async (
             }
         };
 
-        const res = await axios.put(`/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
         return res.data.msg;
 
 
@@ -771,7 +771,7 @@ export const CreateProduct = createAsyncThunk("CreateProduct", async (data, { re
             }
         };
 
-        const res = await axios.post(`/api/admin/createProduct`, data, config)
+        const res = await axios.post(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/createProduct`, data, config)
         return res.data.msg
 
     } catch (error) {
@@ -795,7 +795,7 @@ export const UpdateProduct = createAsyncThunk("UpdateProduct", async ({ id: id, 
             }
         };
 
-        const res = await axios.put(`/api/admin/updateProduct/${id}`, data, config)
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/updateProduct/${id}`, data, config)
         return res.data.msg
 
     } catch (error) {
@@ -818,7 +818,7 @@ export const DeleteProduct = createAsyncThunk("DeleteProduct", async (id, { reje
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteProduct/${id}`, config)
+        const res = await axios.delete(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/deleteProduct/${id}`, config)
         return res.data.msg
 
     } catch (error) {
@@ -844,7 +844,7 @@ export const adminOrders = createAsyncThunk("adminOrders", async (rand, { reject
             }
         };
 
-        const res = await axios.get(`/api/admin/allOrders`, config)
+        const res = await axios.get(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/allOrders`, config)
         return res.data
 
     } catch (error) {
@@ -869,7 +869,7 @@ export const OrderFinalStatus = createAsyncThunk("OrderFinalStatus", async ({ id
 
         const requestData = { status: status };
 
-        const res = await axios.put(`/api/admin/finalStatus/${id}`, requestData, config)
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/finalStatus/${id}`, requestData, config)
         return res.data.msg
     } catch (error) {
         return rejectWithValue(error.response.data.err);
@@ -893,7 +893,7 @@ export const DeleteOrder = createAsyncThunk("DeleteOrder", async (id, { rejectWi
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteOrder/${id}`, config)
+        const res = await axios.delete(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/deleteOrder/${id}`, config)
         return res.data.msg
 
     } catch (error) {
@@ -1038,7 +1038,7 @@ export const AllUsers = createAsyncThunk("AllUsers", async (rand, { rejectWithVa
             }
         };
 
-        const res = await axios.get(`/api/admin/getAllUsers`, config)
+        const res = await axios.get(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/getAllUsers`, config)
         return res.data.users
 
     } catch (error) {
@@ -1059,7 +1059,7 @@ export const UserDetails = createAsyncThunk("UserDetails", async (id, { rejectWi
             }
         };
 
-        const res = await axios.get(`/api/admin/getSingleUser/${id}`, config);
+        const res = await axios.get(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/getSingleUser/${id}`, config);
         return res.data.user;
 
 
@@ -1086,7 +1086,7 @@ export const UpdateUserRole = createAsyncThunk("UpdateUser", async ({ id: id, ro
         };
         const requestData = { role: role };
 
-        const res = await axios.put(`/api/admin/updateUserRole/${id}`, requestData, config)
+        const res = await axios.put(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/updateUserRole/${id}`, requestData, config)
         return res.data.msg
 
     } catch (error) {
@@ -1109,7 +1109,7 @@ export const DeleteUser = createAsyncThunk("DeleteProduct", async (id, { rejectW
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteUser/${id}`, config)
+        const res = await axios.delete(`https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/admin/deleteUser/${id}`, config)
         return res.data.msg
 
     } catch (error) {
