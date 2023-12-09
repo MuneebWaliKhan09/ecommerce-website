@@ -15,7 +15,7 @@ const corsOptions = {
     ],
     credentials: true, // Allow cookies to be sent in requests and responses
     allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
-    // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
   };
 
 // handling uncaught exception
