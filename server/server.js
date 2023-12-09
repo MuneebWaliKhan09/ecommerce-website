@@ -14,7 +14,7 @@ const corsOptions = {
       "*", // Add your frontend application's origin here
     ],
     credentials: true, // Allow cookies to be sent in requests and responses
-    // allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
+    allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
     // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
   };
 
