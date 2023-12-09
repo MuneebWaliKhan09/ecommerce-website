@@ -66,7 +66,7 @@ app.use((err, req, res, next) => {
 
 
 
-const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://:${process.env.PORT || 5000}`.cyan) })
+const server = app.listen(process.env.PORT, () => { console.log(`server started on port http://localhost:${process.env.PORT || 5000}`.cyan) })
 
 
 // unhandle promise rejection server rejection database rejection

@@ -28,7 +28,7 @@ function App() {
   // const navigate = useNavigate()
 
   async function getStripeApiKey() {
-    const { data } = await axios.get("/api/stripeapikey", {headers: {'Access-Control-Allow-Origin': '*'}});
+    const { data } = await axios.get("/api/stripeapikey");
 
     setStripeApiKey(data.stripeApiKey);
   }
