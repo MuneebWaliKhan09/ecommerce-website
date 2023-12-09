@@ -377,16 +377,8 @@ export const registerUser = createAsyncThunk("auth/register", async (data, { rej
 export const loginUser = createAsyncThunk("auth/login", async ({ email: email, password: password }, { rejectWithValue }) => {
 
     try {
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
-        };
 
-        const res = await axios.post("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/loginUser", { email, password }, config);
+        const res = await axios.post("https://ecommerce-muneeb-muneebs-projects-18ef342e.vercel.app/api/loginUser", { email, password });
 
         return res.data.msg;
     } catch (error) {
