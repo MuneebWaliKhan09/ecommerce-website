@@ -31,7 +31,7 @@ const Products = () => {
         Id: `${item._id}`,
         product: item.name,
         price: item.price,
-        stock: item.stock === 0 ? <span className="text-danger">Out Of Stock</span> : item.stock,
+        stock: item.stock <= 0 ? <span className="text-danger">Out Of Stock</span> : item.stock,
         category: item.category,
         ratings: item.ratings.toFixed(1),
         image: item.images && item.images[0] ? <img src={item.images[0].url} alt="product" style={{ height: "50px", width: "50px" }} /> : "",

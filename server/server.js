@@ -52,8 +52,6 @@ app.use('/api', order)
 app.use("/api", payment)
 
 
-
-
 // Global error handler middleware
 app.use((err, req, res, next) => {
     // console.error(err.stack);
