@@ -9,6 +9,11 @@ const cloudinary = require("cloudinary");
 const app = express();
 
 
+const corsOptions = {
+    origin: 'https://ecommerce-muneeb.vercel.app',
+    credentials: true,
+  };
+
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
     console.log(`Error: ${err.message}`.red)
@@ -27,7 +32,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
+app.use(cors(corsOptions))
 
 
 // upload images
