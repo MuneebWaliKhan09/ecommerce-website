@@ -9,14 +9,14 @@ const cloudinary = require("cloudinary");
 const app = express();
 
 
-const corsOptions = {
-    origin: [
-      "http://localhost:5173", // Add your frontend application's origin here
-    ],
-    credentials: true, // Allow cookies to be sent in requests and responses
-    allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
-  };
+// const corsOptions = {
+//     origin: [
+//       "http://localhost:5173", // Add your frontend application's origin here
+//     ],
+//     credentials: true, // Allow cookies to be sent in requests and responses
+//     allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
+//   };
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
@@ -36,7 +36,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions))
+app.use(cors())
 
 
 // upload images
