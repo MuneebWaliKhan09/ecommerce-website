@@ -4,8 +4,8 @@
   "description": "Ecommerce-backend-Muneeb",
   "main": "index.js",
   "scripts": {
-    "dev": "node server/server.js",
-    "script": "node server/server.js"
+    "dev": "nodemon server/server.js",
+    "script": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
