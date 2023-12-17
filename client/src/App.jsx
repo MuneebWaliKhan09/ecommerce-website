@@ -28,7 +28,7 @@ function App() {
   // const navigate = useNavigate()
 
   async function getStripeApiKey() {
-    const { data } = await axios.get("/api/stripeapikey");
+    const { data } = await axios.get("https://ecommerce-muneeb.vercel.app/api/stripeapikey");
 
     setStripeApiKey(data.stripeApiKey);
   }
