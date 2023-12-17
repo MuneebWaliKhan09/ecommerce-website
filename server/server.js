@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require("cors");
 const connect = require("./config/db")
 require("colors")
-const dotenv = require("dotenv")
+const dotenv = require("dotenv").config("./.env")
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
