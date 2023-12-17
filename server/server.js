@@ -2,13 +2,13 @@ const express = require('express');
 const cors = require("cors");
 const connect = require("./config/db")
 require("colors")
-const dotenv = require("dotenv").config("./.env")
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 const app = express();
 
 
+const dotenv = require("dotenv").config("./.env")
 
 // handling uncaught exception
 process.on("uncaughtException", (err) => {
@@ -18,8 +18,8 @@ process.on("uncaughtException", (err) => {
 })
 
 
-// config dotenv
-dotenv.config({ path: ".env" })
+// // config dotenv
+// dotenv.config({ path: ".env" })
 
 connect()
 
