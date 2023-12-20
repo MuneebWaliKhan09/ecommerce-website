@@ -108,8 +108,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
                 res.cookie("token", token, options)
                 console.log('Setting cookie...');
-                res.cookie("token", token, options);
-                console.log('Cookie set successfully!');
+                console.log('Cookie set successfully!', token, options);
                 
                 res.send({
                     msg: "user loged in successfully",
