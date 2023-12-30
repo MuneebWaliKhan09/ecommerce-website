@@ -103,7 +103,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
                         Date.now() + ms(process.env.COOKIE_EXPIRE)
                     ),
                       httpOnly: true,
-                      secure: true, // Set secure attribute in production
+                    path: "/"
                 }
 
                 res.cookie("token", token, options)
