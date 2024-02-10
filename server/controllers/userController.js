@@ -86,7 +86,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
         if (!user) {
             return res.status(400).json({
-                err: "User does not exist",
+                err: "User does not exist ",
                 success: false
             })
         }
@@ -102,7 +102,9 @@ exports.loginUser = asyncHandler(async (req, res) => {
                     expires: new Date(
                         Date.now() + ms(process.env.COOKIE_EXPIRE)
                     ),
-                    httpOnly: true
+                    secure: 'auto',
+                    sameSite: "none",
+                    httpOnly: false,
                 }
 
                 res.cookie("token", token, options)
