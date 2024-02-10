@@ -104,7 +104,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
                     ),
                       secure: 'auto',
                     sameSite: "none",
-                    httpOnly: true,
+                    httpOnly: false,
                 }
 
                 res.cookie("token", token, options)
