@@ -382,7 +382,7 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email: email, p
                 "Content-Type": "application/json",
             }
         };
-        const res = await axios.post("${BASE_URL}/api/loginUser", { email, password }, config);
+        const res = await axios.post(`${BASE_URL}/api/loginUser`, { email, password }, config);
 
         return res.data.msg;
     } catch (error) {
