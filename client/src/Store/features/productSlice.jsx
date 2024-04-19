@@ -2,14 +2,14 @@ import { createSlice, createAsyncThunk, combineReducers } from "@reduxjs/toolkit
 import axios from "axios";
 
 
-
+const BASE_URL = "https://ecommerce-muneeb.vercel.app"
 
 
 
 // get products
 
 export const allProducts = createAsyncThunk("allProducts", async ({ currentPage = 1, category = '', minPrice = 20, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
-    let apiUrl = `/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
+    let apiUrl = `${BASE_URL}/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
 
     if (category) {
         apiUrl += `&category=${category}`;
@@ -29,7 +29,7 @@ export const allProducts = createAsyncThunk("allProducts", async ({ currentPage 
 // get productsDetails
 
 export const productsDetails = createAsyncThunk("productsDetail", async (id, { rejectWithValue }) => {
-    const res = await axios.get(`/api/getProductDetails/${id}`)
+    const res = await axios.get(`${BASE_URL}/api/getProductDetails/${id}`)
 
     try {
 
@@ -58,7 +58,7 @@ export const productsReveiw = createAsyncThunk("productReveiw", async (data, { r
             }
         };
 
-        const res = await axios.put(`/api/createReview`, data, config)
+        const res = await axios.put(`${BASE_URL}/api/createReview`, data, config)
 
         return res.data;
 
@@ -79,7 +79,7 @@ export const createOrder = createAsyncThunk("createOrder", async (order, { rejec
             }
         };
 
-        const res = await axios.post(`/api/createOrder`, order, config)
+        const res = await axios.post(`${BASE_URL}/api/createOrder`, order, config)
 
         return res.data.msg;
 
@@ -101,7 +101,7 @@ export const allOrders = createAsyncThunk("allOrders", async (rand, { rejectWith
             }
         };
 
-        const res = await axios.get(`/api/myOrders`, config)
+        const res = await axios.get(`${BASE_URL}/api/myOrders`, config)
 
         return res.data.orders;
 
@@ -122,7 +122,7 @@ export const orderDetails = createAsyncThunk("orderDetails", async (id, { reject
             }
         };
 
-        const res = await axios.get(`/api/getSingleOrder/${id}`, config)
+        const res = await axios.get(`${BASE_URL}/api/getSingleOrder/${id}`, config)
 
         return res.data.order;
 
@@ -364,7 +364,7 @@ export const registerUser = createAsyncThunk("auth/register", async (data, { rej
     try {
         const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-        const res = await axios.post("/api/registerUser", data, config);
+        const res = await axios.post("${BASE_URL}/api/registerUser", data, config);
 
         return res.data.msg;
     } catch (error) {
@@ -382,7 +382,7 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email: email, p
                 "Content-Type": "application/json",
             }
         };
-        const res = await axios.post("/api/loginUser", { email, password }, config);
+        const res = await axios.post("${BASE_URL}/api/loginUser", { email, password }, config);
 
         return res.data.msg;
     } catch (error) {
@@ -401,7 +401,7 @@ export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectW
             }
         };
 
-        const res = await axios.get("/api/logoutUser", config);
+        const res = await axios.get("${BASE_URL}/api/logoutUser", config);
 
         return res.data.msg;
     } catch (error) {
@@ -416,7 +416,7 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
     try {
         const config = { headers: { "Content-Type": "application/json" } };
 
-        const res = await axios.get("/api/getUserDetails", config);
+        const res = await axios.get("${BASE_URL}/api/getUserDetails", config);
         return res.data.user;
 
 
@@ -431,7 +431,7 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
 export const forgotPasswordUser = createAsyncThunk("forgotPasswordUser", async ({ email: email }, { rejectWithValue }) => {
 
     try {
-        const res = await axios.post("/api/forgot/password", { email });
+        const res = await axios.post("${BASE_URL}/api/forgot/password", { email });
         return res.data.msg;
 
 
@@ -445,7 +445,7 @@ export const forgotPasswordUser = createAsyncThunk("forgotPasswordUser", async (
 export const resetPasswordUser = createAsyncThunk("resetPasswordUser", async ({ password: password, confirmPassword: confirmPassword, token: token }, { rejectWithValue }) => {
 
     try {
-        const res = await axios.put(`/api/password/reset/${token}`, { password, confirmPassword });
+        const res = await axios.put(`${BASE_URL}/api/password/reset/${token}`, { password, confirmPassword });
         return res.data.msg;
 
 
@@ -469,7 +469,7 @@ export const updateUserProfile = createAsyncThunk("updateUserProfile", async (da
         };
 
 
-        const res = await axios.put(`/api/updateUserProfile`, data, config);
+        const res = await axios.put(`${BASE_URL}/api/updateUserProfile`, data, config);
         return res.data.msg;
 
 
@@ -493,7 +493,7 @@ export const updateUserPassword = createAsyncThunk("updateUserPassword", async (
             }
         };
 
-        const res = await axios.put(`/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
+        const res = await axios.put(`${BASE_URL}/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
         return res.data.msg;
 
 
@@ -778,7 +778,7 @@ export const CreateProduct = createAsyncThunk("CreateProduct", async (data, { re
             }
         };
 
-        const res = await axios.post(`/api/admin/createProduct`, data, config)
+        const res = await axios.post(`${BASE_URL}/api/admin/createProduct`, data, config)
         return res.data.msg
 
     } catch (error) {
@@ -802,7 +802,7 @@ export const UpdateProduct = createAsyncThunk("UpdateProduct", async ({ id: id, 
             }
         };
 
-        const res = await axios.put(`/api/admin/updateProduct/${id}`, data, config)
+        const res = await axios.put(`${BASE_URL}/api/admin/updateProduct/${id}`, data, config)
         return res.data.msg
 
     } catch (error) {
@@ -825,7 +825,7 @@ export const DeleteProduct = createAsyncThunk("DeleteProduct", async (id, { reje
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteProduct/${id}`, config)
+        const res = await axios.delete(`${BASE_URL}/api/admin/deleteProduct/${id}`, config)
         return res.data.msg
 
     } catch (error) {
@@ -851,7 +851,7 @@ export const adminOrders = createAsyncThunk("adminOrders", async (rand, { reject
             }
         };
 
-        const res = await axios.get(`/api/admin/allOrders`, config)
+        const res = await axios.get(`${BASE_URL}/api/admin/allOrders`, config)
         return res.data
 
     } catch (error) {
@@ -876,7 +876,7 @@ export const OrderFinalStatus = createAsyncThunk("OrderFinalStatus", async ({ id
 
         const requestData = { status: status };
 
-        const res = await axios.put(`/api/admin/finalStatus/${id}`, requestData, config)
+        const res = await axios.put(`${BASE_URL}/api/admin/finalStatus/${id}`, requestData, config)
         return res.data.msg
     } catch (error) {
         return rejectWithValue(error.response.data.err);
@@ -900,7 +900,7 @@ export const DeleteOrder = createAsyncThunk("DeleteOrder", async (id, { rejectWi
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteOrder/${id}`, config)
+        const res = await axios.delete(`${BASE_URL}/api/admin/deleteOrder/${id}`, config)
         return res.data.msg
 
     } catch (error) {
@@ -1045,7 +1045,7 @@ export const AllUsers = createAsyncThunk("AllUsers", async (rand, { rejectWithVa
             }
         };
 
-        const res = await axios.get(`/api/admin/getAllUsers`, config)
+        const res = await axios.get(`${BASE_URL}/api/admin/getAllUsers`, config)
         return res.data.users
 
     } catch (error) {
@@ -1066,7 +1066,7 @@ export const UserDetails = createAsyncThunk("UserDetails", async (id, { rejectWi
             }
         };
 
-        const res = await axios.get(`/api/admin/getSingleUser/${id}`, config);
+        const res = await axios.get(`${BASE_URL}/api/admin/getSingleUser/${id}`, config);
         return res.data.user;
 
 
@@ -1093,7 +1093,7 @@ export const UpdateUserRole = createAsyncThunk("UpdateUser", async ({ id: id, ro
         };
         const requestData = { role: role };
 
-        const res = await axios.put(`/api/admin/updateUserRole/${id}`, requestData, config)
+        const res = await axios.put(`${BASE_URL}/api/admin/updateUserRole/${id}`, requestData, config)
         return res.data.msg
 
     } catch (error) {
@@ -1116,7 +1116,7 @@ export const DeleteUser = createAsyncThunk("DeleteProduct", async (id, { rejectW
             }
         };
 
-        const res = await axios.delete(`/api/admin/deleteUser/${id}`, config)
+        const res = await axios.delete(`${BASE_URL}/api/admin/deleteUser/${id}`, config)
         return res.data.msg
 
     } catch (error) {
