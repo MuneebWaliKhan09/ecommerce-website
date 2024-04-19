@@ -377,8 +377,12 @@ export const registerUser = createAsyncThunk("auth/register", async (data, { rej
 export const loginUser = createAsyncThunk("auth/login", async ({ email: email, password: password }, { rejectWithValue }) => {
 
     try {
-
-        const res = await axios.post("/api/loginUser", { email, password });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const res = await axios.post("/api/loginUser", { email, password }, config);
 
         return res.data.msg;
     } catch (error) {
@@ -391,12 +395,9 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email: email, p
 export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectWithValue }) => {
 
     try {
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
             }
         };
 
