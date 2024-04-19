@@ -102,7 +102,9 @@ exports.loginUser = asyncHandler(async (req, res) => {
                     expires: new Date(
                         Date.now() + ms(process.env.COOKIE_EXPIRE)
                     ),
-                    httpOnly: true
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "strict"
                 }
 
                 res.cookie("token", token, options)
