@@ -401,7 +401,7 @@ export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectW
             }
         };
 
-        const res = await axios.get("${BASE_URL}/api/logoutUser", config);
+        const res = await axios.get(`${BASE_URL}/api/logoutUser`, config);
 
         return res.data.msg;
     } catch (error) {
@@ -416,7 +416,7 @@ export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand
     try {
         const config = { headers: { "Content-Type": "application/json" } };
 
-        const res = await axios.get("${BASE_URL}/api/getUserDetails", config);
+        const res = await axios.get(`${BASE_URL}/api/getUserDetails`, config);
         return res.data.user;
 
 
