@@ -383,7 +383,7 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email: email, p
             }
         };
         const res = await axios.post(`${BASE_URL}/api/loginUser`, { email, password }, config);
-
+console.log("res", res.data);
         return res.data.msg;
     } catch (error) {
         return rejectWithValue(error.response.data.err);
