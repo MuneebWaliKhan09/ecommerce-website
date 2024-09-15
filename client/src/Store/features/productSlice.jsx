@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, combineReducers } from "@reduxjs/toolkit
 import axios from "axios";
 
 
-const BASE_URL = "https://ecommerce-muneeb.vercel.app"
+const BASE_URL = "https://ecommerce-website-umber-three.vercel.app"
 
 
 

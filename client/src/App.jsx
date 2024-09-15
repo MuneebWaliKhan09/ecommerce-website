@@ -35,7 +35,7 @@ function App() {
   async function getStripeApiKey() {
     try {
       const { data } = await axios.get(
-        `api/stripeapikey`,
+        `https://ecommerce-website-umber-three.vercel.app/api/stripeapikey`,
         {
           withCredentials: true, // Include credentials if needed
         }
