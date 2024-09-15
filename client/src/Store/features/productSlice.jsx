@@ -196,19 +196,19 @@ export const productReveiwer = createSlice({
     }
     ,
     extraReducers: {
-        [productsReveiw.pending]: (state) => {
+        [productsReview.pending]: (state) => {
             state.loadingReveiw = true;
             state.errorRewiew = null;
 
         },
 
-        [productsReveiw.fulfilled]: (state, action) => {
+        [productsReview.fulfilled]: (state, action) => {
             state.loadingReveiw = false;
             state.msg = action.payload.msg;
             state.loadingReveiw = false;
 
         },
-        [productsReveiw.rejected]: (state, action) => {
+        [productsReview.rejected]: (state, action) => {
             state.loadingReveiw = false;
             state.errorRewiew = action.payload.err;
             state.AuthError = action.payload.msg;
