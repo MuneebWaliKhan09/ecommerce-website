@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { productsDetails, productsReveiw, clearMsgReveiwer, addToCartFunc, clearMsgCart } from '../../../Store/features/productSlice';
+import { productsDetails, productsReview, clearMsgReveiwer, addToCartFunc, clearMsgCart } from '../../../Store/features/productSlice';
 import { useDispatch } from "react-redux"
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom';
@@ -88,7 +88,7 @@ const ProductDetails = () => {
         formData.set("comment", comment);
         formData.set("productId", id);
 
-        dispatch(productsReveiw(formData));
+        dispatch(productsReview(formData));
 
         setOpen(false);
         setRating(0);
