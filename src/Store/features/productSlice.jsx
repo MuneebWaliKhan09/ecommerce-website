@@ -6,135 +6,120 @@ const BASE_URL = "https://ecommerce-muneeb.vercel.app"
 
 
 
-// get products
-
-export const allProducts = createAsyncThunk("allProducts", async ({ currentPage = 1, category = '', minPrice = 20, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
-    let apiUrl = `${BASE_URL}/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
-
-    if (category) {
+// Get all products
+export const allProducts = createAsyncThunk(
+    "allProducts",
+    async ({ currentPage = 1, category = '', minPrice = 20, maxPrice = 20000, keyword = '' }, { rejectWithValue }) => {
+      let apiUrl = `${BASE_URL}/api/allProducts?page=${currentPage}&minPrice=${minPrice}&maxPrice=${maxPrice}&keyword=${keyword}`;
+  
+      if (category) {
         apiUrl += `&category=${category}`;
-    }
-
-    try {
-
-        const res = await axios.get(apiUrl);
-
+      }
+  
+      try {
+        const res = await axios.get(apiUrl, { withCredentials: true }); // Include credentials
         return res.data;
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data);
+      }
     }
-})
-
-
-// get productsDetails
-
-export const productsDetails = createAsyncThunk("productsDetail", async (id, { rejectWithValue }) => {
-    const res = await axios.get(`${BASE_URL}/api/getProductDetails/${id}`)
-
-    try {
-
+  );
+  
+  // Get product details
+  export const productsDetails = createAsyncThunk(
+    "productsDetail",
+    async (id, { rejectWithValue }) => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/getProductDetails/${id}`, { withCredentials: true }); // Include credentials
         return res.data.product;
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data);
+      }
     }
-})
-
-
-
-
-// create product reveiwe
-
-export const productsReveiw = createAsyncThunk("productReveiw", async (data, { rejectWithValue }) => {
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Create product review
+  export const productsReview = createAsyncThunk(
+    "productReview",
+    async (data, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.put(`${BASE_URL}/api/createReview`, data, config)
-
+  
+        const res = await axios.put(`${BASE_URL}/api/createReview`, data, config);
         return res.data;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data);
+      }
     }
-})
-
-
-// create order
-export const createOrder = createAsyncThunk("createOrder", async (order, { rejectWithValue }) => {
-
-    try {
+  );
+  
+  // Create order
+  export const createOrder = createAsyncThunk(
+    "createOrder",
+    async (order, { rejectWithValue }) => {
+      try {
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-            }
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.post(`${BASE_URL}/api/createOrder`, order, config)
-
+  
+        const res = await axios.post(`${BASE_URL}/api/createOrder`, order, config);
         return res.data.msg;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-// all orders of loged in user
-export const allOrders = createAsyncThunk("allOrders", async (rand, { rejectWithValue }) => {
-
-    try {
+  );
+  
+  // Get all orders of logged-in user
+  export const allOrders = createAsyncThunk(
+    "allOrders",
+    async (_, { rejectWithValue }) => {
+      try {
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            }
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.get(`${BASE_URL}/api/myOrders`, config)
-
+  
+        const res = await axios.get(`${BASE_URL}/api/myOrders`, config);
         return res.data.orders;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-// single order of loged in user
-export const orderDetails = createAsyncThunk("orderDetails", async (id, { rejectWithValue }) => {
-
-    try {
+  );
+  
+  // Get single order of logged-in user
+  export const orderDetails = createAsyncThunk(
+    "orderDetails",
+    async (id, { rejectWithValue }) => {
+      try {
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-            }
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.get(`${BASE_URL}/api/getSingleOrder/${id}`, config)
-
+  
+        const res = await axios.get(`${BASE_URL}/api/getSingleOrder/${id}`, config);
         return res.data.order;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-
-
+  );
 
 
 
@@ -358,151 +343,158 @@ export const createOrders = createSlice({
 
 
 
-
-export const registerUser = createAsyncThunk("auth/register", async (data, { rejectWithValue }) => {
-
-    try {
-        const config = { headers: { "Content-Type": "multipart/form-data" } };
-
-        const res = await axios.post("${BASE_URL}/api/registerUser", data, config);
-
-        return res.data.msg;
-    } catch (error) {
-        return rejectWithValue(error.response.data.err);
-    }
-
-})
-
-
-export const loginUser = createAsyncThunk("auth/login", async ({ email: email, password: password }, { rejectWithValue }) => {
-
-    try {
+// Register User
+export const registerUser = createAsyncThunk(
+    "auth/register",
+    async (data, { rejectWithValue }) => {
+      try {
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-            }
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true // Include credentials
         };
+  
+        const res = await axios.post(`${BASE_URL}/api/registerUser`, data, config);
+        return res.data.msg;
+      } catch (error) {
+        return rejectWithValue(error.response.data.err);
+      }
+    }
+  );
+  
+  // Login User
+  export const loginUser = createAsyncThunk(
+    "auth/login",
+    async ({ email, password }, { rejectWithValue }) => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true // Include credentials
+        };
+  
         const res = await axios.post(`${BASE_URL}/api/loginUser`, { email, password }, config);
-console.log("res", res.data);
+        console.log("res", res.data);
         return res.data.msg;
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
-
-export const logoutUser = createAsyncThunk("auth/logout", async (rand, { rejectWithValue }) => {
-
-    try {
+  );
+  
+  // Logout User
+  export const logoutUser = createAsyncThunk(
+    "auth/logout",
+    async (_, { rejectWithValue }) => {
+      try {
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-            }
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true // Include credentials
         };
-
+  
         const res = await axios.get(`${BASE_URL}/api/logoutUser`, config);
-
         return res.data.msg;
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
-
-export const loginUserDetails = createAsyncThunk("auth/userDetails", async (rand, { rejectWithValue }) => {
-
-    try {
-        const config = { headers: { "Content-Type": "application/json" } };
-
+  );
+  
+  // Get Logged-In User Details
+  export const loginUserDetails = createAsyncThunk(
+    "auth/userDetails",
+    async (_, { rejectWithValue }) => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true // Include credentials
+        };
+  
         const res = await axios.get(`${BASE_URL}/api/getUserDetails`, config);
         return res.data.user;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data);
+      }
     }
-
-})
-
-
-// forgot password
-export const forgotPasswordUser = createAsyncThunk("forgotPasswordUser", async ({ email: email }, { rejectWithValue }) => {
-
-    try {
-        const res = await axios.post("${BASE_URL}/api/forgot/password", { email });
+  );
+  
+  // Forgot Password
+  export const forgotPasswordUser = createAsyncThunk(
+    "forgotPasswordUser",
+    async ({ email }, { rejectWithValue }) => {
+      try {
+        const res = await axios.post(`${BASE_URL}/api/forgot/password`, { email }, { withCredentials: true });
         return res.data.msg;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
-// reset password
-export const resetPasswordUser = createAsyncThunk("resetPasswordUser", async ({ password: password, confirmPassword: confirmPassword, token: token }, { rejectWithValue }) => {
-
-    try {
-        const res = await axios.put(`${BASE_URL}/api/password/reset/${token}`, { password, confirmPassword });
+  );
+  
+  // Reset Password
+  export const resetPasswordUser = createAsyncThunk(
+    "resetPasswordUser",
+    async ({ password, confirmPassword, token }, { rejectWithValue }) => {
+      try {
+        const res = await axios.put(`${BASE_URL}/api/password/reset/${token}`, { password, confirmPassword }, { withCredentials: true });
         return res.data.msg;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
-// update user profile
-export const updateUserProfile = createAsyncThunk("updateUserProfile", async (data, { rejectWithValue }) => {
-
-    try {
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Update User Profile
+  export const updateUserProfile = createAsyncThunk(
+    "updateUserProfile",
+    async (data, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-
+  
         const res = await axios.put(`${BASE_URL}/api/updateUserProfile`, data, config);
         return res.data.msg;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
-
-// update user profile
-export const updateUserPassword = createAsyncThunk("updateUserPassword", async ({ oldPassword: oldPassword, newPassword: newPassword, confirmPassword: confirmPassword }, { rejectWithValue }) => {
-
-    try {
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Update User Password
+  export const updateUserPassword = createAsyncThunk(
+    "updateUserPassword",
+    async ({ oldPassword, newPassword, confirmPassword }, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
+  
         const res = await axios.put(`${BASE_URL}/api/updateUserPassword`, { oldPassword, newPassword, confirmPassword }, config);
         return res.data.msg;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
+  );
 
 
 
@@ -763,151 +755,143 @@ export const { clearMsgOrder } = createOrders.actions
 
 //  ADMIN SLICES DONW BELOW
 
-
-export const CreateProduct = createAsyncThunk("CreateProduct", async (data, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+// Create Product
+export const CreateProduct = createAsyncThunk(
+    "CreateProduct",
+    async (data, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.post(`${BASE_URL}/api/admin/createProduct`, data, config)
-        return res.data.msg
-
-    } catch (error) {
+  
+        const res = await axios.post(`${BASE_URL}/api/admin/createProduct`, data, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-
-export const UpdateProduct = createAsyncThunk("UpdateProduct", async ({ id: id, data: data }, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Update Product
+  export const UpdateProduct = createAsyncThunk(
+    "UpdateProduct",
+    async ({ id, data }, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.put(`${BASE_URL}/api/admin/updateProduct/${id}`, data, config)
-        return res.data.msg
-
-    } catch (error) {
+  
+        const res = await axios.put(`${BASE_URL}/api/admin/updateProduct/${id}`, data, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-export const DeleteProduct = createAsyncThunk("DeleteProduct", async (id, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Delete Product
+  export const DeleteProduct = createAsyncThunk(
+    "DeleteProduct",
+    async (id, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.delete(`${BASE_URL}/api/admin/deleteProduct/${id}`, config)
-        return res.data.msg
-
-    } catch (error) {
+  
+        const res = await axios.delete(`${BASE_URL}/api/admin/deleteProduct/${id}`, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-
-
-
-export const adminOrders = createAsyncThunk("adminOrders", async (rand, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Get all orders of logged-in user
+  export const adminOrders = createAsyncThunk(
+    "adminOrders",
+    async (_, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.get(`${BASE_URL}/api/admin/allOrders`, config)
-        return res.data
-
-    } catch (error) {
+  
+        const res = await axios.get(`${BASE_URL}/api/admin/allOrders`, config);
+        return res.data;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-
-export const OrderFinalStatus = createAsyncThunk("OrderFinalStatus", async ({ id: id, status: status }, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Update Order Final Status
+  export const OrderFinalStatus = createAsyncThunk(
+    "OrderFinalStatus",
+    async ({ id, status }, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-            },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+          },
+          withCredentials: true // Include credentials
         };
-
+  
         const requestData = { status: status };
-
-        const res = await axios.put(`${BASE_URL}/api/admin/finalStatus/${id}`, requestData, config)
-        return res.data.msg
-    } catch (error) {
+        const res = await axios.put(`${BASE_URL}/api/admin/finalStatus/${id}`, requestData, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-
-
-export const DeleteOrder = createAsyncThunk("DeleteOrder", async (id, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Delete Order
+  export const DeleteOrder = createAsyncThunk(
+    "DeleteOrder",
+    async (id, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.delete(`${BASE_URL}/api/admin/deleteOrder/${id}`, config)
-        return res.data.msg
-
-    } catch (error) {
+  
+        const res = await axios.delete(`${BASE_URL}/api/admin/deleteOrder/${id}`, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
+  );
 
 
 
@@ -1029,103 +1013,98 @@ export const { clearErrorAdminProduct } = AuthorizedProductFunc.actions
 // =============================================================== Aythorized product func is over 
 
 
-
-
-export const AllUsers = createAsyncThunk("AllUsers", async (rand, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+// Get All Users
+export const AllUsers = createAsyncThunk(
+    "AllUsers",
+    async (_, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.get(`${BASE_URL}/api/admin/getAllUsers`, config)
-        return res.data.users
-
-    } catch (error) {
+  
+        const res = await axios.get(`${BASE_URL}/api/admin/getAllUsers`, config);
+        return res.data.users;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-export const UserDetails = createAsyncThunk("UserDetails", async (id, { rejectWithValue }) => {
-
-    try {
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Get User Details
+  export const UserDetails = createAsyncThunk(
+    "UserDetails",
+    async (id, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
+  
         const res = await axios.get(`${BASE_URL}/api/admin/getSingleUser/${id}`, config);
         return res.data.user;
-
-
-    } catch (error) {
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-
-})
-
-
-
-export const UpdateUserRole = createAsyncThunk("UpdateUser", async ({ id: id, role: role }, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Update User Role
+  export const UpdateUserRole = createAsyncThunk(
+    "UpdateUser",
+    async ({ id, role }, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-        const requestData = { role: role };
-
-        const res = await axios.put(`${BASE_URL}/api/admin/updateUserRole/${id}`, requestData, config)
-        return res.data.msg
-
-    } catch (error) {
+        const requestData = { role };
+  
+        const res = await axios.put(`${BASE_URL}/api/admin/updateUserRole/${id}`, requestData, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-export const DeleteUser = createAsyncThunk("DeleteProduct", async (id, { rejectWithValue }) => {
-
-
-    try {
-
-        const token = document.cookie.toString(/token=([^;]+)/)[1];
+  );
+  
+  // Delete User
+  export const DeleteUser = createAsyncThunk(
+    "DeleteUser",
+    async (id, { rejectWithValue }) => {
+      try {
+        const token = document.cookie.match(/token=([^;]+)/)[1]; // Extract token from cookies
         const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                "Accept": "application/json"
-            }
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Use Bearer token format
+            "Accept": "application/json"
+          },
+          withCredentials: true // Include credentials
         };
-
-        const res = await axios.delete(`${BASE_URL}/api/admin/deleteUser/${id}`, config)
-        return res.data.msg
-
-    } catch (error) {
+  
+        const res = await axios.delete(`${BASE_URL}/api/admin/deleteUser/${id}`, config);
+        return res.data.msg;
+      } catch (error) {
         return rejectWithValue(error.response.data.err);
+      }
     }
-})
-
-
-
+  );
 
 
 export const AuthorizedUserFunc = createSlice({
