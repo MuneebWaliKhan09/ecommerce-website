@@ -20,15 +20,16 @@ process.on("uncaughtException", (err) => {
 
 connect()
 
+app.use(cors({
+    origin: 'https://ecommerce-weby.netlify.app',
+    credentials: true
+}))
+
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: process.env.ORIGIN,
-    credentials: true
-}))
 
 
 // upload images
