@@ -21,7 +21,7 @@ process.on("uncaughtException", (err) => {
 connect()
 
 app.use(cors({
-    origin: 'https://ecommerce-weby.netlify.app',
+    origin: ['https://ecommerce-weby.netlify.app','https://ecommerce-website-frontend-eta.vercel.app'],
     credentials: true
 }))
 
