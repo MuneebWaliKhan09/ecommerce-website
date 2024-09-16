@@ -54,9 +54,9 @@ export const allProducts = createAsyncThunk(
         };
   
         const res = await axios.put(`${BASE_URL}/api/createReview`, data, config);
-        return res.data;
+        return res?.data;
       } catch (error) {
-        return rejectWithValue(error.response.data);
+        return rejectWithValue(error?.response?.data);
       }
     }
   );
